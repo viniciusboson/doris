@@ -1,0 +1,38 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "asset",
+            "otherEntityName": "asset",
+            "otherEntityField": "code"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "wallet",
+            "otherEntityName": "wallet",
+            "otherEntityField": "description"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "updatedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "balance",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171022130827",
+    "entityTableName": "position",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris"
+}

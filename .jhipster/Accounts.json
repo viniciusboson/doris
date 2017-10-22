@@ -1,0 +1,32 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "wallet",
+            "otherEntityName": "wallet",
+            "otherEntityRelationshipName": "account"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "updatedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20171022130820",
+    "entityTableName": "accounts",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris"
+}

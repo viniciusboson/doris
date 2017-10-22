@@ -1,0 +1,51 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "operation",
+            "otherEntityName": "operation",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "asset",
+            "otherEntityName": "asset",
+            "otherEntityField": "code"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "updatedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "TransactionType",
+            "fieldValues": "DEBIT,CREDIT"
+        },
+        {
+            "fieldName": "balance",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171022130826",
+    "entityTableName": "transaction",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris"
+}

@@ -1,0 +1,38 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "createdAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "updatedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "code",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "symbol",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "AssetType",
+            "fieldValues": "INDICE,CURRENCY,COMMODITY,STOCK,OPTION"
+        }
+    ],
+    "changelogDate": "20171022130821",
+    "entityTableName": "asset",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris"
+}

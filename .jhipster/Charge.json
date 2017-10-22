@@ -1,0 +1,46 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "institution",
+            "otherEntityName": "institution",
+            "otherEntityField": "description"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "updatedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "ChargeType",
+            "fieldValues": "FLAT_FEE,PERCENTAGE"
+        },
+        {
+            "fieldName": "operationType",
+            "fieldType": "OperationType",
+            "fieldValues": "WIRE_TRANSFER,WITHDRAW,DEPOSIT,BUY,SELL"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171022130824",
+    "entityTableName": "charge",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris"
+}

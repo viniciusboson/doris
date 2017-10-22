@@ -1,0 +1,54 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "fromInstitution",
+            "otherEntityName": "institution",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "fromAsset",
+            "otherEntityName": "asset",
+            "otherEntityField": "code"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "toAsset",
+            "otherEntityName": "asset",
+            "otherEntityField": "code"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "toInstitution",
+            "otherEntityName": "institution",
+            "otherEntityField": "description"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "updatedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "fromAmount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "toAmount",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171022130825",
+    "entityTableName": "operation",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris"
+}
