@@ -28,11 +28,11 @@
             "fieldValues": "INDICE,CURRENCY,COMMODITY,STOCK,OPTION"
         }
     ],
-    "changelogDate": "20171022130821",
+    "changelogDate": "20171023194510",
     "entityTableName": "asset",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

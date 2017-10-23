@@ -31,6 +31,9 @@ public class Transaction implements Serializable {
     @Column(name = "updated_at")
     private ZonedDateTime updatedAt;
 
+    @Column(name = "executed_at")
+    private ZonedDateTime executedAt;
+
     @Column(name = "description")
     private String description;
 
@@ -83,6 +86,19 @@ public class Transaction implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public ZonedDateTime getExecutedAt() {
+        return executedAt;
+    }
+
+    public Transaction executedAt(ZonedDateTime executedAt) {
+        this.executedAt = executedAt;
+        return this;
+    }
+
+    public void setExecutedAt(ZonedDateTime executedAt) {
+        this.executedAt = executedAt;
     }
 
     public String getDescription() {
@@ -190,6 +206,7 @@ public class Transaction implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", executedAt='" + getExecutedAt() + "'" +
             ", description='" + getDescription() + "'" +
             ", amount='" + getAmount() + "'" +
             ", type='" + getType() + "'" +

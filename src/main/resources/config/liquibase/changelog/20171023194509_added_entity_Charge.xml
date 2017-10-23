@@ -14,10 +14,10 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Accounts.
+        Added the entity Charge.
     -->
-    <changeSet id="20171022130820-1" author="jhipster">
-        <createTable tableName="accounts">
+    <changeSet id="20171023194509-1" author="jhipster">
+        <createTable tableName="charge">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -33,10 +33,26 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="charge_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="operation_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="amount" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="institution_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="accounts" columnName="created_at" columnDataType="datetime"/>
-        <dropDefaultValue tableName="accounts" columnName="updated_at" columnDataType="datetime"/>
+        <dropDefaultValue tableName="charge" columnName="created_at" columnDataType="datetime"/>
+        <dropDefaultValue tableName="charge" columnName="updated_at" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

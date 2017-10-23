@@ -1,0 +1,132 @@
+entity Institution {
+  id Long
+  createdAt ZonedDateTime
+  updatedAt ZonedDateTime
+  description String //Poloniex, XP, Exodus, Santander
+}
+
+entity Charge {
+  id Long
+  createdAt ZonedDateTime
+  updatedAt ZonedDateTime
+  description String  //wire transfer, transaction fee
+  chargeType ChargeType
+  operationType OperationType
+  amount Double
+}
+
+enum ChargeType {
+  FLAT_FEE, PERCENTAGE
+}
+
+relationship ManyToOne {
+  Charge{institution(description)} to Institution
+}
+
+entity Asset {
+  id Long
+  createdAt ZonedDateTime
+  updatedAt ZonedDateTime
+  description String // US Dollar, Real, Bitcoin
+  code String //USD, BRL, BTC
+  symbol String // $, £
+  type AssetType
+}
+
+enum AssetType {
+  INDICE, CURRENCY, COMMODITY, STOCK, OPTION
+}
+
+entity Accounts {
+  id Long
+  createdAt ZonedDateTime
+  updatedAt ZonedDateTime
+  description String //Personal, Exchange A, Exchange B
+}
+
+entity Portfolio {
+  id Long
+  createdAt ZonedDateTime
+  updatedAt ZonedDateTime
+  description String // Bounds, Stocks, CryptoCoins
+}
+
+relationship ManyToOne {
+  Portfolio{account(description)} to Accounts{portfolio}
+}
+
+relationship ManyToMany {
+  Portfolio{assets(code)} to Asset,
+  Portfolio{institutions(description)} to Institution
+}
+
+entity Position { //history: balance, etc
+  id Long
+  createdAt ZonedDateTime
+  updatedAt ZonedDateTime
+  description String
+  balance Double
+  averange Double
+  type PositionType
+  status PositionStatus
+}
+
+enum PositionType {
+  LONG, SHORT, FLAT
+}
+
+enum PositionStatus {
+  OPENED, CLOSED
+}
+
+relationship ManyToOne {
+  Position{asset(code)} to Asset,
+  Position{portfolio(description)} to Portfolio
+}
+
+entity Operation {
+  id Long
+  createdAt ZonedDateTime
+  updatedAt ZonedDateTime
+  executedAt ZonedDateTime
+  fromAmount Double
+  toAmount Double
+}
+
+enum OperationType {
+  WIRE_TRANSFER, WITHDRAW, DEPOSIT, BUY, SELL
+}
+
+relationship ManyToOne {
+  Operation{fromPosition(description)} to Position,
+  Operation{fromInstitution(description)} to Institution,
+  Operation{toPosition(description)} to Position,
+  Operation{toInstitution(description)} to Institution
+}
+
+entity Transaction {
+  id Long
+  createdAt ZonedDateTime
+  updatedAt ZonedDateTime
+  executedAt ZonedDateTime
+  description String
+  amount Double
+  type TransactionType
+  balance Double
+}
+
+enum TransactionType {
+  DEBIT, CREDIT
+}
+
+relationship ManyToOne {
+  Transaction{operation} to Operation,
+  Transaction{asset(code)} to Asset
+}
+
+dto * with mapstruct
+
+// Set service options to all
+service all with serviceClass
+
+microservice * with doris

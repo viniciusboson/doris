@@ -13,7 +13,7 @@ public interface AccountsMapper extends EntityMapper<AccountsDTO, Accounts> {
 
     
 
-    @Mapping(target = "wallets", ignore = true)
+    @Mapping(target = "portfolios", ignore = true)
     Accounts toEntity(AccountsDTO accountsDTO);
 
     default Accounts fromId(Long id) {

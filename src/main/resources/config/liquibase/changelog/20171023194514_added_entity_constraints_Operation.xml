@@ -6,25 +6,25 @@
     <!--
         Added the constraints for entity Operation.
     -->
-    <changeSet id="20171022130825-2" author="jhipster">
+    <changeSet id="20171023194514-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="from_position_id"
+                                 baseTableName="operation"
+                                 constraintName="fk_operation_from_position_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="position"/>
+
         <addForeignKeyConstraint baseColumnNames="from_institution_id"
                                  baseTableName="operation"
                                  constraintName="fk_operation_from_institution_id"
                                  referencedColumnNames="id"
                                  referencedTableName="institution"/>
 
-        <addForeignKeyConstraint baseColumnNames="from_asset_id"
+        <addForeignKeyConstraint baseColumnNames="to_position_id"
                                  baseTableName="operation"
-                                 constraintName="fk_operation_from_asset_id"
+                                 constraintName="fk_operation_to_position_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="asset"/>
-
-        <addForeignKeyConstraint baseColumnNames="to_asset_id"
-                                 baseTableName="operation"
-                                 constraintName="fk_operation_to_asset_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="asset"/>
+                                 referencedTableName="position"/>
 
         <addForeignKeyConstraint baseColumnNames="to_institution_id"
                                  baseTableName="operation"

@@ -36,6 +36,8 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.oceanus.doris.domain.enumeration.PositionType;
+import com.oceanus.doris.domain.enumeration.PositionStatus;
 /**
  * Test class for the PositionResource REST controller.
  *
@@ -51,8 +53,20 @@ public class PositionResourceIntTest {
     private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     private static final Double DEFAULT_BALANCE = 1D;
     private static final Double UPDATED_BALANCE = 2D;
+
+    private static final Double DEFAULT_AVERANGE = 1D;
+    private static final Double UPDATED_AVERANGE = 2D;
+
+    private static final PositionType DEFAULT_TYPE = PositionType.LONG;
+    private static final PositionType UPDATED_TYPE = PositionType.SHORT;
+
+    private static final PositionStatus DEFAULT_STATUS = PositionStatus.OPENED;
+    private static final PositionStatus UPDATED_STATUS = PositionStatus.CLOSED;
 
     @Autowired
     private PositionRepository positionRepository;
@@ -99,7 +113,11 @@ public class PositionResourceIntTest {
         Position position = new Position()
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
-            .balance(DEFAULT_BALANCE);
+            .description(DEFAULT_DESCRIPTION)
+            .balance(DEFAULT_BALANCE)
+            .averange(DEFAULT_AVERANGE)
+            .type(DEFAULT_TYPE)
+            .status(DEFAULT_STATUS);
         return position;
     }
 
@@ -126,7 +144,11 @@ public class PositionResourceIntTest {
         Position testPosition = positionList.get(positionList.size() - 1);
         assertThat(testPosition.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testPosition.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testPosition.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testPosition.getBalance()).isEqualTo(DEFAULT_BALANCE);
+        assertThat(testPosition.getAverange()).isEqualTo(DEFAULT_AVERANGE);
+        assertThat(testPosition.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testPosition.getStatus()).isEqualTo(DEFAULT_STATUS);
     }
 
     @Test
@@ -162,7 +184,11 @@ public class PositionResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(position.getId().intValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
-            .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.doubleValue())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.doubleValue())))
+            .andExpect(jsonPath("$.[*].averange").value(hasItem(DEFAULT_AVERANGE.doubleValue())))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
 
     @Test
@@ -178,7 +204,11 @@ public class PositionResourceIntTest {
             .andExpect(jsonPath("$.id").value(position.getId().intValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
-            .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.doubleValue()));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.doubleValue()))
+            .andExpect(jsonPath("$.averange").value(DEFAULT_AVERANGE.doubleValue()))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
 
     @Test
@@ -201,7 +231,11 @@ public class PositionResourceIntTest {
         updatedPosition
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
-            .balance(UPDATED_BALANCE);
+            .description(UPDATED_DESCRIPTION)
+            .balance(UPDATED_BALANCE)
+            .averange(UPDATED_AVERANGE)
+            .type(UPDATED_TYPE)
+            .status(UPDATED_STATUS);
         PositionDTO positionDTO = positionMapper.toDto(updatedPosition);
 
         restPositionMockMvc.perform(put("/api/positions")
@@ -215,7 +249,11 @@ public class PositionResourceIntTest {
         Position testPosition = positionList.get(positionList.size() - 1);
         assertThat(testPosition.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testPosition.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testPosition.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testPosition.getBalance()).isEqualTo(UPDATED_BALANCE);
+        assertThat(testPosition.getAverange()).isEqualTo(UPDATED_AVERANGE);
+        assertThat(testPosition.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testPosition.getStatus()).isEqualTo(UPDATED_STATUS);
     }
 
     @Test

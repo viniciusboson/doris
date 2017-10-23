@@ -19,6 +19,8 @@ public class TransactionDTO implements Serializable {
 
     private ZonedDateTime updatedAt;
 
+    private ZonedDateTime executedAt;
+
     private String description;
 
     private Double amount;
@@ -55,6 +57,14 @@ public class TransactionDTO implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public ZonedDateTime getExecutedAt() {
+        return executedAt;
+    }
+
+    public void setExecutedAt(ZonedDateTime executedAt) {
+        this.executedAt = executedAt;
     }
 
     public String getDescription() {
@@ -140,6 +150,7 @@ public class TransactionDTO implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", executedAt='" + getExecutedAt() + "'" +
             ", description='" + getDescription() + "'" +
             ", amount='" + getAmount() + "'" +
             ", type='" + getType() + "'" +

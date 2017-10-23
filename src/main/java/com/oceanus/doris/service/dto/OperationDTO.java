@@ -18,21 +18,23 @@ public class OperationDTO implements Serializable {
 
     private ZonedDateTime updatedAt;
 
+    private ZonedDateTime executedAt;
+
     private Double fromAmount;
 
     private Double toAmount;
+
+    private Long fromPositionId;
+
+    private String fromPositionDescription;
 
     private Long fromInstitutionId;
 
     private String fromInstitutionDescription;
 
-    private Long fromAssetId;
+    private Long toPositionId;
 
-    private String fromAssetCode;
-
-    private Long toAssetId;
-
-    private String toAssetCode;
+    private String toPositionDescription;
 
     private Long toInstitutionId;
 
@@ -62,6 +64,14 @@ public class OperationDTO implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public ZonedDateTime getExecutedAt() {
+        return executedAt;
+    }
+
+    public void setExecutedAt(ZonedDateTime executedAt) {
+        this.executedAt = executedAt;
+    }
+
     public Double getFromAmount() {
         return fromAmount;
     }
@@ -76,6 +86,22 @@ public class OperationDTO implements Serializable {
 
     public void setToAmount(Double toAmount) {
         this.toAmount = toAmount;
+    }
+
+    public Long getFromPositionId() {
+        return fromPositionId;
+    }
+
+    public void setFromPositionId(Long positionId) {
+        this.fromPositionId = positionId;
+    }
+
+    public String getFromPositionDescription() {
+        return fromPositionDescription;
+    }
+
+    public void setFromPositionDescription(String positionDescription) {
+        this.fromPositionDescription = positionDescription;
     }
 
     public Long getFromInstitutionId() {
@@ -94,36 +120,20 @@ public class OperationDTO implements Serializable {
         this.fromInstitutionDescription = institutionDescription;
     }
 
-    public Long getFromAssetId() {
-        return fromAssetId;
+    public Long getToPositionId() {
+        return toPositionId;
     }
 
-    public void setFromAssetId(Long assetId) {
-        this.fromAssetId = assetId;
+    public void setToPositionId(Long positionId) {
+        this.toPositionId = positionId;
     }
 
-    public String getFromAssetCode() {
-        return fromAssetCode;
+    public String getToPositionDescription() {
+        return toPositionDescription;
     }
 
-    public void setFromAssetCode(String assetCode) {
-        this.fromAssetCode = assetCode;
-    }
-
-    public Long getToAssetId() {
-        return toAssetId;
-    }
-
-    public void setToAssetId(Long assetId) {
-        this.toAssetId = assetId;
-    }
-
-    public String getToAssetCode() {
-        return toAssetCode;
-    }
-
-    public void setToAssetCode(String assetCode) {
-        this.toAssetCode = assetCode;
+    public void setToPositionDescription(String positionDescription) {
+        this.toPositionDescription = positionDescription;
     }
 
     public Long getToInstitutionId() {
@@ -169,6 +179,7 @@ public class OperationDTO implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", executedAt='" + getExecutedAt() + "'" +
             ", fromAmount='" + getFromAmount() + "'" +
             ", toAmount='" + getToAmount() + "'" +
             "}";

@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Wallet entity.
+ * Performance test for the Portfolio entity.
  */
-class WalletGatlingTest extends Simulation {
+class PortfolioGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -42,7 +42,7 @@ class WalletGatlingTest extends Simulation {
         "Authorization" -> "${access_token}"
     )
 
-    val scn = scenario("Test the Wallet entity")
+    val scn = scenario("Test the Portfolio entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -60,26 +60,26 @@ class WalletGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all wallets")
-            .get("/doris/api/wallets")
+            exec(http("Get all portfolios")
+            .get("/doris/api/portfolios")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new wallet")
-            .post("/doris/api/wallets")
+            .exec(http("Create new portfolio")
+            .post("/doris/api/portfolios")
             .headers(headers_http_authenticated)
             .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "description":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_wallet_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_portfolio_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created wallet")
-                .get("/doris${new_wallet_url}")
+                exec(http("Get created portfolio")
+                .get("/doris${new_portfolio_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created wallet")
-            .delete("/doris${new_wallet_url}")
+            .exec(http("Delete created portfolio")
+            .delete("/doris${new_portfolio_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

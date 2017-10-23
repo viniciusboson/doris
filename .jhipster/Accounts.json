@@ -3,8 +3,8 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "wallet",
-            "otherEntityName": "wallet",
+            "relationshipName": "portfolio",
+            "otherEntityName": "portfolio",
             "otherEntityRelationshipName": "account"
         }
     ],
@@ -22,11 +22,11 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20171022130820",
+    "changelogDate": "20171023194511",
     "entityTableName": "accounts",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

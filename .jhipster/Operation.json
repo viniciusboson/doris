@@ -3,21 +3,21 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipName": "fromPosition",
+            "otherEntityName": "position",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipName": "fromInstitution",
             "otherEntityName": "institution",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "fromAsset",
-            "otherEntityName": "asset",
-            "otherEntityField": "code"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "toAsset",
-            "otherEntityName": "asset",
-            "otherEntityField": "code"
+            "relationshipName": "toPosition",
+            "otherEntityName": "position",
+            "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
@@ -36,6 +36,10 @@
             "fieldType": "ZonedDateTime"
         },
         {
+            "fieldName": "executedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
             "fieldName": "fromAmount",
             "fieldType": "Double"
         },
@@ -44,11 +48,11 @@
             "fieldType": "Double"
         }
     ],
-    "changelogDate": "20171022130825",
+    "changelogDate": "20171023194514",
     "entityTableName": "operation",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

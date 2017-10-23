@@ -52,6 +52,9 @@ public class TransactionResourceIntTest {
     private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final ZonedDateTime DEFAULT_EXECUTED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_EXECUTED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -109,6 +112,7 @@ public class TransactionResourceIntTest {
         Transaction transaction = new Transaction()
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
+            .executedAt(DEFAULT_EXECUTED_AT)
             .description(DEFAULT_DESCRIPTION)
             .amount(DEFAULT_AMOUNT)
             .type(DEFAULT_TYPE)
@@ -139,6 +143,7 @@ public class TransactionResourceIntTest {
         Transaction testTransaction = transactionList.get(transactionList.size() - 1);
         assertThat(testTransaction.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testTransaction.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testTransaction.getExecutedAt()).isEqualTo(DEFAULT_EXECUTED_AT);
         assertThat(testTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testTransaction.getAmount()).isEqualTo(DEFAULT_AMOUNT);
         assertThat(testTransaction.getType()).isEqualTo(DEFAULT_TYPE);
@@ -178,6 +183,7 @@ public class TransactionResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
+            .andExpect(jsonPath("$.[*].executedAt").value(hasItem(sameInstant(DEFAULT_EXECUTED_AT))))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
@@ -197,6 +203,7 @@ public class TransactionResourceIntTest {
             .andExpect(jsonPath("$.id").value(transaction.getId().intValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
+            .andExpect(jsonPath("$.executedAt").value(sameInstant(DEFAULT_EXECUTED_AT)))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.doubleValue()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
@@ -223,6 +230,7 @@ public class TransactionResourceIntTest {
         updatedTransaction
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
+            .executedAt(UPDATED_EXECUTED_AT)
             .description(UPDATED_DESCRIPTION)
             .amount(UPDATED_AMOUNT)
             .type(UPDATED_TYPE)
@@ -240,6 +248,7 @@ public class TransactionResourceIntTest {
         Transaction testTransaction = transactionList.get(transactionList.size() - 1);
         assertThat(testTransaction.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testTransaction.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testTransaction.getExecutedAt()).isEqualTo(UPDATED_EXECUTED_AT);
         assertThat(testTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testTransaction.getAmount()).isEqualTo(UPDATED_AMOUNT);
         assertThat(testTransaction.getType()).isEqualTo(UPDATED_TYPE);

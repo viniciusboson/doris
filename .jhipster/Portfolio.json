@@ -14,6 +14,14 @@
             "otherEntityName": "asset",
             "otherEntityField": "code",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "institutions",
+            "otherEntityName": "institution",
+            "otherEntityField": "description",
+            "ownerSide": true
         }
     ],
     "fields": [
@@ -30,11 +38,11 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20171022130822",
-    "entityTableName": "wallet",
+    "changelogDate": "20171023194512",
+    "entityTableName": "portfolio",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

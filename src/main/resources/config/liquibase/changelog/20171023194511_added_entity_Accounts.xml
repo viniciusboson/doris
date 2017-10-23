@@ -14,10 +14,10 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Operation.
+        Added the entity Accounts.
     -->
-    <changeSet id="20171022130825-1" author="jhipster">
-        <createTable tableName="operation">
+    <changeSet id="20171023194511-1" author="jhipster">
+        <createTable tableName="accounts">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -29,34 +29,14 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="from_amount" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="to_amount" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="from_institution_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="from_asset_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="to_asset_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="to_institution_id" type="bigint">
+            <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="operation" columnName="created_at" columnDataType="datetime"/>
-        <dropDefaultValue tableName="operation" columnName="updated_at" columnDataType="datetime"/>
+        <dropDefaultValue tableName="accounts" columnName="created_at" columnDataType="datetime"/>
+        <dropDefaultValue tableName="accounts" columnName="updated_at" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

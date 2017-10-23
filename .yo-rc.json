@@ -1,8 +1,7 @@
 {
   "generator-jhipster": {
     "promptValues": {
-      "packageName": "com.oceanus.doris",
-      "nativeLanguage": "en"
+      "packageName": "com.oceanus.doris"
     },
     "jhipsterVersion": "4.10.0",
     "baseName": "doris",
@@ -22,8 +21,8 @@
     "buildTool": "gradle",
     "enableSocialSignIn": false,
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "f0ab6f08d15eef21c08aa480dcb3f92ccfe48d73",
-    "enableTranslation": true,
+    "jwtSecretKey": "b0d37b89edac23de0673bd69aba351ee0ef277d6",
+    "enableTranslation": false,
     "applicationType": "microservice",
     "testFrameworks": [
       "gatling"
@@ -31,11 +30,6 @@
     "jhiPrefix": "jhi",
     "skipClient": true,
     "skipUserManagement": true,
-    "nativeLanguage": "en",
-    "languages": [
-      "en",
-      "pt-br"
-    ],
     "clientPackageManager": "yarn"
   }
 }

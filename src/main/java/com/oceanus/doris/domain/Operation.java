@@ -29,6 +29,9 @@ public class Operation implements Serializable {
     @Column(name = "updated_at")
     private ZonedDateTime updatedAt;
 
+    @Column(name = "executed_at")
+    private ZonedDateTime executedAt;
+
     @Column(name = "from_amount")
     private Double fromAmount;
 
@@ -36,13 +39,13 @@ public class Operation implements Serializable {
     private Double toAmount;
 
     @ManyToOne
+    private Position fromPosition;
+
+    @ManyToOne
     private Institution fromInstitution;
 
     @ManyToOne
-    private Asset fromAsset;
-
-    @ManyToOne
-    private Asset toAsset;
+    private Position toPosition;
 
     @ManyToOne
     private Institution toInstitution;
@@ -82,6 +85,19 @@ public class Operation implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public ZonedDateTime getExecutedAt() {
+        return executedAt;
+    }
+
+    public Operation executedAt(ZonedDateTime executedAt) {
+        this.executedAt = executedAt;
+        return this;
+    }
+
+    public void setExecutedAt(ZonedDateTime executedAt) {
+        this.executedAt = executedAt;
+    }
+
     public Double getFromAmount() {
         return fromAmount;
     }
@@ -108,6 +124,19 @@ public class Operation implements Serializable {
         this.toAmount = toAmount;
     }
 
+    public Position getFromPosition() {
+        return fromPosition;
+    }
+
+    public Operation fromPosition(Position position) {
+        this.fromPosition = position;
+        return this;
+    }
+
+    public void setFromPosition(Position position) {
+        this.fromPosition = position;
+    }
+
     public Institution getFromInstitution() {
         return fromInstitution;
     }
@@ -121,30 +150,17 @@ public class Operation implements Serializable {
         this.fromInstitution = institution;
     }
 
-    public Asset getFromAsset() {
-        return fromAsset;
+    public Position getToPosition() {
+        return toPosition;
     }
 
-    public Operation fromAsset(Asset asset) {
-        this.fromAsset = asset;
+    public Operation toPosition(Position position) {
+        this.toPosition = position;
         return this;
     }
 
-    public void setFromAsset(Asset asset) {
-        this.fromAsset = asset;
-    }
-
-    public Asset getToAsset() {
-        return toAsset;
-    }
-
-    public Operation toAsset(Asset asset) {
-        this.toAsset = asset;
-        return this;
-    }
-
-    public void setToAsset(Asset asset) {
-        this.toAsset = asset;
+    public void setToPosition(Position position) {
+        this.toPosition = position;
     }
 
     public Institution getToInstitution() {
@@ -187,6 +203,7 @@ public class Operation implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", executedAt='" + getExecutedAt() + "'" +
             ", fromAmount='" + getFromAmount() + "'" +
             ", toAmount='" + getToAmount() + "'" +
             "}";

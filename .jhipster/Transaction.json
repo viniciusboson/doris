@@ -24,6 +24,10 @@
             "fieldType": "ZonedDateTime"
         },
         {
+            "fieldName": "executedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
             "fieldName": "description",
             "fieldType": "String"
         },
@@ -41,11 +45,11 @@
             "fieldType": "Double"
         }
     ],
-    "changelogDate": "20171022130826",
+    "changelogDate": "20171023194515",
     "entityTableName": "transaction",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

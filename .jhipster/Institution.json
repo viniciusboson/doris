@@ -15,11 +15,11 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20171022130823",
+    "changelogDate": "20171023194508",
     "entityTableName": "institution",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

@@ -8,6 +8,10 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import com.oceanus.doris.domain.enumeration.PositionType;
+
+import com.oceanus.doris.domain.enumeration.PositionStatus;
+
 /**
  * A Position.
  */
@@ -29,14 +33,28 @@ public class Position implements Serializable {
     @Column(name = "updated_at")
     private ZonedDateTime updatedAt;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "balance")
     private Double balance;
+
+    @Column(name = "averange")
+    private Double averange;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jhi_type")
+    private PositionType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private PositionStatus status;
 
     @ManyToOne
     private Asset asset;
 
     @ManyToOne
-    private Wallet wallet;
+    private Portfolio portfolio;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -73,6 +91,19 @@ public class Position implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Position description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Double getBalance() {
         return balance;
     }
@@ -84,6 +115,45 @@ public class Position implements Serializable {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public Double getAverange() {
+        return averange;
+    }
+
+    public Position averange(Double averange) {
+        this.averange = averange;
+        return this;
+    }
+
+    public void setAverange(Double averange) {
+        this.averange = averange;
+    }
+
+    public PositionType getType() {
+        return type;
+    }
+
+    public Position type(PositionType type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(PositionType type) {
+        this.type = type;
+    }
+
+    public PositionStatus getStatus() {
+        return status;
+    }
+
+    public Position status(PositionStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    public void setStatus(PositionStatus status) {
+        this.status = status;
     }
 
     public Asset getAsset() {
@@ -99,17 +169,17 @@ public class Position implements Serializable {
         this.asset = asset;
     }
 
-    public Wallet getWallet() {
-        return wallet;
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
-    public Position wallet(Wallet wallet) {
-        this.wallet = wallet;
+    public Position portfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
         return this;
     }
 
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -139,7 +209,11 @@ public class Position implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", description='" + getDescription() + "'" +
             ", balance='" + getBalance() + "'" +
+            ", averange='" + getAverange() + "'" +
+            ", type='" + getType() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

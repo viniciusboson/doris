@@ -38,7 +38,7 @@ public class Accounts implements Serializable {
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Wallet> wallets = new HashSet<>();
+    private Set<Portfolio> portfolios = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -88,29 +88,29 @@ public class Accounts implements Serializable {
         this.description = description;
     }
 
-    public Set<Wallet> getWallets() {
-        return wallets;
+    public Set<Portfolio> getPortfolios() {
+        return portfolios;
     }
 
-    public Accounts wallets(Set<Wallet> wallets) {
-        this.wallets = wallets;
+    public Accounts portfolios(Set<Portfolio> portfolios) {
+        this.portfolios = portfolios;
         return this;
     }
 
-    public Accounts addWallet(Wallet wallet) {
-        this.wallets.add(wallet);
-        wallet.setAccount(this);
+    public Accounts addPortfolio(Portfolio portfolio) {
+        this.portfolios.add(portfolio);
+        portfolio.setAccount(this);
         return this;
     }
 
-    public Accounts removeWallet(Wallet wallet) {
-        this.wallets.remove(wallet);
-        wallet.setAccount(null);
+    public Accounts removePortfolio(Portfolio portfolio) {
+        this.portfolios.remove(portfolio);
+        portfolio.setAccount(null);
         return this;
     }
 
-    public void setWallets(Set<Wallet> wallets) {
-        this.wallets = wallets;
+    public void setPortfolios(Set<Portfolio> portfolios) {
+        this.portfolios = portfolios;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

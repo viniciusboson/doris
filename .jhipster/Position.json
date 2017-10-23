@@ -9,8 +9,8 @@
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "wallet",
-            "otherEntityName": "wallet",
+            "relationshipName": "portfolio",
+            "otherEntityName": "portfolio",
             "otherEntityField": "description"
         }
     ],
@@ -24,15 +24,33 @@
             "fieldType": "ZonedDateTime"
         },
         {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "balance",
             "fieldType": "Double"
+        },
+        {
+            "fieldName": "averange",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "PositionType",
+            "fieldValues": "LONG,SHORT,FLAT"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "PositionStatus",
+            "fieldValues": "OPENED,CLOSED"
         }
     ],
-    "changelogDate": "20171022130827",
+    "changelogDate": "20171023194513",
     "entityTableName": "position",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

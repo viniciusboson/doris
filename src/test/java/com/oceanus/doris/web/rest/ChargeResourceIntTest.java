@@ -56,8 +56,8 @@ public class ChargeResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final ChargeType DEFAULT_TYPE = ChargeType.FLAT_FEE;
-    private static final ChargeType UPDATED_TYPE = ChargeType.PERCENTAGE;
+    private static final ChargeType DEFAULT_CHARGE_TYPE = ChargeType.FLAT_FEE;
+    private static final ChargeType UPDATED_CHARGE_TYPE = ChargeType.PERCENTAGE;
 
     private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WIRE_TRANSFER;
     private static final OperationType UPDATED_OPERATION_TYPE = OperationType.WITHDRAW;
@@ -111,7 +111,7 @@ public class ChargeResourceIntTest {
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
             .description(DEFAULT_DESCRIPTION)
-            .type(DEFAULT_TYPE)
+            .chargeType(DEFAULT_CHARGE_TYPE)
             .operationType(DEFAULT_OPERATION_TYPE)
             .amount(DEFAULT_AMOUNT);
         return charge;
@@ -141,7 +141,7 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testCharge.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
         assertThat(testCharge.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testCharge.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testCharge.getChargeType()).isEqualTo(DEFAULT_CHARGE_TYPE);
         assertThat(testCharge.getOperationType()).isEqualTo(DEFAULT_OPERATION_TYPE);
         assertThat(testCharge.getAmount()).isEqualTo(DEFAULT_AMOUNT);
     }
@@ -180,7 +180,7 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].chargeType").value(hasItem(DEFAULT_CHARGE_TYPE.toString())))
             .andExpect(jsonPath("$.[*].operationType").value(hasItem(DEFAULT_OPERATION_TYPE.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())));
     }
@@ -199,7 +199,7 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.chargeType").value(DEFAULT_CHARGE_TYPE.toString()))
             .andExpect(jsonPath("$.operationType").value(DEFAULT_OPERATION_TYPE.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.doubleValue()));
     }
@@ -225,7 +225,7 @@ public class ChargeResourceIntTest {
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
             .description(UPDATED_DESCRIPTION)
-            .type(UPDATED_TYPE)
+            .chargeType(UPDATED_CHARGE_TYPE)
             .operationType(UPDATED_OPERATION_TYPE)
             .amount(UPDATED_AMOUNT);
         ChargeDTO chargeDTO = chargeMapper.toDto(updatedCharge);
@@ -242,7 +242,7 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testCharge.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
         assertThat(testCharge.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testCharge.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testCharge.getChargeType()).isEqualTo(UPDATED_CHARGE_TYPE);
         assertThat(testCharge.getOperationType()).isEqualTo(UPDATED_OPERATION_TYPE);
         assertThat(testCharge.getAmount()).isEqualTo(UPDATED_AMOUNT);
     }

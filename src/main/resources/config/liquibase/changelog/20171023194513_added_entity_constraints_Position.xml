@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Position.
     -->
-    <changeSet id="20171022130827-2" author="jhipster">
+    <changeSet id="20171023194513-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="asset_id"
                                  baseTableName="position"
@@ -14,11 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="asset"/>
 
-        <addForeignKeyConstraint baseColumnNames="wallet_id"
+        <addForeignKeyConstraint baseColumnNames="portfolio_id"
                                  baseTableName="position"
-                                 constraintName="fk_position_wallet_id"
+                                 constraintName="fk_position_portfolio_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="wallet"/>
+                                 referencedTableName="portfolio"/>
 
     </changeSet>
 </databaseChangeLog>

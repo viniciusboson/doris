@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import com.oceanus.doris.domain.enumeration.PositionType;
+import com.oceanus.doris.domain.enumeration.PositionStatus;
 
 /**
  * A DTO for the Position entity.
@@ -18,15 +20,23 @@ public class PositionDTO implements Serializable {
 
     private ZonedDateTime updatedAt;
 
+    private String description;
+
     private Double balance;
+
+    private Double averange;
+
+    private PositionType type;
+
+    private PositionStatus status;
 
     private Long assetId;
 
     private String assetCode;
 
-    private Long walletId;
+    private Long portfolioId;
 
-    private String walletDescription;
+    private String portfolioDescription;
 
     public Long getId() {
         return id;
@@ -52,12 +62,44 @@ public class PositionDTO implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Double getBalance() {
         return balance;
     }
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public Double getAverange() {
+        return averange;
+    }
+
+    public void setAverange(Double averange) {
+        this.averange = averange;
+    }
+
+    public PositionType getType() {
+        return type;
+    }
+
+    public void setType(PositionType type) {
+        this.type = type;
+    }
+
+    public PositionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PositionStatus status) {
+        this.status = status;
     }
 
     public Long getAssetId() {
@@ -76,20 +118,20 @@ public class PositionDTO implements Serializable {
         this.assetCode = assetCode;
     }
 
-    public Long getWalletId() {
-        return walletId;
+    public Long getPortfolioId() {
+        return portfolioId;
     }
 
-    public void setWalletId(Long walletId) {
-        this.walletId = walletId;
+    public void setPortfolioId(Long portfolioId) {
+        this.portfolioId = portfolioId;
     }
 
-    public String getWalletDescription() {
-        return walletDescription;
+    public String getPortfolioDescription() {
+        return portfolioDescription;
     }
 
-    public void setWalletDescription(String walletDescription) {
-        this.walletDescription = walletDescription;
+    public void setPortfolioDescription(String portfolioDescription) {
+        this.portfolioDescription = portfolioDescription;
     }
 
     @Override
@@ -119,7 +161,11 @@ public class PositionDTO implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", description='" + getDescription() + "'" +
             ", balance='" + getBalance() + "'" +
+            ", averange='" + getAverange() + "'" +
+            ", type='" + getType() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

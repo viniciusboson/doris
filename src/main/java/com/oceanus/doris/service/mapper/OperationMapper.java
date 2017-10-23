@@ -8,22 +8,22 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Operation and its DTO OperationDTO.
  */
-@Mapper(componentModel = "spring", uses = {InstitutionMapper.class, AssetMapper.class})
+@Mapper(componentModel = "spring", uses = {PositionMapper.class, InstitutionMapper.class})
 public interface OperationMapper extends EntityMapper<OperationDTO, Operation> {
 
+    @Mapping(source = "fromPosition.id", target = "fromPositionId")
+    @Mapping(source = "fromPosition.description", target = "fromPositionDescription")
     @Mapping(source = "fromInstitution.id", target = "fromInstitutionId")
     @Mapping(source = "fromInstitution.description", target = "fromInstitutionDescription")
-    @Mapping(source = "fromAsset.id", target = "fromAssetId")
-    @Mapping(source = "fromAsset.code", target = "fromAssetCode")
-    @Mapping(source = "toAsset.id", target = "toAssetId")
-    @Mapping(source = "toAsset.code", target = "toAssetCode")
+    @Mapping(source = "toPosition.id", target = "toPositionId")
+    @Mapping(source = "toPosition.description", target = "toPositionDescription")
     @Mapping(source = "toInstitution.id", target = "toInstitutionId")
     @Mapping(source = "toInstitution.description", target = "toInstitutionDescription")
     OperationDTO toDto(Operation operation); 
 
+    @Mapping(source = "fromPositionId", target = "fromPosition")
     @Mapping(source = "fromInstitutionId", target = "fromInstitution")
-    @Mapping(source = "fromAssetId", target = "fromAsset")
-    @Mapping(source = "toAssetId", target = "toAsset")
+    @Mapping(source = "toPositionId", target = "toPosition")
     @Mapping(source = "toInstitutionId", target = "toInstitution")
     Operation toEntity(OperationDTO operationDTO);
 

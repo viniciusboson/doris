@@ -11,12 +11,12 @@ import java.util.Set;
 import java.util.Objects;
 
 /**
- * A Wallet.
+ * A Portfolio.
  */
 @Entity
-@Table(name = "wallet")
+@Table(name = "portfolio")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Wallet implements Serializable {
+public class Portfolio implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,10 +39,17 @@ public class Wallet implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "wallet_assets",
-               joinColumns = @JoinColumn(name="wallets_id", referencedColumnName="id"),
+    @JoinTable(name = "portfolio_assets",
+               joinColumns = @JoinColumn(name="portfolios_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"))
     private Set<Asset> assets = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "portfolio_institutions",
+               joinColumns = @JoinColumn(name="portfolios_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="institutions_id", referencedColumnName="id"))
+    private Set<Institution> institutions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -57,7 +64,7 @@ public class Wallet implements Serializable {
         return createdAt;
     }
 
-    public Wallet createdAt(ZonedDateTime createdAt) {
+    public Portfolio createdAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -70,7 +77,7 @@ public class Wallet implements Serializable {
         return updatedAt;
     }
 
-    public Wallet updatedAt(ZonedDateTime updatedAt) {
+    public Portfolio updatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
@@ -83,7 +90,7 @@ public class Wallet implements Serializable {
         return description;
     }
 
-    public Wallet description(String description) {
+    public Portfolio description(String description) {
         this.description = description;
         return this;
     }
@@ -96,7 +103,7 @@ public class Wallet implements Serializable {
         return account;
     }
 
-    public Wallet account(Accounts accounts) {
+    public Portfolio account(Accounts accounts) {
         this.account = accounts;
         return this;
     }
@@ -109,23 +116,46 @@ public class Wallet implements Serializable {
         return assets;
     }
 
-    public Wallet assets(Set<Asset> assets) {
+    public Portfolio assets(Set<Asset> assets) {
         this.assets = assets;
         return this;
     }
 
-    public Wallet addAssets(Asset asset) {
+    public Portfolio addAssets(Asset asset) {
         this.assets.add(asset);
         return this;
     }
 
-    public Wallet removeAssets(Asset asset) {
+    public Portfolio removeAssets(Asset asset) {
         this.assets.remove(asset);
         return this;
     }
 
     public void setAssets(Set<Asset> assets) {
         this.assets = assets;
+    }
+
+    public Set<Institution> getInstitutions() {
+        return institutions;
+    }
+
+    public Portfolio institutions(Set<Institution> institutions) {
+        this.institutions = institutions;
+        return this;
+    }
+
+    public Portfolio addInstitutions(Institution institution) {
+        this.institutions.add(institution);
+        return this;
+    }
+
+    public Portfolio removeInstitutions(Institution institution) {
+        this.institutions.remove(institution);
+        return this;
+    }
+
+    public void setInstitutions(Set<Institution> institutions) {
+        this.institutions = institutions;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -137,11 +167,11 @@ public class Wallet implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Wallet wallet = (Wallet) o;
-        if (wallet.getId() == null || getId() == null) {
+        Portfolio portfolio = (Portfolio) o;
+        if (portfolio.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), wallet.getId());
+        return Objects.equals(getId(), portfolio.getId());
     }
 
     @Override
@@ -151,7 +181,7 @@ public class Wallet implements Serializable {
 
     @Override
     public String toString() {
-        return "Wallet{" +
+        return "Portfolio{" +
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +

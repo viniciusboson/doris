@@ -22,7 +22,7 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "type",
+            "fieldName": "chargeType",
             "fieldType": "ChargeType",
             "fieldValues": "FLAT_FEE,PERCENTAGE"
         },
@@ -36,11 +36,11 @@
             "fieldType": "Double"
         }
     ],
-    "changelogDate": "20171022130824",
+    "changelogDate": "20171023194509",
     "entityTableName": "charge",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

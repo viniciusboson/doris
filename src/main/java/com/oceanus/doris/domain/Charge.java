@@ -37,8 +37,8 @@ public class Charge implements Serializable {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type")
-    private ChargeType type;
+    @Column(name = "charge_type")
+    private ChargeType chargeType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "operation_type")
@@ -98,17 +98,17 @@ public class Charge implements Serializable {
         this.description = description;
     }
 
-    public ChargeType getType() {
-        return type;
+    public ChargeType getChargeType() {
+        return chargeType;
     }
 
-    public Charge type(ChargeType type) {
-        this.type = type;
+    public Charge chargeType(ChargeType chargeType) {
+        this.chargeType = chargeType;
         return this;
     }
 
-    public void setType(ChargeType type) {
-        this.type = type;
+    public void setChargeType(ChargeType chargeType) {
+        this.chargeType = chargeType;
     }
 
     public OperationType getOperationType() {
@@ -178,7 +178,7 @@ public class Charge implements Serializable {
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", description='" + getDescription() + "'" +
-            ", type='" + getType() + "'" +
+            ", chargeType='" + getChargeType() + "'" +
             ", operationType='" + getOperationType() + "'" +
             ", amount='" + getAmount() + "'" +
             "}";

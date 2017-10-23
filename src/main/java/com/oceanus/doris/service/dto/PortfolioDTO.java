@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.Objects;
 
 /**
- * A DTO for the Wallet entity.
+ * A DTO for the Portfolio entity.
  */
-public class WalletDTO implements Serializable {
+public class PortfolioDTO implements Serializable {
 
     private Long id;
 
@@ -25,6 +25,8 @@ public class WalletDTO implements Serializable {
     private String accountDescription;
 
     private Set<AssetDTO> assets = new HashSet<>();
+
+    private Set<InstitutionDTO> institutions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -82,6 +84,14 @@ public class WalletDTO implements Serializable {
         this.assets = assets;
     }
 
+    public Set<InstitutionDTO> getInstitutions() {
+        return institutions;
+    }
+
+    public void setInstitutions(Set<InstitutionDTO> institutions) {
+        this.institutions = institutions;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,11 +101,11 @@ public class WalletDTO implements Serializable {
             return false;
         }
 
-        WalletDTO walletDTO = (WalletDTO) o;
-        if(walletDTO.getId() == null || getId() == null) {
+        PortfolioDTO portfolioDTO = (PortfolioDTO) o;
+        if(portfolioDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), walletDTO.getId());
+        return Objects.equals(getId(), portfolioDTO.getId());
     }
 
     @Override
@@ -105,7 +115,7 @@ public class WalletDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "WalletDTO{" +
+        return "PortfolioDTO{" +
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +

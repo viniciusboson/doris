@@ -22,7 +22,7 @@ public class ChargeDTO implements Serializable {
 
     private String description;
 
-    private ChargeType type;
+    private ChargeType chargeType;
 
     private OperationType operationType;
 
@@ -64,12 +64,12 @@ public class ChargeDTO implements Serializable {
         this.description = description;
     }
 
-    public ChargeType getType() {
-        return type;
+    public ChargeType getChargeType() {
+        return chargeType;
     }
 
-    public void setType(ChargeType type) {
-        this.type = type;
+    public void setChargeType(ChargeType chargeType) {
+        this.chargeType = chargeType;
     }
 
     public OperationType getOperationType() {
@@ -132,7 +132,7 @@ public class ChargeDTO implements Serializable {
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", description='" + getDescription() + "'" +
-            ", type='" + getType() + "'" +
+            ", chargeType='" + getChargeType() + "'" +
             ", operationType='" + getOperationType() + "'" +
             ", amount='" + getAmount() + "'" +
             "}";
