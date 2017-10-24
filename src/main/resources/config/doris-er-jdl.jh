@@ -2,6 +2,7 @@ entity Institution {
   id Long
   createdAt ZonedDateTime required
   updatedAt ZonedDateTime required
+  modifiedBy String required
   description String required // Poloniex, XP, Exodus, Santander
 }
 
@@ -9,6 +10,7 @@ entity Charge {
   id Long
   createdAt ZonedDateTime required
   updatedAt ZonedDateTime required
+  modifiedBy String required
   description String required  //wire transfer, transaction fee
   chargeType ChargeType required
   operationType OperationType required
@@ -27,6 +29,7 @@ entity Asset {
   id Long
   createdAt ZonedDateTime required
   updatedAt ZonedDateTime required
+  modifiedBy String required
   description String required // US Dollar, Real, Bitcoin
   code String required //USD, BRL, BTC
   symbol String // $, £
@@ -41,6 +44,7 @@ entity Portfolio {
   id Long
   createdAt ZonedDateTime required
   updatedAt ZonedDateTime required
+  modifiedBy String required
   description String required //Personal, Exchange A, Exchange B
 }
 
@@ -75,7 +79,7 @@ enum PositionType {
 }
 
 enum PositionStatus {
-  OPENED, CLOSED
+  OPEN, CLOSED
 }
 
 relationship ManyToOne {
@@ -88,8 +92,8 @@ entity Operation {
   createdAt ZonedDateTime required
   updatedAt ZonedDateTime required
   executedAt ZonedDateTime required
-  fromAmount Double required
-  toAmount Double required
+  amountFrom Double required
+  amountTo Double required
 }
 
 enum OperationType {
@@ -97,10 +101,10 @@ enum OperationType {
 }
 
 relationship ManyToOne {
-  Operation{fromPosition(description)} to Position,
-  Operation{fromInstitution(description)} to Institution,
-  Operation{toPosition(description)} to Position,
-  Operation{toInstitution(description)} to Institution
+  Operation{positionFrom(description)} to Position,
+  Operation{institutionFrom(description)} to Institution,
+  Operation{positionTo(description)} to Position,
+  Operation{institutionTo(description)} to Institution
 }
 
 entity Transaction {
@@ -120,12 +124,12 @@ enum TransactionType {
 
 relationship ManyToOne {
   Transaction{operation} to Operation,
-  Transaction{asset(code)} to Asset
+  Transaction{position(description)} to Position
 }
 
 dto * with mapstruct
 
 // Set service options to all
-service all with serviceClass
+service all with serviceImpl
 
 microservice * with doris

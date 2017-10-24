@@ -11,20 +11,20 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {PositionMapper.class, InstitutionMapper.class})
 public interface OperationMapper extends EntityMapper<OperationDTO, Operation> {
 
-    @Mapping(source = "fromPosition.id", target = "fromPositionId")
-    @Mapping(source = "fromPosition.description", target = "fromPositionDescription")
-    @Mapping(source = "fromInstitution.id", target = "fromInstitutionId")
-    @Mapping(source = "fromInstitution.description", target = "fromInstitutionDescription")
-    @Mapping(source = "toPosition.id", target = "toPositionId")
-    @Mapping(source = "toPosition.description", target = "toPositionDescription")
-    @Mapping(source = "toInstitution.id", target = "toInstitutionId")
-    @Mapping(source = "toInstitution.description", target = "toInstitutionDescription")
+    @Mapping(source = "positionFrom.id", target = "positionFromId")
+    @Mapping(source = "positionFrom.description", target = "positionFromDescription")
+    @Mapping(source = "institutionFrom.id", target = "institutionFromId")
+    @Mapping(source = "institutionFrom.description", target = "institutionFromDescription")
+    @Mapping(source = "positionTo.id", target = "positionToId")
+    @Mapping(source = "positionTo.description", target = "positionToDescription")
+    @Mapping(source = "institutionTo.id", target = "institutionToId")
+    @Mapping(source = "institutionTo.description", target = "institutionToDescription")
     OperationDTO toDto(Operation operation); 
 
-    @Mapping(source = "fromPositionId", target = "fromPosition")
-    @Mapping(source = "fromInstitutionId", target = "fromInstitution")
-    @Mapping(source = "toPositionId", target = "toPosition")
-    @Mapping(source = "toInstitutionId", target = "toInstitution")
+    @Mapping(source = "positionFromId", target = "positionFrom")
+    @Mapping(source = "institutionFromId", target = "institutionFrom")
+    @Mapping(source = "positionToId", target = "positionTo")
+    @Mapping(source = "institutionToId", target = "institutionTo")
     Operation toEntity(OperationDTO operationDTO);
 
     default Operation fromId(Long id) {

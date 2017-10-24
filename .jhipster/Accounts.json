@@ -47,11 +47,11 @@
             ]
         }
     ],
-    "changelogDate": "20171024010554",
+    "changelogDate": "20171024173206",
     "entityTableName": "accounts",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceClass",
+    "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

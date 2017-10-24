@@ -54,11 +54,11 @@ public class OperationResourceIntTest {
     private static final ZonedDateTime DEFAULT_EXECUTED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_EXECUTED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final Double DEFAULT_FROM_AMOUNT = 1D;
-    private static final Double UPDATED_FROM_AMOUNT = 2D;
+    private static final Double DEFAULT_AMOUNT_FROM = 1D;
+    private static final Double UPDATED_AMOUNT_FROM = 2D;
 
-    private static final Double DEFAULT_TO_AMOUNT = 1D;
-    private static final Double UPDATED_TO_AMOUNT = 2D;
+    private static final Double DEFAULT_AMOUNT_TO = 1D;
+    private static final Double UPDATED_AMOUNT_TO = 2D;
 
     @Autowired
     private OperationRepository operationRepository;
@@ -106,8 +106,8 @@ public class OperationResourceIntTest {
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
             .executedAt(DEFAULT_EXECUTED_AT)
-            .fromAmount(DEFAULT_FROM_AMOUNT)
-            .toAmount(DEFAULT_TO_AMOUNT);
+            .amountFrom(DEFAULT_AMOUNT_FROM)
+            .amountTo(DEFAULT_AMOUNT_TO);
         return operation;
     }
 
@@ -135,8 +135,8 @@ public class OperationResourceIntTest {
         assertThat(testOperation.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testOperation.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
         assertThat(testOperation.getExecutedAt()).isEqualTo(DEFAULT_EXECUTED_AT);
-        assertThat(testOperation.getFromAmount()).isEqualTo(DEFAULT_FROM_AMOUNT);
-        assertThat(testOperation.getToAmount()).isEqualTo(DEFAULT_TO_AMOUNT);
+        assertThat(testOperation.getAmountFrom()).isEqualTo(DEFAULT_AMOUNT_FROM);
+        assertThat(testOperation.getAmountTo()).isEqualTo(DEFAULT_AMOUNT_TO);
     }
 
     @Test
@@ -218,10 +218,10 @@ public class OperationResourceIntTest {
 
     @Test
     @Transactional
-    public void checkFromAmountIsRequired() throws Exception {
+    public void checkAmountFromIsRequired() throws Exception {
         int databaseSizeBeforeTest = operationRepository.findAll().size();
         // set the field null
-        operation.setFromAmount(null);
+        operation.setAmountFrom(null);
 
         // Create the Operation, which fails.
         OperationDTO operationDTO = operationMapper.toDto(operation);
@@ -237,10 +237,10 @@ public class OperationResourceIntTest {
 
     @Test
     @Transactional
-    public void checkToAmountIsRequired() throws Exception {
+    public void checkAmountToIsRequired() throws Exception {
         int databaseSizeBeforeTest = operationRepository.findAll().size();
         // set the field null
-        operation.setToAmount(null);
+        operation.setAmountTo(null);
 
         // Create the Operation, which fails.
         OperationDTO operationDTO = operationMapper.toDto(operation);
@@ -268,8 +268,8 @@ public class OperationResourceIntTest {
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
             .andExpect(jsonPath("$.[*].executedAt").value(hasItem(sameInstant(DEFAULT_EXECUTED_AT))))
-            .andExpect(jsonPath("$.[*].fromAmount").value(hasItem(DEFAULT_FROM_AMOUNT.doubleValue())))
-            .andExpect(jsonPath("$.[*].toAmount").value(hasItem(DEFAULT_TO_AMOUNT.doubleValue())));
+            .andExpect(jsonPath("$.[*].amountFrom").value(hasItem(DEFAULT_AMOUNT_FROM.doubleValue())))
+            .andExpect(jsonPath("$.[*].amountTo").value(hasItem(DEFAULT_AMOUNT_TO.doubleValue())));
     }
 
     @Test
@@ -286,8 +286,8 @@ public class OperationResourceIntTest {
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
             .andExpect(jsonPath("$.executedAt").value(sameInstant(DEFAULT_EXECUTED_AT)))
-            .andExpect(jsonPath("$.fromAmount").value(DEFAULT_FROM_AMOUNT.doubleValue()))
-            .andExpect(jsonPath("$.toAmount").value(DEFAULT_TO_AMOUNT.doubleValue()));
+            .andExpect(jsonPath("$.amountFrom").value(DEFAULT_AMOUNT_FROM.doubleValue()))
+            .andExpect(jsonPath("$.amountTo").value(DEFAULT_AMOUNT_TO.doubleValue()));
     }
 
     @Test
@@ -311,8 +311,8 @@ public class OperationResourceIntTest {
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
             .executedAt(UPDATED_EXECUTED_AT)
-            .fromAmount(UPDATED_FROM_AMOUNT)
-            .toAmount(UPDATED_TO_AMOUNT);
+            .amountFrom(UPDATED_AMOUNT_FROM)
+            .amountTo(UPDATED_AMOUNT_TO);
         OperationDTO operationDTO = operationMapper.toDto(updatedOperation);
 
         restOperationMockMvc.perform(put("/api/operations")
@@ -327,8 +327,8 @@ public class OperationResourceIntTest {
         assertThat(testOperation.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testOperation.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
         assertThat(testOperation.getExecutedAt()).isEqualTo(UPDATED_EXECUTED_AT);
-        assertThat(testOperation.getFromAmount()).isEqualTo(UPDATED_FROM_AMOUNT);
-        assertThat(testOperation.getToAmount()).isEqualTo(UPDATED_TO_AMOUNT);
+        assertThat(testOperation.getAmountFrom()).isEqualTo(UPDATED_AMOUNT_FROM);
+        assertThat(testOperation.getAmountTo()).isEqualTo(UPDATED_AMOUNT_TO);
     }
 
     @Test

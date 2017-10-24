@@ -51,6 +51,9 @@ public class PortfolioResourceIntTest {
     private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_MODIFIED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_MODIFIED_BY = "BBBBBBBBBB";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -99,6 +102,7 @@ public class PortfolioResourceIntTest {
         Portfolio portfolio = new Portfolio()
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
+            .modifiedBy(DEFAULT_MODIFIED_BY)
             .description(DEFAULT_DESCRIPTION);
         return portfolio;
     }
@@ -126,6 +130,7 @@ public class PortfolioResourceIntTest {
         Portfolio testPortfolio = portfolioList.get(portfolioList.size() - 1);
         assertThat(testPortfolio.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testPortfolio.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testPortfolio.getModifiedBy()).isEqualTo(DEFAULT_MODIFIED_BY);
         assertThat(testPortfolio.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
@@ -189,6 +194,25 @@ public class PortfolioResourceIntTest {
 
     @Test
     @Transactional
+    public void checkModifiedByIsRequired() throws Exception {
+        int databaseSizeBeforeTest = portfolioRepository.findAll().size();
+        // set the field null
+        portfolio.setModifiedBy(null);
+
+        // Create the Portfolio, which fails.
+        PortfolioDTO portfolioDTO = portfolioMapper.toDto(portfolio);
+
+        restPortfolioMockMvc.perform(post("/api/portfolios")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(portfolioDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Portfolio> portfolioList = portfolioRepository.findAll();
+        assertThat(portfolioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void checkDescriptionIsRequired() throws Exception {
         int databaseSizeBeforeTest = portfolioRepository.findAll().size();
         // set the field null
@@ -219,6 +243,7 @@ public class PortfolioResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(portfolio.getId().intValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
+            .andExpect(jsonPath("$.[*].modifiedBy").value(hasItem(DEFAULT_MODIFIED_BY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
@@ -235,6 +260,7 @@ public class PortfolioResourceIntTest {
             .andExpect(jsonPath("$.id").value(portfolio.getId().intValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
+            .andExpect(jsonPath("$.modifiedBy").value(DEFAULT_MODIFIED_BY.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
@@ -258,6 +284,7 @@ public class PortfolioResourceIntTest {
         updatedPortfolio
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
+            .modifiedBy(UPDATED_MODIFIED_BY)
             .description(UPDATED_DESCRIPTION);
         PortfolioDTO portfolioDTO = portfolioMapper.toDto(updatedPortfolio);
 
@@ -272,6 +299,7 @@ public class PortfolioResourceIntTest {
         Portfolio testPortfolio = portfolioList.get(portfolioList.size() - 1);
         assertThat(testPortfolio.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testPortfolio.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testPortfolio.getModifiedBy()).isEqualTo(UPDATED_MODIFIED_BY);
         assertThat(testPortfolio.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 

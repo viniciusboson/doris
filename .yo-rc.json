@@ -21,7 +21,7 @@
     "buildTool": "gradle",
     "enableSocialSignIn": false,
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "3ade34f888d85036210a54dda91441ff57458056",
+    "jwtSecretKey": "06269fc18aa6e3326ffa67de8d3b16a61f4d3233",
     "enableTranslation": false,
     "applicationType": "microservice",
     "testFrameworks": [

@@ -54,17 +54,17 @@
         {
             "fieldName": "status",
             "fieldType": "PositionStatus",
-            "fieldValues": "OPENED,CLOSED",
+            "fieldValues": "OPEN,CLOSED",
             "fieldValidateRules": [
                 "required"
             ]
         }
     ],
-    "changelogDate": "20171024010555",
+    "changelogDate": "20171024173207",
     "entityTableName": "position",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceClass",
+    "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

@@ -1,35 +1,12 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.domain.Charge;
-import com.oceanus.doris.repository.ChargeRepository;
 import com.oceanus.doris.service.dto.ChargeDTO;
-import com.oceanus.doris.service.mapper.ChargeMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Service Implementation for managing Charge.
+ * Service Interface for managing Charge.
  */
-@Service
-@Transactional
-public class ChargeService {
-
-    private final Logger log = LoggerFactory.getLogger(ChargeService.class);
-
-    private final ChargeRepository chargeRepository;
-
-    private final ChargeMapper chargeMapper;
-
-    public ChargeService(ChargeRepository chargeRepository, ChargeMapper chargeMapper) {
-        this.chargeRepository = chargeRepository;
-        this.chargeMapper = chargeMapper;
-    }
+public interface ChargeService {
 
     /**
      * Save a charge.
@@ -37,46 +14,27 @@ public class ChargeService {
      * @param chargeDTO the entity to save
      * @return the persisted entity
      */
-    public ChargeDTO save(ChargeDTO chargeDTO) {
-        log.debug("Request to save Charge : {}", chargeDTO);
-        Charge charge = chargeMapper.toEntity(chargeDTO);
-        charge = chargeRepository.save(charge);
-        return chargeMapper.toDto(charge);
-    }
+    ChargeDTO save(ChargeDTO chargeDTO);
 
     /**
      *  Get all the charges.
      *
      *  @return the list of entities
      */
-    @Transactional(readOnly = true)
-    public List<ChargeDTO> findAll() {
-        log.debug("Request to get all Charges");
-        return chargeRepository.findAll().stream()
-            .map(chargeMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
+    List<ChargeDTO> findAll();
 
     /**
-     *  Get one charge by id.
+     *  Get the "id" charge.
      *
      *  @param id the id of the entity
      *  @return the entity
      */
-    @Transactional(readOnly = true)
-    public ChargeDTO findOne(Long id) {
-        log.debug("Request to get Charge : {}", id);
-        Charge charge = chargeRepository.findOne(id);
-        return chargeMapper.toDto(charge);
-    }
+    ChargeDTO findOne(Long id);
 
     /**
-     *  Delete the  charge by id.
+     *  Delete the "id" charge.
      *
      *  @param id the id of the entity
      */
-    public void delete(Long id) {
-        log.debug("Request to delete Charge : {}", id);
-        chargeRepository.delete(id);
-    }
+    void delete(Long id);
 }

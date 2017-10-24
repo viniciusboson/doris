@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Position.
     -->
-    <changeSet id="20171024010555-2" author="jhipster">
+    <changeSet id="20171024173207-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="asset_id"
                                  baseTableName="position"

@@ -3,25 +3,25 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "fromPosition",
+            "relationshipName": "positionFrom",
             "otherEntityName": "position",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "fromInstitution",
+            "relationshipName": "institutionFrom",
             "otherEntityName": "institution",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "toPosition",
+            "relationshipName": "positionTo",
             "otherEntityName": "position",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "toInstitution",
+            "relationshipName": "institutionTo",
             "otherEntityName": "institution",
             "otherEntityField": "description"
         }
@@ -49,25 +49,25 @@
             ]
         },
         {
-            "fieldName": "fromAmount",
+            "fieldName": "amountFrom",
             "fieldType": "Double",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "toAmount",
+            "fieldName": "amountTo",
             "fieldType": "Double",
             "fieldValidateRules": [
                 "required"
             ]
         }
     ],
-    "changelogDate": "20171024010556",
+    "changelogDate": "20171024173208",
     "entityTableName": "operation",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceClass",
+    "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

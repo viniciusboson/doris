@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Accounts.
     -->
-    <changeSet id="20171024010554-2" author="jhipster">
+    <changeSet id="20171024173206-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="portfolio_id"
                                  baseTableName="accounts"

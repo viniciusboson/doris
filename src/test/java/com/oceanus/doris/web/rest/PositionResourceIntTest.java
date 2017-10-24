@@ -62,7 +62,7 @@ public class PositionResourceIntTest {
     private static final PositionType DEFAULT_TYPE = PositionType.LONG;
     private static final PositionType UPDATED_TYPE = PositionType.SHORT;
 
-    private static final PositionStatus DEFAULT_STATUS = PositionStatus.OPENED;
+    private static final PositionStatus DEFAULT_STATUS = PositionStatus.OPEN;
     private static final PositionStatus UPDATED_STATUS = PositionStatus.CLOSED;
 
     @Autowired

@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Transaction.
     -->
-    <changeSet id="20171024010557-2" author="jhipster">
+    <changeSet id="20171024173209-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="operation_id"
                                  baseTableName="transaction"
@@ -14,11 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="operation"/>
 
-        <addForeignKeyConstraint baseColumnNames="asset_id"
+        <addForeignKeyConstraint baseColumnNames="position_id"
                                  baseTableName="transaction"
-                                 constraintName="fk_transaction_asset_id"
+                                 constraintName="fk_transaction_position_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="asset"/>
+                                 referencedTableName="position"/>
 
     </changeSet>
 </databaseChangeLog>

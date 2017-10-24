@@ -52,6 +52,9 @@ public class AssetResourceIntTest {
     private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_MODIFIED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_MODIFIED_BY = "BBBBBBBBBB";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -109,6 +112,7 @@ public class AssetResourceIntTest {
         Asset asset = new Asset()
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
+            .modifiedBy(DEFAULT_MODIFIED_BY)
             .description(DEFAULT_DESCRIPTION)
             .code(DEFAULT_CODE)
             .symbol(DEFAULT_SYMBOL)
@@ -139,6 +143,7 @@ public class AssetResourceIntTest {
         Asset testAsset = assetList.get(assetList.size() - 1);
         assertThat(testAsset.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testAsset.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testAsset.getModifiedBy()).isEqualTo(DEFAULT_MODIFIED_BY);
         assertThat(testAsset.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAsset.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testAsset.getSymbol()).isEqualTo(DEFAULT_SYMBOL);
@@ -190,6 +195,25 @@ public class AssetResourceIntTest {
         int databaseSizeBeforeTest = assetRepository.findAll().size();
         // set the field null
         asset.setUpdatedAt(null);
+
+        // Create the Asset, which fails.
+        AssetDTO assetDTO = assetMapper.toDto(asset);
+
+        restAssetMockMvc.perform(post("/api/assets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Asset> assetList = assetRepository.findAll();
+        assertThat(assetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkModifiedByIsRequired() throws Exception {
+        int databaseSizeBeforeTest = assetRepository.findAll().size();
+        // set the field null
+        asset.setModifiedBy(null);
 
         // Create the Asset, which fails.
         AssetDTO assetDTO = assetMapper.toDto(asset);
@@ -273,6 +297,7 @@ public class AssetResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(asset.getId().intValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
+            .andExpect(jsonPath("$.[*].modifiedBy").value(hasItem(DEFAULT_MODIFIED_BY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].symbol").value(hasItem(DEFAULT_SYMBOL.toString())))
@@ -292,6 +317,7 @@ public class AssetResourceIntTest {
             .andExpect(jsonPath("$.id").value(asset.getId().intValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
+            .andExpect(jsonPath("$.modifiedBy").value(DEFAULT_MODIFIED_BY.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()))
             .andExpect(jsonPath("$.symbol").value(DEFAULT_SYMBOL.toString()))
@@ -318,6 +344,7 @@ public class AssetResourceIntTest {
         updatedAsset
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
+            .modifiedBy(UPDATED_MODIFIED_BY)
             .description(UPDATED_DESCRIPTION)
             .code(UPDATED_CODE)
             .symbol(UPDATED_SYMBOL)
@@ -335,6 +362,7 @@ public class AssetResourceIntTest {
         Asset testAsset = assetList.get(assetList.size() - 1);
         assertThat(testAsset.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testAsset.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testAsset.getModifiedBy()).isEqualTo(UPDATED_MODIFIED_BY);
         assertThat(testAsset.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAsset.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testAsset.getSymbol()).isEqualTo(UPDATED_SYMBOL);

@@ -68,7 +68,7 @@ class ChargeGatlingTest extends Simulation {
             .exec(http("Create new charge")
             .post("/doris/api/charges")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "description":"SAMPLE_TEXT", "chargeType":null, "operationType":null, "amount":null}""")).asJSON
+            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "modifiedBy":"SAMPLE_TEXT", "description":"SAMPLE_TEXT", "chargeType":null, "operationType":null, "amount":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_charge_url"))).exitHereIfFailed
             .pause(10)

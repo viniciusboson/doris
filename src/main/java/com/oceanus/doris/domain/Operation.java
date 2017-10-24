@@ -37,24 +37,24 @@ public class Operation implements Serializable {
     private ZonedDateTime executedAt;
 
     @NotNull
-    @Column(name = "from_amount", nullable = false)
-    private Double fromAmount;
+    @Column(name = "amount_from", nullable = false)
+    private Double amountFrom;
 
     @NotNull
-    @Column(name = "to_amount", nullable = false)
-    private Double toAmount;
+    @Column(name = "amount_to", nullable = false)
+    private Double amountTo;
 
     @ManyToOne
-    private Position fromPosition;
+    private Position positionFrom;
 
     @ManyToOne
-    private Institution fromInstitution;
+    private Institution institutionFrom;
 
     @ManyToOne
-    private Position toPosition;
+    private Position positionTo;
 
     @ManyToOne
-    private Institution toInstitution;
+    private Institution institutionTo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -104,82 +104,82 @@ public class Operation implements Serializable {
         this.executedAt = executedAt;
     }
 
-    public Double getFromAmount() {
-        return fromAmount;
+    public Double getAmountFrom() {
+        return amountFrom;
     }
 
-    public Operation fromAmount(Double fromAmount) {
-        this.fromAmount = fromAmount;
+    public Operation amountFrom(Double amountFrom) {
+        this.amountFrom = amountFrom;
         return this;
     }
 
-    public void setFromAmount(Double fromAmount) {
-        this.fromAmount = fromAmount;
+    public void setAmountFrom(Double amountFrom) {
+        this.amountFrom = amountFrom;
     }
 
-    public Double getToAmount() {
-        return toAmount;
+    public Double getAmountTo() {
+        return amountTo;
     }
 
-    public Operation toAmount(Double toAmount) {
-        this.toAmount = toAmount;
+    public Operation amountTo(Double amountTo) {
+        this.amountTo = amountTo;
         return this;
     }
 
-    public void setToAmount(Double toAmount) {
-        this.toAmount = toAmount;
+    public void setAmountTo(Double amountTo) {
+        this.amountTo = amountTo;
     }
 
-    public Position getFromPosition() {
-        return fromPosition;
+    public Position getPositionFrom() {
+        return positionFrom;
     }
 
-    public Operation fromPosition(Position position) {
-        this.fromPosition = position;
+    public Operation positionFrom(Position position) {
+        this.positionFrom = position;
         return this;
     }
 
-    public void setFromPosition(Position position) {
-        this.fromPosition = position;
+    public void setPositionFrom(Position position) {
+        this.positionFrom = position;
     }
 
-    public Institution getFromInstitution() {
-        return fromInstitution;
+    public Institution getInstitutionFrom() {
+        return institutionFrom;
     }
 
-    public Operation fromInstitution(Institution institution) {
-        this.fromInstitution = institution;
+    public Operation institutionFrom(Institution institution) {
+        this.institutionFrom = institution;
         return this;
     }
 
-    public void setFromInstitution(Institution institution) {
-        this.fromInstitution = institution;
+    public void setInstitutionFrom(Institution institution) {
+        this.institutionFrom = institution;
     }
 
-    public Position getToPosition() {
-        return toPosition;
+    public Position getPositionTo() {
+        return positionTo;
     }
 
-    public Operation toPosition(Position position) {
-        this.toPosition = position;
+    public Operation positionTo(Position position) {
+        this.positionTo = position;
         return this;
     }
 
-    public void setToPosition(Position position) {
-        this.toPosition = position;
+    public void setPositionTo(Position position) {
+        this.positionTo = position;
     }
 
-    public Institution getToInstitution() {
-        return toInstitution;
+    public Institution getInstitutionTo() {
+        return institutionTo;
     }
 
-    public Operation toInstitution(Institution institution) {
-        this.toInstitution = institution;
+    public Operation institutionTo(Institution institution) {
+        this.institutionTo = institution;
         return this;
     }
 
-    public void setToInstitution(Institution institution) {
-        this.toInstitution = institution;
+    public void setInstitutionTo(Institution institution) {
+        this.institutionTo = institution;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -210,8 +210,8 @@ public class Operation implements Serializable {
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", executedAt='" + getExecutedAt() + "'" +
-            ", fromAmount='" + getFromAmount() + "'" +
-            ", toAmount='" + getToAmount() + "'" +
+            ", amountFrom='" + getAmountFrom() + "'" +
+            ", amountTo='" + getAmountTo() + "'" +
             "}";
     }
 }

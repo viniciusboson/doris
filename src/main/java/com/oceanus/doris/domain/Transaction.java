@@ -59,7 +59,7 @@ public class Transaction implements Serializable {
     private Operation operation;
 
     @ManyToOne
-    private Asset asset;
+    private Position position;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -174,17 +174,17 @@ public class Transaction implements Serializable {
         this.operation = operation;
     }
 
-    public Asset getAsset() {
-        return asset;
+    public Position getPosition() {
+        return position;
     }
 
-    public Transaction asset(Asset asset) {
-        this.asset = asset;
+    public Transaction position(Position position) {
+        this.position = position;
         return this;
     }
 
-    public void setAsset(Asset asset) {
-        this.asset = asset;
+    public void setPosition(Position position) {
+        this.position = position;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -6,29 +6,29 @@
     <!--
         Added the constraints for entity Operation.
     -->
-    <changeSet id="20171024010556-2" author="jhipster">
+    <changeSet id="20171024173208-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="from_position_id"
+        <addForeignKeyConstraint baseColumnNames="position_from_id"
                                  baseTableName="operation"
-                                 constraintName="fk_operation_from_position_id"
+                                 constraintName="fk_operation_position_from_id"
                                  referencedColumnNames="id"
                                  referencedTableName="position"/>
 
-        <addForeignKeyConstraint baseColumnNames="from_institution_id"
+        <addForeignKeyConstraint baseColumnNames="institution_from_id"
                                  baseTableName="operation"
-                                 constraintName="fk_operation_from_institution_id"
+                                 constraintName="fk_operation_institution_from_id"
                                  referencedColumnNames="id"
                                  referencedTableName="institution"/>
 
-        <addForeignKeyConstraint baseColumnNames="to_position_id"
+        <addForeignKeyConstraint baseColumnNames="position_to_id"
                                  baseTableName="operation"
-                                 constraintName="fk_operation_to_position_id"
+                                 constraintName="fk_operation_position_to_id"
                                  referencedColumnNames="id"
                                  referencedTableName="position"/>
 
-        <addForeignKeyConstraint baseColumnNames="to_institution_id"
+        <addForeignKeyConstraint baseColumnNames="institution_to_id"
                                  baseTableName="operation"
-                                 constraintName="fk_operation_to_institution_id"
+                                 constraintName="fk_operation_institution_to_id"
                                  referencedColumnNames="id"
                                  referencedTableName="institution"/>
 

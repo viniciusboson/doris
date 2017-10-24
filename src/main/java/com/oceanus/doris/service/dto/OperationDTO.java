@@ -25,26 +25,26 @@ public class OperationDTO implements Serializable {
     private ZonedDateTime executedAt;
 
     @NotNull
-    private Double fromAmount;
+    private Double amountFrom;
 
     @NotNull
-    private Double toAmount;
+    private Double amountTo;
 
-    private Long fromPositionId;
+    private Long positionFromId;
 
-    private String fromPositionDescription;
+    private String positionFromDescription;
 
-    private Long fromInstitutionId;
+    private Long institutionFromId;
 
-    private String fromInstitutionDescription;
+    private String institutionFromDescription;
 
-    private Long toPositionId;
+    private Long positionToId;
 
-    private String toPositionDescription;
+    private String positionToDescription;
 
-    private Long toInstitutionId;
+    private Long institutionToId;
 
-    private String toInstitutionDescription;
+    private String institutionToDescription;
 
     public Long getId() {
         return id;
@@ -78,84 +78,84 @@ public class OperationDTO implements Serializable {
         this.executedAt = executedAt;
     }
 
-    public Double getFromAmount() {
-        return fromAmount;
+    public Double getAmountFrom() {
+        return amountFrom;
     }
 
-    public void setFromAmount(Double fromAmount) {
-        this.fromAmount = fromAmount;
+    public void setAmountFrom(Double amountFrom) {
+        this.amountFrom = amountFrom;
     }
 
-    public Double getToAmount() {
-        return toAmount;
+    public Double getAmountTo() {
+        return amountTo;
     }
 
-    public void setToAmount(Double toAmount) {
-        this.toAmount = toAmount;
+    public void setAmountTo(Double amountTo) {
+        this.amountTo = amountTo;
     }
 
-    public Long getFromPositionId() {
-        return fromPositionId;
+    public Long getPositionFromId() {
+        return positionFromId;
     }
 
-    public void setFromPositionId(Long positionId) {
-        this.fromPositionId = positionId;
+    public void setPositionFromId(Long positionId) {
+        this.positionFromId = positionId;
     }
 
-    public String getFromPositionDescription() {
-        return fromPositionDescription;
+    public String getPositionFromDescription() {
+        return positionFromDescription;
     }
 
-    public void setFromPositionDescription(String positionDescription) {
-        this.fromPositionDescription = positionDescription;
+    public void setPositionFromDescription(String positionDescription) {
+        this.positionFromDescription = positionDescription;
     }
 
-    public Long getFromInstitutionId() {
-        return fromInstitutionId;
+    public Long getInstitutionFromId() {
+        return institutionFromId;
     }
 
-    public void setFromInstitutionId(Long institutionId) {
-        this.fromInstitutionId = institutionId;
+    public void setInstitutionFromId(Long institutionId) {
+        this.institutionFromId = institutionId;
     }
 
-    public String getFromInstitutionDescription() {
-        return fromInstitutionDescription;
+    public String getInstitutionFromDescription() {
+        return institutionFromDescription;
     }
 
-    public void setFromInstitutionDescription(String institutionDescription) {
-        this.fromInstitutionDescription = institutionDescription;
+    public void setInstitutionFromDescription(String institutionDescription) {
+        this.institutionFromDescription = institutionDescription;
     }
 
-    public Long getToPositionId() {
-        return toPositionId;
+    public Long getPositionToId() {
+        return positionToId;
     }
 
-    public void setToPositionId(Long positionId) {
-        this.toPositionId = positionId;
+    public void setPositionToId(Long positionId) {
+        this.positionToId = positionId;
     }
 
-    public String getToPositionDescription() {
-        return toPositionDescription;
+    public String getPositionToDescription() {
+        return positionToDescription;
     }
 
-    public void setToPositionDescription(String positionDescription) {
-        this.toPositionDescription = positionDescription;
+    public void setPositionToDescription(String positionDescription) {
+        this.positionToDescription = positionDescription;
     }
 
-    public Long getToInstitutionId() {
-        return toInstitutionId;
+    public Long getInstitutionToId() {
+        return institutionToId;
     }
 
-    public void setToInstitutionId(Long institutionId) {
-        this.toInstitutionId = institutionId;
+    public void setInstitutionToId(Long institutionId) {
+        this.institutionToId = institutionId;
     }
 
-    public String getToInstitutionDescription() {
-        return toInstitutionDescription;
+    public String getInstitutionToDescription() {
+        return institutionToDescription;
     }
 
-    public void setToInstitutionDescription(String institutionDescription) {
-        this.toInstitutionDescription = institutionDescription;
+    public void setInstitutionToDescription(String institutionDescription) {
+        this.institutionToDescription = institutionDescription;
     }
 
     @Override
@@ -186,8 +186,8 @@ public class OperationDTO implements Serializable {
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", executedAt='" + getExecutedAt() + "'" +
-            ", fromAmount='" + getFromAmount() + "'" +
-            ", toAmount='" + getToAmount() + "'" +
+            ", amountFrom='" + getAmountFrom() + "'" +
+            ", amountTo='" + getAmountTo() + "'" +
             "}";
     }
 }

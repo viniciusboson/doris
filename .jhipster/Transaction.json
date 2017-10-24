@@ -9,9 +9,9 @@
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "asset",
-            "otherEntityName": "asset",
-            "otherEntityField": "code"
+            "relationshipName": "position",
+            "otherEntityName": "position",
+            "otherEntityField": "description"
         }
     ],
     "fields": [
@@ -66,11 +66,11 @@
             ]
         }
     ],
-    "changelogDate": "20171024010557",
+    "changelogDate": "20171024173209",
     "entityTableName": "transaction",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceClass",
+    "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
     "microserviceName": "doris"
 }

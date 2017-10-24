@@ -51,6 +51,9 @@ public class InstitutionResourceIntTest {
     private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_MODIFIED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_MODIFIED_BY = "BBBBBBBBBB";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -99,6 +102,7 @@ public class InstitutionResourceIntTest {
         Institution institution = new Institution()
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
+            .modifiedBy(DEFAULT_MODIFIED_BY)
             .description(DEFAULT_DESCRIPTION);
         return institution;
     }
@@ -126,6 +130,7 @@ public class InstitutionResourceIntTest {
         Institution testInstitution = institutionList.get(institutionList.size() - 1);
         assertThat(testInstitution.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testInstitution.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testInstitution.getModifiedBy()).isEqualTo(DEFAULT_MODIFIED_BY);
         assertThat(testInstitution.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
@@ -189,6 +194,25 @@ public class InstitutionResourceIntTest {
 
     @Test
     @Transactional
+    public void checkModifiedByIsRequired() throws Exception {
+        int databaseSizeBeforeTest = institutionRepository.findAll().size();
+        // set the field null
+        institution.setModifiedBy(null);
+
+        // Create the Institution, which fails.
+        InstitutionDTO institutionDTO = institutionMapper.toDto(institution);
+
+        restInstitutionMockMvc.perform(post("/api/institutions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(institutionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Institution> institutionList = institutionRepository.findAll();
+        assertThat(institutionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void checkDescriptionIsRequired() throws Exception {
         int databaseSizeBeforeTest = institutionRepository.findAll().size();
         // set the field null
@@ -219,6 +243,7 @@ public class InstitutionResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(institution.getId().intValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
+            .andExpect(jsonPath("$.[*].modifiedBy").value(hasItem(DEFAULT_MODIFIED_BY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
@@ -235,6 +260,7 @@ public class InstitutionResourceIntTest {
             .andExpect(jsonPath("$.id").value(institution.getId().intValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
+            .andExpect(jsonPath("$.modifiedBy").value(DEFAULT_MODIFIED_BY.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
@@ -258,6 +284,7 @@ public class InstitutionResourceIntTest {
         updatedInstitution
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
+            .modifiedBy(UPDATED_MODIFIED_BY)
             .description(UPDATED_DESCRIPTION);
         InstitutionDTO institutionDTO = institutionMapper.toDto(updatedInstitution);
 
@@ -272,6 +299,7 @@ public class InstitutionResourceIntTest {
         Institution testInstitution = institutionList.get(institutionList.size() - 1);
         assertThat(testInstitution.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testInstitution.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testInstitution.getModifiedBy()).isEqualTo(UPDATED_MODIFIED_BY);
         assertThat(testInstitution.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 

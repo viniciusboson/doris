@@ -33,6 +33,10 @@ public class Institution implements Serializable {
     private ZonedDateTime updatedAt;
 
     @NotNull
+    @Column(name = "modified_by", nullable = false)
+    private String modifiedBy;
+
+    @NotNull
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -69,6 +73,19 @@ public class Institution implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public Institution modifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+        return this;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public String getDescription() {
@@ -111,6 +128,7 @@ public class Institution implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", modifiedBy='" + getModifiedBy() + "'" +
             ", description='" + getDescription() + "'" +
             "}";
     }

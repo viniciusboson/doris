@@ -39,9 +39,9 @@ public class TransactionDTO implements Serializable {
 
     private Long operationId;
 
-    private Long assetId;
+    private Long positionId;
 
-    private String assetCode;
+    private String positionDescription;
 
     public Long getId() {
         return id;
@@ -115,20 +115,20 @@ public class TransactionDTO implements Serializable {
         this.operationId = operationId;
     }
 
-    public Long getAssetId() {
-        return assetId;
+    public Long getPositionId() {
+        return positionId;
     }
 
-    public void setAssetId(Long assetId) {
-        this.assetId = assetId;
+    public void setPositionId(Long positionId) {
+        this.positionId = positionId;
     }
 
-    public String getAssetCode() {
-        return assetCode;
+    public String getPositionDescription() {
+        return positionDescription;
     }
 
-    public void setAssetCode(String assetCode) {
-        this.assetCode = assetCode;
+    public void setPositionDescription(String positionDescription) {
+        this.positionDescription = positionDescription;
     }
 
     @Override
