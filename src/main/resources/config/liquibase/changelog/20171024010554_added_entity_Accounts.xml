@@ -14,55 +14,55 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Portfolio.
+        Added the entity Accounts.
     -->
-    <changeSet id="20171023194512-1" author="jhipster">
-        <createTable tableName="portfolio">
+    <changeSet id="20171024010554-1" author="jhipster">
+        <createTable tableName="accounts">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="created_at" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="updated_at" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="description" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
-            <column name="account_id" type="bigint">
+            <column name="portfolio_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="portfolio" columnName="created_at" columnDataType="datetime"/>
-        <dropDefaultValue tableName="portfolio" columnName="updated_at" columnDataType="datetime"/>
+        <dropDefaultValue tableName="accounts" columnName="created_at" columnDataType="datetime"/>
+        <dropDefaultValue tableName="accounts" columnName="updated_at" columnDataType="datetime"/>
         
-        <createTable tableName="portfolio_assets">
+        <createTable tableName="accounts_assets">
             <column name="assets_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="portfolios_id" type="bigint">
+            <column name="accounts_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="portfolios_id, assets_id" tableName="portfolio_assets"/>
+        <addPrimaryKey columnNames="accounts_id, assets_id" tableName="accounts_assets"/>
         
-        <createTable tableName="portfolio_institutions">
+        <createTable tableName="accounts_institutions">
             <column name="institutions_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="portfolios_id" type="bigint">
+            <column name="accounts_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="portfolios_id, institutions_id" tableName="portfolio_institutions"/>
+        <addPrimaryKey columnNames="accounts_id, institutions_id" tableName="accounts_institutions"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

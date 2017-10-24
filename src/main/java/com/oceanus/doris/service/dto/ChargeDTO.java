@@ -2,6 +2,7 @@ package com.oceanus.doris.service.dto;
 
 
 import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,16 +17,22 @@ public class ChargeDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private ZonedDateTime createdAt;
 
+    @NotNull
     private ZonedDateTime updatedAt;
 
+    @NotNull
     private String description;
 
+    @NotNull
     private ChargeType chargeType;
 
+    @NotNull
     private OperationType operationType;
 
+    @NotNull
     private Double amount;
 
     private Long institutionId;

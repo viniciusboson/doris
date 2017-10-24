@@ -1,18 +1,18 @@
 entity Institution {
   id Long
-  createdAt ZonedDateTime
-  updatedAt ZonedDateTime
-  description String //Poloniex, XP, Exodus, Santander
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  description String required // Poloniex, XP, Exodus, Santander
 }
 
 entity Charge {
   id Long
-  createdAt ZonedDateTime
-  updatedAt ZonedDateTime
-  description String  //wire transfer, transaction fee
-  chargeType ChargeType
-  operationType OperationType
-  amount Double
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  description String required  //wire transfer, transaction fee
+  chargeType ChargeType required
+  operationType OperationType required
+  amount Double required
 }
 
 enum ChargeType {
@@ -25,50 +25,49 @@ relationship ManyToOne {
 
 entity Asset {
   id Long
-  createdAt ZonedDateTime
-  updatedAt ZonedDateTime
-  description String // US Dollar, Real, Bitcoin
-  code String //USD, BRL, BTC
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  description String required // US Dollar, Real, Bitcoin
+  code String required //USD, BRL, BTC
   symbol String // $, £
-  type AssetType
+  type AssetType required
 }
 
 enum AssetType {
-  INDICE, CURRENCY, COMMODITY, STOCK, OPTION
-}
-
-entity Accounts {
-  id Long
-  createdAt ZonedDateTime
-  updatedAt ZonedDateTime
-  description String //Personal, Exchange A, Exchange B
+  COMMODITY, CURRENCY, FUTURE, INDICE, OPTION, STOCK
 }
 
 entity Portfolio {
   id Long
-  createdAt ZonedDateTime
-  updatedAt ZonedDateTime
-  description String // Bounds, Stocks, CryptoCoins
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  description String required //Personal, Exchange A, Exchange B
+}
+
+entity Accounts {
+  id Long
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  description String required // Bounds, Stocks, CryptoCoins
 }
 
 relationship ManyToOne {
-  Portfolio{account(description)} to Accounts{portfolio}
+  Accounts{portfolio(description)} to Portfolio{accounts}
 }
 
 relationship ManyToMany {
-  Portfolio{assets(code)} to Asset,
-  Portfolio{institutions(description)} to Institution
+  Accounts{assets(code)} to Asset,
+  Accounts{institutions(description)} to Institution
 }
 
 entity Position { //history: balance, etc
   id Long
-  createdAt ZonedDateTime
-  updatedAt ZonedDateTime
-  description String
-  balance Double
-  averange Double
-  type PositionType
-  status PositionStatus
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  description String required
+  balance Double required
+  type PositionType required
+  status PositionStatus required
 }
 
 enum PositionType {
@@ -81,16 +80,16 @@ enum PositionStatus {
 
 relationship ManyToOne {
   Position{asset(code)} to Asset,
-  Position{portfolio(description)} to Portfolio
+  Position{account(description)} to Accounts
 }
 
 entity Operation {
   id Long
-  createdAt ZonedDateTime
-  updatedAt ZonedDateTime
-  executedAt ZonedDateTime
-  fromAmount Double
-  toAmount Double
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  executedAt ZonedDateTime required
+  fromAmount Double required
+  toAmount Double required
 }
 
 enum OperationType {
@@ -106,13 +105,13 @@ relationship ManyToOne {
 
 entity Transaction {
   id Long
-  createdAt ZonedDateTime
-  updatedAt ZonedDateTime
-  executedAt ZonedDateTime
-  description String
-  amount Double
-  type TransactionType
-  balance Double
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  executedAt ZonedDateTime required
+  description String required
+  amount Double required
+  type TransactionType required
+  balance Double required
 }
 
 enum TransactionType {

@@ -8,17 +8,17 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Position and its DTO PositionDTO.
  */
-@Mapper(componentModel = "spring", uses = {AssetMapper.class, PortfolioMapper.class})
+@Mapper(componentModel = "spring", uses = {AssetMapper.class, AccountsMapper.class})
 public interface PositionMapper extends EntityMapper<PositionDTO, Position> {
 
     @Mapping(source = "asset.id", target = "assetId")
     @Mapping(source = "asset.code", target = "assetCode")
-    @Mapping(source = "portfolio.id", target = "portfolioId")
-    @Mapping(source = "portfolio.description", target = "portfolioDescription")
+    @Mapping(source = "account.id", target = "accountId")
+    @Mapping(source = "account.description", target = "accountDescription")
     PositionDTO toDto(Position position); 
 
     @Mapping(source = "assetId", target = "asset")
-    @Mapping(source = "portfolioId", target = "portfolio")
+    @Mapping(source = "accountId", target = "account")
     Position toEntity(PositionDTO positionDTO);
 
     default Position fromId(Long id) {

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class PositionResource {
      */
     @PostMapping("/positions")
     @Timed
-    public ResponseEntity<PositionDTO> createPosition(@RequestBody PositionDTO positionDTO) throws URISyntaxException {
+    public ResponseEntity<PositionDTO> createPosition(@Valid @RequestBody PositionDTO positionDTO) throws URISyntaxException {
         log.debug("REST request to save Position : {}", positionDTO);
         if (positionDTO.getId() != null) {
             throw new BadRequestAlertException("A new position cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class PositionResource {
      */
     @PutMapping("/positions")
     @Timed
-    public ResponseEntity<PositionDTO> updatePosition(@RequestBody PositionDTO positionDTO) throws URISyntaxException {
+    public ResponseEntity<PositionDTO> updatePosition(@Valid @RequestBody PositionDTO positionDTO) throws URISyntaxException {
         log.debug("REST request to update Position : {}", positionDTO);
         if (positionDTO.getId() == null) {
             return createPosition(positionDTO);

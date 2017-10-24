@@ -151,6 +151,63 @@ public class PortfolioResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCreatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = portfolioRepository.findAll().size();
+        // set the field null
+        portfolio.setCreatedAt(null);
+
+        // Create the Portfolio, which fails.
+        PortfolioDTO portfolioDTO = portfolioMapper.toDto(portfolio);
+
+        restPortfolioMockMvc.perform(post("/api/portfolios")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(portfolioDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Portfolio> portfolioList = portfolioRepository.findAll();
+        assertThat(portfolioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkUpdatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = portfolioRepository.findAll().size();
+        // set the field null
+        portfolio.setUpdatedAt(null);
+
+        // Create the Portfolio, which fails.
+        PortfolioDTO portfolioDTO = portfolioMapper.toDto(portfolio);
+
+        restPortfolioMockMvc.perform(post("/api/portfolios")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(portfolioDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Portfolio> portfolioList = portfolioRepository.findAll();
+        assertThat(portfolioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = portfolioRepository.findAll().size();
+        // set the field null
+        portfolio.setDescription(null);
+
+        // Create the Portfolio, which fails.
+        PortfolioDTO portfolioDTO = portfolioMapper.toDto(portfolio);
+
+        restPortfolioMockMvc.perform(post("/api/portfolios")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(portfolioDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Portfolio> portfolioList = portfolioRepository.findAll();
+        assertThat(portfolioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPortfolios() throws Exception {
         // Initialize the database
         portfolioRepository.saveAndFlush(portfolio);

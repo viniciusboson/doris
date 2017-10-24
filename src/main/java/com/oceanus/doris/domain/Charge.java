@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -27,24 +28,30 @@ public class Charge implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "created_at")
+    @NotNull
+    @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @NotNull
+    @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @Column(name = "description")
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "charge_type")
+    @Column(name = "charge_type", nullable = false)
     private ChargeType chargeType;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "operation_type")
+    @Column(name = "operation_type", nullable = false)
     private OperationType operationType;
 
-    @Column(name = "amount")
+    @NotNull
+    @Column(name = "amount", nullable = false)
     private Double amount;
 
     @ManyToOne

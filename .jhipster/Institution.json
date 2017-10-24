@@ -4,18 +4,27 @@
     "fields": [
         {
             "fieldName": "createdAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "updatedAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
-    "changelogDate": "20171023194508",
+    "changelogDate": "20171024010550",
     "entityTableName": "institution",
     "dto": "mapstruct",
     "pagination": "no",

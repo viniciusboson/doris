@@ -2,6 +2,7 @@ package com.oceanus.doris.service.dto;
 
 
 import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,19 +15,14 @@ public class PortfolioDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private ZonedDateTime createdAt;
 
+    @NotNull
     private ZonedDateTime updatedAt;
 
+    @NotNull
     private String description;
-
-    private Long accountId;
-
-    private String accountDescription;
-
-    private Set<AssetDTO> assets = new HashSet<>();
-
-    private Set<InstitutionDTO> institutions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -58,38 +54,6 @@ public class PortfolioDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountsId) {
-        this.accountId = accountsId;
-    }
-
-    public String getAccountDescription() {
-        return accountDescription;
-    }
-
-    public void setAccountDescription(String accountsDescription) {
-        this.accountDescription = accountsDescription;
-    }
-
-    public Set<AssetDTO> getAssets() {
-        return assets;
-    }
-
-    public void setAssets(Set<AssetDTO> assets) {
-        this.assets = assets;
-    }
-
-    public Set<InstitutionDTO> getInstitutions() {
-        return institutions;
-    }
-
-    public void setInstitutions(Set<InstitutionDTO> institutions) {
-        this.institutions = institutions;
     }
 
     @Override

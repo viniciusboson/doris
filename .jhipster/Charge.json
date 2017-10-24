@@ -11,32 +11,50 @@
     "fields": [
         {
             "fieldName": "createdAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "updatedAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "chargeType",
             "fieldType": "ChargeType",
-            "fieldValues": "FLAT_FEE,PERCENTAGE"
+            "fieldValues": "FLAT_FEE,PERCENTAGE",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "operationType",
             "fieldType": "OperationType",
-            "fieldValues": "WIRE_TRANSFER,WITHDRAW,DEPOSIT,BUY,SELL"
+            "fieldValues": "WIRE_TRANSFER,WITHDRAW,DEPOSIT,BUY,SELL",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "amount",
-            "fieldType": "Double"
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
-    "changelogDate": "20171023194509",
+    "changelogDate": "20171024010551",
     "entityTableName": "charge",
     "dto": "mapstruct",
     "pagination": "no",

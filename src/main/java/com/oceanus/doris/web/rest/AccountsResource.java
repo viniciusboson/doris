@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class AccountsResource {
      */
     @PostMapping("/accounts")
     @Timed
-    public ResponseEntity<AccountsDTO> createAccounts(@RequestBody AccountsDTO accountsDTO) throws URISyntaxException {
+    public ResponseEntity<AccountsDTO> createAccounts(@Valid @RequestBody AccountsDTO accountsDTO) throws URISyntaxException {
         log.debug("REST request to save Accounts : {}", accountsDTO);
         if (accountsDTO.getId() != null) {
             throw new BadRequestAlertException("A new accounts cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class AccountsResource {
      */
     @PutMapping("/accounts")
     @Timed
-    public ResponseEntity<AccountsDTO> updateAccounts(@RequestBody AccountsDTO accountsDTO) throws URISyntaxException {
+    public ResponseEntity<AccountsDTO> updateAccounts(@Valid @RequestBody AccountsDTO accountsDTO) throws URISyntaxException {
         log.debug("REST request to update Accounts : {}", accountsDTO);
         if (accountsDTO.getId() == null) {
             return createAccounts(accountsDTO);

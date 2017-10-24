@@ -2,43 +2,36 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
-            "relationshipName": "account",
+            "relationshipType": "one-to-many",
+            "relationshipName": "accounts",
             "otherEntityName": "accounts",
-            "otherEntityField": "description"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "assets",
-            "otherEntityName": "asset",
-            "otherEntityField": "code",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "institutions",
-            "otherEntityName": "institution",
-            "otherEntityField": "description",
-            "ownerSide": true
+            "otherEntityRelationshipName": "portfolio"
         }
     ],
     "fields": [
         {
             "fieldName": "createdAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "updatedAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
-    "changelogDate": "20171023194512",
+    "changelogDate": "20171024010553",
     "entityTableName": "portfolio",
     "dto": "mapstruct",
     "pagination": "no",

@@ -4,19 +4,31 @@
     "fields": [
         {
             "fieldName": "createdAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "updatedAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "code",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "symbol",
@@ -25,10 +37,13 @@
         {
             "fieldName": "type",
             "fieldType": "AssetType",
-            "fieldValues": "INDICE,CURRENCY,COMMODITY,STOCK,OPTION"
+            "fieldValues": "COMMODITY,CURRENCY,FUTURE,INDICE,OPTION,STOCK",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
-    "changelogDate": "20171023194510",
+    "changelogDate": "20171024010552",
     "entityTableName": "asset",
     "dto": "mapstruct",
     "pagination": "no",

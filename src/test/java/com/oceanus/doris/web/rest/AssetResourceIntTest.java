@@ -61,7 +61,7 @@ public class AssetResourceIntTest {
     private static final String DEFAULT_SYMBOL = "AAAAAAAAAA";
     private static final String UPDATED_SYMBOL = "BBBBBBBBBB";
 
-    private static final AssetType DEFAULT_TYPE = AssetType.INDICE;
+    private static final AssetType DEFAULT_TYPE = AssetType.COMMODITY;
     private static final AssetType UPDATED_TYPE = AssetType.CURRENCY;
 
     @Autowired
@@ -163,6 +163,101 @@ public class AssetResourceIntTest {
         // Validate the Asset in the database
         List<Asset> assetList = assetRepository.findAll();
         assertThat(assetList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkCreatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = assetRepository.findAll().size();
+        // set the field null
+        asset.setCreatedAt(null);
+
+        // Create the Asset, which fails.
+        AssetDTO assetDTO = assetMapper.toDto(asset);
+
+        restAssetMockMvc.perform(post("/api/assets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Asset> assetList = assetRepository.findAll();
+        assertThat(assetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkUpdatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = assetRepository.findAll().size();
+        // set the field null
+        asset.setUpdatedAt(null);
+
+        // Create the Asset, which fails.
+        AssetDTO assetDTO = assetMapper.toDto(asset);
+
+        restAssetMockMvc.perform(post("/api/assets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Asset> assetList = assetRepository.findAll();
+        assertThat(assetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = assetRepository.findAll().size();
+        // set the field null
+        asset.setDescription(null);
+
+        // Create the Asset, which fails.
+        AssetDTO assetDTO = assetMapper.toDto(asset);
+
+        restAssetMockMvc.perform(post("/api/assets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Asset> assetList = assetRepository.findAll();
+        assertThat(assetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = assetRepository.findAll().size();
+        // set the field null
+        asset.setCode(null);
+
+        // Create the Asset, which fails.
+        AssetDTO assetDTO = assetMapper.toDto(asset);
+
+        restAssetMockMvc.perform(post("/api/assets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Asset> assetList = assetRepository.findAll();
+        assertThat(assetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = assetRepository.findAll().size();
+        // set the field null
+        asset.setType(null);
+
+        // Create the Asset, which fails.
+        AssetDTO assetDTO = assetMapper.toDto(asset);
+
+        restAssetMockMvc.perform(post("/api/assets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Asset> assetList = assetRepository.findAll();
+        assertThat(assetList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test

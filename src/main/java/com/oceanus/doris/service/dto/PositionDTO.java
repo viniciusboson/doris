@@ -2,6 +2,7 @@ package com.oceanus.doris.service.dto;
 
 
 import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,27 +17,31 @@ public class PositionDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private ZonedDateTime createdAt;
 
+    @NotNull
     private ZonedDateTime updatedAt;
 
+    @NotNull
     private String description;
 
+    @NotNull
     private Double balance;
 
-    private Double averange;
-
+    @NotNull
     private PositionType type;
 
+    @NotNull
     private PositionStatus status;
 
     private Long assetId;
 
     private String assetCode;
 
-    private Long portfolioId;
+    private Long accountId;
 
-    private String portfolioDescription;
+    private String accountDescription;
 
     public Long getId() {
         return id;
@@ -78,14 +83,6 @@ public class PositionDTO implements Serializable {
         this.balance = balance;
     }
 
-    public Double getAverange() {
-        return averange;
-    }
-
-    public void setAverange(Double averange) {
-        this.averange = averange;
-    }
-
     public PositionType getType() {
         return type;
     }
@@ -118,20 +115,20 @@ public class PositionDTO implements Serializable {
         this.assetCode = assetCode;
     }
 
-    public Long getPortfolioId() {
-        return portfolioId;
+    public Long getAccountId() {
+        return accountId;
     }
 
-    public void setPortfolioId(Long portfolioId) {
-        this.portfolioId = portfolioId;
+    public void setAccountId(Long accountsId) {
+        this.accountId = accountsId;
     }
 
-    public String getPortfolioDescription() {
-        return portfolioDescription;
+    public String getAccountDescription() {
+        return accountDescription;
     }
 
-    public void setPortfolioDescription(String portfolioDescription) {
-        this.portfolioDescription = portfolioDescription;
+    public void setAccountDescription(String accountsDescription) {
+        this.accountDescription = accountsDescription;
     }
 
     @Override
@@ -163,7 +160,6 @@ public class PositionDTO implements Serializable {
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", description='" + getDescription() + "'" +
             ", balance='" + getBalance() + "'" +
-            ", averange='" + getAverange() + "'" +
             ", type='" + getType() + "'" +
             ", status='" + getStatus() + "'" +
             "}";

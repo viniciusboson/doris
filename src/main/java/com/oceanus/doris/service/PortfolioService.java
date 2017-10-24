@@ -52,7 +52,7 @@ public class PortfolioService {
     @Transactional(readOnly = true)
     public List<PortfolioDTO> findAll() {
         log.debug("Request to get all Portfolios");
-        return portfolioRepository.findAllWithEagerRelationships().stream()
+        return portfolioRepository.findAll().stream()
             .map(portfolioMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -66,7 +66,7 @@ public class PortfolioService {
     @Transactional(readOnly = true)
     public PortfolioDTO findOne(Long id) {
         log.debug("Request to get Portfolio : {}", id);
-        Portfolio portfolio = portfolioRepository.findOneWithEagerRelationships(id);
+        Portfolio portfolio = portfolioRepository.findOne(id);
         return portfolioMapper.toDto(portfolio);
     }
 

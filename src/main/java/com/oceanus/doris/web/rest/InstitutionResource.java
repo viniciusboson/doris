@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class InstitutionResource {
      */
     @PostMapping("/institutions")
     @Timed
-    public ResponseEntity<InstitutionDTO> createInstitution(@RequestBody InstitutionDTO institutionDTO) throws URISyntaxException {
+    public ResponseEntity<InstitutionDTO> createInstitution(@Valid @RequestBody InstitutionDTO institutionDTO) throws URISyntaxException {
         log.debug("REST request to save Institution : {}", institutionDTO);
         if (institutionDTO.getId() != null) {
             throw new BadRequestAlertException("A new institution cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class InstitutionResource {
      */
     @PutMapping("/institutions")
     @Timed
-    public ResponseEntity<InstitutionDTO> updateInstitution(@RequestBody InstitutionDTO institutionDTO) throws URISyntaxException {
+    public ResponseEntity<InstitutionDTO> updateInstitution(@Valid @RequestBody InstitutionDTO institutionDTO) throws URISyntaxException {
         log.debug("REST request to update Institution : {}", institutionDTO);
         if (institutionDTO.getId() == null) {
             return createInstitution(institutionDTO);

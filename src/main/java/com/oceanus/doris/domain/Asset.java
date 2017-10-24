@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -25,23 +26,28 @@ public class Asset implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "created_at")
+    @NotNull
+    @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @NotNull
+    @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @Column(name = "description")
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "code")
+    @NotNull
+    @Column(name = "code", nullable = false)
     private String code;
 
     @Column(name = "symbol")
     private String symbol;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type")
+    @Column(name = "jhi_type", nullable = false)
     private AssetType type;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

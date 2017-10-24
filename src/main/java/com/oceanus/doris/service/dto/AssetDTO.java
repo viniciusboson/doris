@@ -2,6 +2,7 @@ package com.oceanus.doris.service.dto;
 
 
 import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import com.oceanus.doris.domain.enumeration.AssetType;
@@ -13,16 +14,21 @@ public class AssetDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private ZonedDateTime createdAt;
 
+    @NotNull
     private ZonedDateTime updatedAt;
 
+    @NotNull
     private String description;
 
+    @NotNull
     private String code;
 
     private String symbol;
 
+    @NotNull
     private AssetType type;
 
     public Long getId() {

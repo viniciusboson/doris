@@ -1,10 +1,10 @@
 package com.oceanus.doris.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -26,19 +26,34 @@ public class Accounts implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "created_at")
+    @NotNull
+    @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @NotNull
+    @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @Column(name = "description")
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "account")
-    @JsonIgnore
+    @ManyToOne
+    private Portfolio portfolio;
+
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Portfolio> portfolios = new HashSet<>();
+    @JoinTable(name = "accounts_assets",
+               joinColumns = @JoinColumn(name="accounts_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"))
+    private Set<Asset> assets = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "accounts_institutions",
+               joinColumns = @JoinColumn(name="accounts_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="institutions_id", referencedColumnName="id"))
+    private Set<Institution> institutions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -88,29 +103,63 @@ public class Accounts implements Serializable {
         this.description = description;
     }
 
-    public Set<Portfolio> getPortfolios() {
-        return portfolios;
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
-    public Accounts portfolios(Set<Portfolio> portfolios) {
-        this.portfolios = portfolios;
+    public Accounts portfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
         return this;
     }
 
-    public Accounts addPortfolio(Portfolio portfolio) {
-        this.portfolios.add(portfolio);
-        portfolio.setAccount(this);
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public Set<Asset> getAssets() {
+        return assets;
+    }
+
+    public Accounts assets(Set<Asset> assets) {
+        this.assets = assets;
         return this;
     }
 
-    public Accounts removePortfolio(Portfolio portfolio) {
-        this.portfolios.remove(portfolio);
-        portfolio.setAccount(null);
+    public Accounts addAssets(Asset asset) {
+        this.assets.add(asset);
         return this;
     }
 
-    public void setPortfolios(Set<Portfolio> portfolios) {
-        this.portfolios = portfolios;
+    public Accounts removeAssets(Asset asset) {
+        this.assets.remove(asset);
+        return this;
+    }
+
+    public void setAssets(Set<Asset> assets) {
+        this.assets = assets;
+    }
+
+    public Set<Institution> getInstitutions() {
+        return institutions;
+    }
+
+    public Accounts institutions(Set<Institution> institutions) {
+        this.institutions = institutions;
+        return this;
+    }
+
+    public Accounts addInstitutions(Institution institution) {
+        this.institutions.add(institution);
+        return this;
+    }
+
+    public Accounts removeInstitutions(Institution institution) {
+        this.institutions.remove(institution);
+        return this;
+    }
+
+    public void setInstitutions(Set<Institution> institutions) {
+        this.institutions = institutions;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

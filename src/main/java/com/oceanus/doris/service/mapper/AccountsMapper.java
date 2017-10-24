@@ -8,12 +8,14 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Accounts and its DTO AccountsDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {PortfolioMapper.class, AssetMapper.class, InstitutionMapper.class})
 public interface AccountsMapper extends EntityMapper<AccountsDTO, Accounts> {
 
-    
+    @Mapping(source = "portfolio.id", target = "portfolioId")
+    @Mapping(source = "portfolio.description", target = "portfolioDescription")
+    AccountsDTO toDto(Accounts accounts); 
 
-    @Mapping(target = "portfolios", ignore = true)
+    @Mapping(source = "portfolioId", target = "portfolio")
     Accounts toEntity(AccountsDTO accountsDTO);
 
     default Accounts fromId(Long id) {

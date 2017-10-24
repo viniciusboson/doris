@@ -151,6 +151,63 @@ public class InstitutionResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCreatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = institutionRepository.findAll().size();
+        // set the field null
+        institution.setCreatedAt(null);
+
+        // Create the Institution, which fails.
+        InstitutionDTO institutionDTO = institutionMapper.toDto(institution);
+
+        restInstitutionMockMvc.perform(post("/api/institutions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(institutionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Institution> institutionList = institutionRepository.findAll();
+        assertThat(institutionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkUpdatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = institutionRepository.findAll().size();
+        // set the field null
+        institution.setUpdatedAt(null);
+
+        // Create the Institution, which fails.
+        InstitutionDTO institutionDTO = institutionMapper.toDto(institution);
+
+        restInstitutionMockMvc.perform(post("/api/institutions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(institutionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Institution> institutionList = institutionRepository.findAll();
+        assertThat(institutionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = institutionRepository.findAll().size();
+        // set the field null
+        institution.setDescription(null);
+
+        // Create the Institution, which fails.
+        InstitutionDTO institutionDTO = institutionMapper.toDto(institution);
+
+        restInstitutionMockMvc.perform(post("/api/institutions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(institutionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Institution> institutionList = institutionRepository.findAll();
+        assertThat(institutionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllInstitutions() throws Exception {
         // Initialize the database
         institutionRepository.saveAndFlush(institution);

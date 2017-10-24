@@ -168,6 +168,120 @@ public class ChargeResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCreatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chargeRepository.findAll().size();
+        // set the field null
+        charge.setCreatedAt(null);
+
+        // Create the Charge, which fails.
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+
+        restChargeMockMvc.perform(post("/api/charges")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(chargeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Charge> chargeList = chargeRepository.findAll();
+        assertThat(chargeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkUpdatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chargeRepository.findAll().size();
+        // set the field null
+        charge.setUpdatedAt(null);
+
+        // Create the Charge, which fails.
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+
+        restChargeMockMvc.perform(post("/api/charges")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(chargeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Charge> chargeList = chargeRepository.findAll();
+        assertThat(chargeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chargeRepository.findAll().size();
+        // set the field null
+        charge.setDescription(null);
+
+        // Create the Charge, which fails.
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+
+        restChargeMockMvc.perform(post("/api/charges")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(chargeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Charge> chargeList = chargeRepository.findAll();
+        assertThat(chargeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkChargeTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chargeRepository.findAll().size();
+        // set the field null
+        charge.setChargeType(null);
+
+        // Create the Charge, which fails.
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+
+        restChargeMockMvc.perform(post("/api/charges")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(chargeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Charge> chargeList = chargeRepository.findAll();
+        assertThat(chargeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkOperationTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chargeRepository.findAll().size();
+        // set the field null
+        charge.setOperationType(null);
+
+        // Create the Charge, which fails.
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+
+        restChargeMockMvc.perform(post("/api/charges")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(chargeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Charge> chargeList = chargeRepository.findAll();
+        assertThat(chargeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkAmountIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chargeRepository.findAll().size();
+        // set the field null
+        charge.setAmount(null);
+
+        // Create the Charge, which fails.
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+
+        restChargeMockMvc.perform(post("/api/charges")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(chargeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Charge> chargeList = chargeRepository.findAll();
+        assertThat(chargeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllCharges() throws Exception {
         // Initialize the database
         chargeRepository.saveAndFlush(charge);

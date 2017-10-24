@@ -59,9 +59,6 @@ public class PositionResourceIntTest {
     private static final Double DEFAULT_BALANCE = 1D;
     private static final Double UPDATED_BALANCE = 2D;
 
-    private static final Double DEFAULT_AVERANGE = 1D;
-    private static final Double UPDATED_AVERANGE = 2D;
-
     private static final PositionType DEFAULT_TYPE = PositionType.LONG;
     private static final PositionType UPDATED_TYPE = PositionType.SHORT;
 
@@ -115,7 +112,6 @@ public class PositionResourceIntTest {
             .updatedAt(DEFAULT_UPDATED_AT)
             .description(DEFAULT_DESCRIPTION)
             .balance(DEFAULT_BALANCE)
-            .averange(DEFAULT_AVERANGE)
             .type(DEFAULT_TYPE)
             .status(DEFAULT_STATUS);
         return position;
@@ -146,7 +142,6 @@ public class PositionResourceIntTest {
         assertThat(testPosition.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
         assertThat(testPosition.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testPosition.getBalance()).isEqualTo(DEFAULT_BALANCE);
-        assertThat(testPosition.getAverange()).isEqualTo(DEFAULT_AVERANGE);
         assertThat(testPosition.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testPosition.getStatus()).isEqualTo(DEFAULT_STATUS);
     }
@@ -173,6 +168,120 @@ public class PositionResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCreatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = positionRepository.findAll().size();
+        // set the field null
+        position.setCreatedAt(null);
+
+        // Create the Position, which fails.
+        PositionDTO positionDTO = positionMapper.toDto(position);
+
+        restPositionMockMvc.perform(post("/api/positions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Position> positionList = positionRepository.findAll();
+        assertThat(positionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkUpdatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = positionRepository.findAll().size();
+        // set the field null
+        position.setUpdatedAt(null);
+
+        // Create the Position, which fails.
+        PositionDTO positionDTO = positionMapper.toDto(position);
+
+        restPositionMockMvc.perform(post("/api/positions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Position> positionList = positionRepository.findAll();
+        assertThat(positionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = positionRepository.findAll().size();
+        // set the field null
+        position.setDescription(null);
+
+        // Create the Position, which fails.
+        PositionDTO positionDTO = positionMapper.toDto(position);
+
+        restPositionMockMvc.perform(post("/api/positions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Position> positionList = positionRepository.findAll();
+        assertThat(positionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkBalanceIsRequired() throws Exception {
+        int databaseSizeBeforeTest = positionRepository.findAll().size();
+        // set the field null
+        position.setBalance(null);
+
+        // Create the Position, which fails.
+        PositionDTO positionDTO = positionMapper.toDto(position);
+
+        restPositionMockMvc.perform(post("/api/positions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Position> positionList = positionRepository.findAll();
+        assertThat(positionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = positionRepository.findAll().size();
+        // set the field null
+        position.setType(null);
+
+        // Create the Position, which fails.
+        PositionDTO positionDTO = positionMapper.toDto(position);
+
+        restPositionMockMvc.perform(post("/api/positions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Position> positionList = positionRepository.findAll();
+        assertThat(positionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkStatusIsRequired() throws Exception {
+        int databaseSizeBeforeTest = positionRepository.findAll().size();
+        // set the field null
+        position.setStatus(null);
+
+        // Create the Position, which fails.
+        PositionDTO positionDTO = positionMapper.toDto(position);
+
+        restPositionMockMvc.perform(post("/api/positions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Position> positionList = positionRepository.findAll();
+        assertThat(positionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPositions() throws Exception {
         // Initialize the database
         positionRepository.saveAndFlush(position);
@@ -186,7 +295,6 @@ public class PositionResourceIntTest {
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.doubleValue())))
-            .andExpect(jsonPath("$.[*].averange").value(hasItem(DEFAULT_AVERANGE.doubleValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
@@ -206,7 +314,6 @@ public class PositionResourceIntTest {
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.doubleValue()))
-            .andExpect(jsonPath("$.averange").value(DEFAULT_AVERANGE.doubleValue()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
@@ -233,7 +340,6 @@ public class PositionResourceIntTest {
             .updatedAt(UPDATED_UPDATED_AT)
             .description(UPDATED_DESCRIPTION)
             .balance(UPDATED_BALANCE)
-            .averange(UPDATED_AVERANGE)
             .type(UPDATED_TYPE)
             .status(UPDATED_STATUS);
         PositionDTO positionDTO = positionMapper.toDto(updatedPosition);
@@ -251,7 +357,6 @@ public class PositionResourceIntTest {
         assertThat(testPosition.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
         assertThat(testPosition.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testPosition.getBalance()).isEqualTo(UPDATED_BALANCE);
-        assertThat(testPosition.getAverange()).isEqualTo(UPDATED_AVERANGE);
         assertThat(testPosition.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testPosition.getStatus()).isEqualTo(UPDATED_STATUS);
     }

@@ -31,18 +31,9 @@ spring:
             enabled: false # we use gulp + BrowserSync for livereload
     jackson:
         serialization.indent_output: true
-    cloud:
-        stream:
-            kafka:
-                binder:
-                    brokers: localhost
-                    zk-nodes: localhost
-            bindings:
-                output:
-                    destination: topic-jhipster
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:doris;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:file:./build/h2db/db/doris;DB_CLOSE_DELAY=-1
         username: doris
         password:
     h2:

@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -27,34 +28,37 @@ public class Position implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "created_at")
+    @NotNull
+    @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @NotNull
+    @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @Column(name = "description")
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "balance")
+    @NotNull
+    @Column(name = "balance", nullable = false)
     private Double balance;
 
-    @Column(name = "averange")
-    private Double averange;
-
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type")
+    @Column(name = "jhi_type", nullable = false)
     private PositionType type;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private PositionStatus status;
 
     @ManyToOne
     private Asset asset;
 
     @ManyToOne
-    private Portfolio portfolio;
+    private Accounts account;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -117,19 +121,6 @@ public class Position implements Serializable {
         this.balance = balance;
     }
 
-    public Double getAverange() {
-        return averange;
-    }
-
-    public Position averange(Double averange) {
-        this.averange = averange;
-        return this;
-    }
-
-    public void setAverange(Double averange) {
-        this.averange = averange;
-    }
-
     public PositionType getType() {
         return type;
     }
@@ -169,17 +160,17 @@ public class Position implements Serializable {
         this.asset = asset;
     }
 
-    public Portfolio getPortfolio() {
-        return portfolio;
+    public Accounts getAccount() {
+        return account;
     }
 
-    public Position portfolio(Portfolio portfolio) {
-        this.portfolio = portfolio;
+    public Position account(Accounts accounts) {
+        this.account = accounts;
         return this;
     }
 
-    public void setPortfolio(Portfolio portfolio) {
-        this.portfolio = portfolio;
+    public void setAccount(Accounts accounts) {
+        this.account = accounts;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -211,7 +202,6 @@ public class Position implements Serializable {
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", description='" + getDescription() + "'" +
             ", balance='" + getBalance() + "'" +
-            ", averange='" + getAverange() + "'" +
             ", type='" + getType() + "'" +
             ", status='" + getStatus() + "'" +
             "}";

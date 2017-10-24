@@ -1,9 +1,11 @@
 package com.oceanus.doris.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -25,31 +27,22 @@ public class Portfolio implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "created_at")
+    @NotNull
+    @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @NotNull
+    @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @Column(name = "description")
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
-    private Accounts account;
-
-    @ManyToMany
+    @OneToMany(mappedBy = "portfolio")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "portfolio_assets",
-               joinColumns = @JoinColumn(name="portfolios_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"))
-    private Set<Asset> assets = new HashSet<>();
-
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "portfolio_institutions",
-               joinColumns = @JoinColumn(name="portfolios_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="institutions_id", referencedColumnName="id"))
-    private Set<Institution> institutions = new HashSet<>();
+    private Set<Accounts> accounts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -99,63 +92,29 @@ public class Portfolio implements Serializable {
         this.description = description;
     }
 
-    public Accounts getAccount() {
-        return account;
+    public Set<Accounts> getAccounts() {
+        return accounts;
     }
 
-    public Portfolio account(Accounts accounts) {
-        this.account = accounts;
+    public Portfolio accounts(Set<Accounts> accounts) {
+        this.accounts = accounts;
         return this;
     }
 
-    public void setAccount(Accounts accounts) {
-        this.account = accounts;
-    }
-
-    public Set<Asset> getAssets() {
-        return assets;
-    }
-
-    public Portfolio assets(Set<Asset> assets) {
-        this.assets = assets;
+    public Portfolio addAccounts(Accounts accounts) {
+        this.accounts.add(accounts);
+        accounts.setPortfolio(this);
         return this;
     }
 
-    public Portfolio addAssets(Asset asset) {
-        this.assets.add(asset);
+    public Portfolio removeAccounts(Accounts accounts) {
+        this.accounts.remove(accounts);
+        accounts.setPortfolio(null);
         return this;
     }
 
-    public Portfolio removeAssets(Asset asset) {
-        this.assets.remove(asset);
-        return this;
-    }
-
-    public void setAssets(Set<Asset> assets) {
-        this.assets = assets;
-    }
-
-    public Set<Institution> getInstitutions() {
-        return institutions;
-    }
-
-    public Portfolio institutions(Set<Institution> institutions) {
-        this.institutions = institutions;
-        return this;
-    }
-
-    public Portfolio addInstitutions(Institution institution) {
-        this.institutions.add(institution);
-        return this;
-    }
-
-    public Portfolio removeInstitutions(Institution institution) {
-        this.institutions.remove(institution);
-        return this;
-    }
-
-    public void setInstitutions(Set<Institution> institutions) {
-        this.institutions = institutions;
+    public void setAccounts(Set<Accounts> accounts) {
+        this.accounts = accounts;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

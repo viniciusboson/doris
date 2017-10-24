@@ -52,7 +52,7 @@ public class AccountsService {
     @Transactional(readOnly = true)
     public List<AccountsDTO> findAll() {
         log.debug("Request to get all Accounts");
-        return accountsRepository.findAll().stream()
+        return accountsRepository.findAllWithEagerRelationships().stream()
             .map(accountsMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -66,7 +66,7 @@ public class AccountsService {
     @Transactional(readOnly = true)
     public AccountsDTO findOne(Long id) {
         log.debug("Request to get Accounts : {}", id);
-        Accounts accounts = accountsRepository.findOne(id);
+        Accounts accounts = accountsRepository.findOneWithEagerRelationships(id);
         return accountsMapper.toDto(accounts);
     }
 

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class OperationResource {
      */
     @PostMapping("/operations")
     @Timed
-    public ResponseEntity<OperationDTO> createOperation(@RequestBody OperationDTO operationDTO) throws URISyntaxException {
+    public ResponseEntity<OperationDTO> createOperation(@Valid @RequestBody OperationDTO operationDTO) throws URISyntaxException {
         log.debug("REST request to save Operation : {}", operationDTO);
         if (operationDTO.getId() != null) {
             throw new BadRequestAlertException("A new operation cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class OperationResource {
      */
     @PutMapping("/operations")
     @Timed
-    public ResponseEntity<OperationDTO> updateOperation(@RequestBody OperationDTO operationDTO) throws URISyntaxException {
+    public ResponseEntity<OperationDTO> updateOperation(@Valid @RequestBody OperationDTO operationDTO) throws URISyntaxException {
         log.debug("REST request to update Operation : {}", operationDTO);
         if (operationDTO.getId() == null) {
             return createOperation(operationDTO);

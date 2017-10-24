@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class PortfolioResource {
      */
     @PostMapping("/portfolios")
     @Timed
-    public ResponseEntity<PortfolioDTO> createPortfolio(@RequestBody PortfolioDTO portfolioDTO) throws URISyntaxException {
+    public ResponseEntity<PortfolioDTO> createPortfolio(@Valid @RequestBody PortfolioDTO portfolioDTO) throws URISyntaxException {
         log.debug("REST request to save Portfolio : {}", portfolioDTO);
         if (portfolioDTO.getId() != null) {
             throw new BadRequestAlertException("A new portfolio cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class PortfolioResource {
      */
     @PutMapping("/portfolios")
     @Timed
-    public ResponseEntity<PortfolioDTO> updatePortfolio(@RequestBody PortfolioDTO portfolioDTO) throws URISyntaxException {
+    public ResponseEntity<PortfolioDTO> updatePortfolio(@Valid @RequestBody PortfolioDTO portfolioDTO) throws URISyntaxException {
         log.debug("REST request to update Portfolio : {}", portfolioDTO);
         if (portfolioDTO.getId() == null) {
             return createPortfolio(portfolioDTO);

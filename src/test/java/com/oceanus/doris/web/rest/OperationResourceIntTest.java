@@ -161,6 +161,101 @@ public class OperationResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCreatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = operationRepository.findAll().size();
+        // set the field null
+        operation.setCreatedAt(null);
+
+        // Create the Operation, which fails.
+        OperationDTO operationDTO = operationMapper.toDto(operation);
+
+        restOperationMockMvc.perform(post("/api/operations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Operation> operationList = operationRepository.findAll();
+        assertThat(operationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkUpdatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = operationRepository.findAll().size();
+        // set the field null
+        operation.setUpdatedAt(null);
+
+        // Create the Operation, which fails.
+        OperationDTO operationDTO = operationMapper.toDto(operation);
+
+        restOperationMockMvc.perform(post("/api/operations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Operation> operationList = operationRepository.findAll();
+        assertThat(operationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkExecutedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = operationRepository.findAll().size();
+        // set the field null
+        operation.setExecutedAt(null);
+
+        // Create the Operation, which fails.
+        OperationDTO operationDTO = operationMapper.toDto(operation);
+
+        restOperationMockMvc.perform(post("/api/operations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Operation> operationList = operationRepository.findAll();
+        assertThat(operationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkFromAmountIsRequired() throws Exception {
+        int databaseSizeBeforeTest = operationRepository.findAll().size();
+        // set the field null
+        operation.setFromAmount(null);
+
+        // Create the Operation, which fails.
+        OperationDTO operationDTO = operationMapper.toDto(operation);
+
+        restOperationMockMvc.perform(post("/api/operations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Operation> operationList = operationRepository.findAll();
+        assertThat(operationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkToAmountIsRequired() throws Exception {
+        int databaseSizeBeforeTest = operationRepository.findAll().size();
+        // set the field null
+        operation.setToAmount(null);
+
+        // Create the Operation, which fails.
+        OperationDTO operationDTO = operationMapper.toDto(operation);
+
+        restOperationMockMvc.perform(post("/api/operations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Operation> operationList = operationRepository.findAll();
+        assertThat(operationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllOperations() throws Exception {
         // Initialize the database
         operationRepository.saveAndFlush(operation);

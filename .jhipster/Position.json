@@ -9,44 +9,58 @@
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "portfolio",
-            "otherEntityName": "portfolio",
+            "relationshipName": "account",
+            "otherEntityName": "accounts",
             "otherEntityField": "description"
         }
     ],
     "fields": [
         {
             "fieldName": "createdAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "updatedAt",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "balance",
-            "fieldType": "Double"
-        },
-        {
-            "fieldName": "averange",
-            "fieldType": "Double"
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "type",
             "fieldType": "PositionType",
-            "fieldValues": "LONG,SHORT,FLAT"
+            "fieldValues": "LONG,SHORT,FLAT",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "status",
             "fieldType": "PositionStatus",
-            "fieldValues": "OPENED,CLOSED"
+            "fieldValues": "OPENED,CLOSED",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
-    "changelogDate": "20171023194513",
+    "changelogDate": "20171024010555",
     "entityTableName": "position",
     "dto": "mapstruct",
     "pagination": "no",

@@ -151,6 +151,63 @@ public class AccountsResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCreatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = accountsRepository.findAll().size();
+        // set the field null
+        accounts.setCreatedAt(null);
+
+        // Create the Accounts, which fails.
+        AccountsDTO accountsDTO = accountsMapper.toDto(accounts);
+
+        restAccountsMockMvc.perform(post("/api/accounts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Accounts> accountsList = accountsRepository.findAll();
+        assertThat(accountsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkUpdatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = accountsRepository.findAll().size();
+        // set the field null
+        accounts.setUpdatedAt(null);
+
+        // Create the Accounts, which fails.
+        AccountsDTO accountsDTO = accountsMapper.toDto(accounts);
+
+        restAccountsMockMvc.perform(post("/api/accounts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Accounts> accountsList = accountsRepository.findAll();
+        assertThat(accountsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = accountsRepository.findAll().size();
+        // set the field null
+        accounts.setDescription(null);
+
+        // Create the Accounts, which fails.
+        AccountsDTO accountsDTO = accountsMapper.toDto(accounts);
+
+        restAccountsMockMvc.perform(post("/api/accounts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Accounts> accountsList = accountsRepository.findAll();
+        assertThat(accountsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllAccounts() throws Exception {
         // Initialize the database
         accountsRepository.saveAndFlush(accounts);

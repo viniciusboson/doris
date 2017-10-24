@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class ChargeResource {
      */
     @PostMapping("/charges")
     @Timed
-    public ResponseEntity<ChargeDTO> createCharge(@RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
+    public ResponseEntity<ChargeDTO> createCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
         log.debug("REST request to save Charge : {}", chargeDTO);
         if (chargeDTO.getId() != null) {
             throw new BadRequestAlertException("A new charge cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class ChargeResource {
      */
     @PutMapping("/charges")
     @Timed
-    public ResponseEntity<ChargeDTO> updateCharge(@RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
+    public ResponseEntity<ChargeDTO> updateCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
         log.debug("REST request to update Charge : {}", chargeDTO);
         if (chargeDTO.getId() == null) {
             return createCharge(chargeDTO);
