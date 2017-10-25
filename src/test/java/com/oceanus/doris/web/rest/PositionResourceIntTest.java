@@ -53,6 +53,9 @@ public class PositionResourceIntTest {
     private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_MODIFIED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_MODIFIED_BY = "BBBBBBBBBB";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -110,6 +113,7 @@ public class PositionResourceIntTest {
         Position position = new Position()
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
+            .modifiedBy(DEFAULT_MODIFIED_BY)
             .description(DEFAULT_DESCRIPTION)
             .balance(DEFAULT_BALANCE)
             .type(DEFAULT_TYPE)
@@ -140,6 +144,7 @@ public class PositionResourceIntTest {
         Position testPosition = positionList.get(positionList.size() - 1);
         assertThat(testPosition.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testPosition.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testPosition.getModifiedBy()).isEqualTo(DEFAULT_MODIFIED_BY);
         assertThat(testPosition.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testPosition.getBalance()).isEqualTo(DEFAULT_BALANCE);
         assertThat(testPosition.getType()).isEqualTo(DEFAULT_TYPE);
@@ -191,6 +196,25 @@ public class PositionResourceIntTest {
         int databaseSizeBeforeTest = positionRepository.findAll().size();
         // set the field null
         position.setUpdatedAt(null);
+
+        // Create the Position, which fails.
+        PositionDTO positionDTO = positionMapper.toDto(position);
+
+        restPositionMockMvc.perform(post("/api/positions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Position> positionList = positionRepository.findAll();
+        assertThat(positionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkModifiedByIsRequired() throws Exception {
+        int databaseSizeBeforeTest = positionRepository.findAll().size();
+        // set the field null
+        position.setModifiedBy(null);
 
         // Create the Position, which fails.
         PositionDTO positionDTO = positionMapper.toDto(position);
@@ -293,6 +317,7 @@ public class PositionResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(position.getId().intValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
+            .andExpect(jsonPath("$.[*].modifiedBy").value(hasItem(DEFAULT_MODIFIED_BY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
@@ -312,6 +337,7 @@ public class PositionResourceIntTest {
             .andExpect(jsonPath("$.id").value(position.getId().intValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
+            .andExpect(jsonPath("$.modifiedBy").value(DEFAULT_MODIFIED_BY.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.doubleValue()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
@@ -338,6 +364,7 @@ public class PositionResourceIntTest {
         updatedPosition
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
+            .modifiedBy(UPDATED_MODIFIED_BY)
             .description(UPDATED_DESCRIPTION)
             .balance(UPDATED_BALANCE)
             .type(UPDATED_TYPE)
@@ -355,6 +382,7 @@ public class PositionResourceIntTest {
         Position testPosition = positionList.get(positionList.size() - 1);
         assertThat(testPosition.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testPosition.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testPosition.getModifiedBy()).isEqualTo(UPDATED_MODIFIED_BY);
         assertThat(testPosition.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testPosition.getBalance()).isEqualTo(UPDATED_BALANCE);
         assertThat(testPosition.getType()).isEqualTo(UPDATED_TYPE);

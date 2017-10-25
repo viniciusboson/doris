@@ -51,6 +51,9 @@ public class OperationResourceIntTest {
     private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_MODIFIED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_MODIFIED_BY = "BBBBBBBBBB";
+
     private static final ZonedDateTime DEFAULT_EXECUTED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_EXECUTED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
@@ -105,6 +108,7 @@ public class OperationResourceIntTest {
         Operation operation = new Operation()
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT)
+            .modifiedBy(DEFAULT_MODIFIED_BY)
             .executedAt(DEFAULT_EXECUTED_AT)
             .amountFrom(DEFAULT_AMOUNT_FROM)
             .amountTo(DEFAULT_AMOUNT_TO);
@@ -134,6 +138,7 @@ public class OperationResourceIntTest {
         Operation testOperation = operationList.get(operationList.size() - 1);
         assertThat(testOperation.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testOperation.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testOperation.getModifiedBy()).isEqualTo(DEFAULT_MODIFIED_BY);
         assertThat(testOperation.getExecutedAt()).isEqualTo(DEFAULT_EXECUTED_AT);
         assertThat(testOperation.getAmountFrom()).isEqualTo(DEFAULT_AMOUNT_FROM);
         assertThat(testOperation.getAmountTo()).isEqualTo(DEFAULT_AMOUNT_TO);
@@ -184,6 +189,25 @@ public class OperationResourceIntTest {
         int databaseSizeBeforeTest = operationRepository.findAll().size();
         // set the field null
         operation.setUpdatedAt(null);
+
+        // Create the Operation, which fails.
+        OperationDTO operationDTO = operationMapper.toDto(operation);
+
+        restOperationMockMvc.perform(post("/api/operations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Operation> operationList = operationRepository.findAll();
+        assertThat(operationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkModifiedByIsRequired() throws Exception {
+        int databaseSizeBeforeTest = operationRepository.findAll().size();
+        // set the field null
+        operation.setModifiedBy(null);
 
         // Create the Operation, which fails.
         OperationDTO operationDTO = operationMapper.toDto(operation);
@@ -267,6 +291,7 @@ public class OperationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(operation.getId().intValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
+            .andExpect(jsonPath("$.[*].modifiedBy").value(hasItem(DEFAULT_MODIFIED_BY.toString())))
             .andExpect(jsonPath("$.[*].executedAt").value(hasItem(sameInstant(DEFAULT_EXECUTED_AT))))
             .andExpect(jsonPath("$.[*].amountFrom").value(hasItem(DEFAULT_AMOUNT_FROM.doubleValue())))
             .andExpect(jsonPath("$.[*].amountTo").value(hasItem(DEFAULT_AMOUNT_TO.doubleValue())));
@@ -285,6 +310,7 @@ public class OperationResourceIntTest {
             .andExpect(jsonPath("$.id").value(operation.getId().intValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
+            .andExpect(jsonPath("$.modifiedBy").value(DEFAULT_MODIFIED_BY.toString()))
             .andExpect(jsonPath("$.executedAt").value(sameInstant(DEFAULT_EXECUTED_AT)))
             .andExpect(jsonPath("$.amountFrom").value(DEFAULT_AMOUNT_FROM.doubleValue()))
             .andExpect(jsonPath("$.amountTo").value(DEFAULT_AMOUNT_TO.doubleValue()));
@@ -310,6 +336,7 @@ public class OperationResourceIntTest {
         updatedOperation
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT)
+            .modifiedBy(UPDATED_MODIFIED_BY)
             .executedAt(UPDATED_EXECUTED_AT)
             .amountFrom(UPDATED_AMOUNT_FROM)
             .amountTo(UPDATED_AMOUNT_TO);
@@ -326,6 +353,7 @@ public class OperationResourceIntTest {
         Operation testOperation = operationList.get(operationList.size() - 1);
         assertThat(testOperation.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testOperation.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testOperation.getModifiedBy()).isEqualTo(UPDATED_MODIFIED_BY);
         assertThat(testOperation.getExecutedAt()).isEqualTo(UPDATED_EXECUTED_AT);
         assertThat(testOperation.getAmountFrom()).isEqualTo(UPDATED_AMOUNT_FROM);
         assertThat(testOperation.getAmountTo()).isEqualTo(UPDATED_AMOUNT_TO);

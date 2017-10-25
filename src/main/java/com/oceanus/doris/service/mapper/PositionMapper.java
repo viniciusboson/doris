@@ -19,6 +19,7 @@ public interface PositionMapper extends EntityMapper<PositionDTO, Position> {
 
     @Mapping(source = "assetId", target = "asset")
     @Mapping(source = "accountId", target = "account")
+    @Mapping(target = "metrics", ignore = true)
     Position toEntity(PositionDTO positionDTO);
 
     default Position fromId(Long id) {

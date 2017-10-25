@@ -1,5 +1,6 @@
 package com.oceanus.doris.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import com.oceanus.doris.domain.enumeration.PositionType;
@@ -37,6 +40,10 @@ public class Position implements Serializable {
     private ZonedDateTime updatedAt;
 
     @NotNull
+    @Column(name = "modified_by", nullable = false)
+    private String modifiedBy;
+
+    @NotNull
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -59,6 +66,11 @@ public class Position implements Serializable {
 
     @ManyToOne
     private Accounts account;
+
+    @OneToMany(mappedBy = "position")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<PositionMetric> metrics = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -93,6 +105,19 @@ public class Position implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public Position modifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+        return this;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public String getDescription() {
@@ -172,6 +197,31 @@ public class Position implements Serializable {
     public void setAccount(Accounts accounts) {
         this.account = accounts;
     }
+
+    public Set<PositionMetric> getMetrics() {
+        return metrics;
+    }
+
+    public Position metrics(Set<PositionMetric> positionMetrics) {
+        this.metrics = positionMetrics;
+        return this;
+    }
+
+    public Position addMetrics(PositionMetric positionMetric) {
+        this.metrics.add(positionMetric);
+        positionMetric.setPosition(this);
+        return this;
+    }
+
+    public Position removeMetrics(PositionMetric positionMetric) {
+        this.metrics.remove(positionMetric);
+        positionMetric.setPosition(null);
+        return this;
+    }
+
+    public void setMetrics(Set<PositionMetric> positionMetrics) {
+        this.metrics = positionMetrics;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -200,6 +250,7 @@ public class Position implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", modifiedBy='" + getModifiedBy() + "'" +
             ", description='" + getDescription() + "'" +
             ", balance='" + getBalance() + "'" +
             ", type='" + getType() + "'" +

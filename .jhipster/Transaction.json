@@ -30,6 +30,13 @@
             ]
         },
         {
+            "fieldName": "modifiedBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "executedAt",
             "fieldType": "ZonedDateTime",
             "fieldValidateRules": [

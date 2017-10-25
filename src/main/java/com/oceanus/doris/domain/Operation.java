@@ -33,6 +33,10 @@ public class Operation implements Serializable {
     private ZonedDateTime updatedAt;
 
     @NotNull
+    @Column(name = "modified_by", nullable = false)
+    private String modifiedBy;
+
+    @NotNull
     @Column(name = "executed_at", nullable = false)
     private ZonedDateTime executedAt;
 
@@ -89,6 +93,19 @@ public class Operation implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public Operation modifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+        return this;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public ZonedDateTime getExecutedAt() {
@@ -209,6 +226,7 @@ public class Operation implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", modifiedBy='" + getModifiedBy() + "'" +
             ", executedAt='" + getExecutedAt() + "'" +
             ", amountFrom='" + getAmountFrom() + "'" +
             ", amountTo='" + getAmountTo() + "'" +

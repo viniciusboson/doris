@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Operation entity.
+ * Performance test for the PositionMetric entity.
  */
-class OperationGatlingTest extends Simulation {
+class PositionMetricGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -42,7 +42,7 @@ class OperationGatlingTest extends Simulation {
         "Authorization" -> "${access_token}"
     )
 
-    val scn = scenario("Test the Operation entity")
+    val scn = scenario("Test the PositionMetric entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -60,26 +60,26 @@ class OperationGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all operations")
-            .get("/doris/api/operations")
+            exec(http("Get all positionMetrics")
+            .get("/doris/api/position-metrics")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new operation")
-            .post("/doris/api/operations")
+            .exec(http("Create new positionMetric")
+            .post("/doris/api/position-metrics")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "modifiedBy":"SAMPLE_TEXT", "executedAt":"2020-01-01T00:00:00.000Z", "amountFrom":null, "amountTo":null}""")).asJSON
+            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "modifiedBy":"SAMPLE_TEXT", "entryAvgPrice":null, "entryAmount":null, "exitAvgPrice":null, "exitAmount":null, "txCosts":null}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_operation_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_positionMetric_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created operation")
-                .get("/doris${new_operation_url}")
+                exec(http("Get created positionMetric")
+                .get("/doris${new_positionMetric_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created operation")
-            .delete("/doris${new_operation_url}")
+            .exec(http("Delete created positionMetric")
+            .delete("/doris${new_positionMetric_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

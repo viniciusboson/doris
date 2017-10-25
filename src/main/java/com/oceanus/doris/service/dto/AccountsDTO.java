@@ -22,6 +22,9 @@ public class AccountsDTO implements Serializable {
     private ZonedDateTime updatedAt;
 
     @NotNull
+    private String modifiedBy;
+
+    @NotNull
     private String description;
 
     private Long portfolioId;
@@ -54,6 +57,14 @@ public class AccountsDTO implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public String getDescription() {
@@ -123,6 +134,7 @@ public class AccountsDTO implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", modifiedBy='" + getModifiedBy() + "'" +
             ", description='" + getDescription() + "'" +
             "}";
     }

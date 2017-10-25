@@ -7,12 +7,11 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-import com.oceanus.doris.domain.enumeration.TransactionType;
 
 /**
- * A DTO for the Transaction entity.
+ * A DTO for the PositionMetric entity.
  */
-public class TransactionDTO implements Serializable {
+public class PositionMetricDTO implements Serializable {
 
     private Long id;
 
@@ -25,26 +24,23 @@ public class TransactionDTO implements Serializable {
     @NotNull
     private String modifiedBy;
 
-    @NotNull
-    private ZonedDateTime executedAt;
+    private Double entryAvgPrice;
 
-    @NotNull
-    private String description;
+    private Double entryAmount;
 
-    @NotNull
-    private Double amount;
+    private Double exitAvgPrice;
 
-    @NotNull
-    private TransactionType type;
+    private Double exitAmount;
 
-    @NotNull
-    private Double balance;
-
-    private Long operationId;
+    private Double txCosts;
 
     private Long positionId;
 
     private String positionDescription;
+
+    private Long assetComparisonId;
+
+    private String assetComparisonCode;
 
     public Long getId() {
         return id;
@@ -78,52 +74,44 @@ public class TransactionDTO implements Serializable {
         this.modifiedBy = modifiedBy;
     }
 
-    public ZonedDateTime getExecutedAt() {
-        return executedAt;
+    public Double getEntryAvgPrice() {
+        return entryAvgPrice;
     }
 
-    public void setExecutedAt(ZonedDateTime executedAt) {
-        this.executedAt = executedAt;
+    public void setEntryAvgPrice(Double entryAvgPrice) {
+        this.entryAvgPrice = entryAvgPrice;
     }
 
-    public String getDescription() {
-        return description;
+    public Double getEntryAmount() {
+        return entryAmount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEntryAmount(Double entryAmount) {
+        this.entryAmount = entryAmount;
     }
 
-    public Double getAmount() {
-        return amount;
+    public Double getExitAvgPrice() {
+        return exitAvgPrice;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setExitAvgPrice(Double exitAvgPrice) {
+        this.exitAvgPrice = exitAvgPrice;
     }
 
-    public TransactionType getType() {
-        return type;
+    public Double getExitAmount() {
+        return exitAmount;
     }
 
-    public void setType(TransactionType type) {
-        this.type = type;
+    public void setExitAmount(Double exitAmount) {
+        this.exitAmount = exitAmount;
     }
 
-    public Double getBalance() {
-        return balance;
+    public Double getTxCosts() {
+        return txCosts;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
-
-    public Long getOperationId() {
-        return operationId;
-    }
-
-    public void setOperationId(Long operationId) {
-        this.operationId = operationId;
+    public void setTxCosts(Double txCosts) {
+        this.txCosts = txCosts;
     }
 
     public Long getPositionId() {
@@ -142,6 +130,22 @@ public class TransactionDTO implements Serializable {
         this.positionDescription = positionDescription;
     }
 
+    public Long getAssetComparisonId() {
+        return assetComparisonId;
+    }
+
+    public void setAssetComparisonId(Long assetId) {
+        this.assetComparisonId = assetId;
+    }
+
+    public String getAssetComparisonCode() {
+        return assetComparisonCode;
+    }
+
+    public void setAssetComparisonCode(String assetCode) {
+        this.assetComparisonCode = assetCode;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -151,11 +155,11 @@ public class TransactionDTO implements Serializable {
             return false;
         }
 
-        TransactionDTO transactionDTO = (TransactionDTO) o;
-        if(transactionDTO.getId() == null || getId() == null) {
+        PositionMetricDTO positionMetricDTO = (PositionMetricDTO) o;
+        if(positionMetricDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), transactionDTO.getId());
+        return Objects.equals(getId(), positionMetricDTO.getId());
     }
 
     @Override
@@ -165,16 +169,16 @@ public class TransactionDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "TransactionDTO{" +
+        return "PositionMetricDTO{" +
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", modifiedBy='" + getModifiedBy() + "'" +
-            ", executedAt='" + getExecutedAt() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", amount='" + getAmount() + "'" +
-            ", type='" + getType() + "'" +
-            ", balance='" + getBalance() + "'" +
+            ", entryAvgPrice='" + getEntryAvgPrice() + "'" +
+            ", entryAmount='" + getEntryAmount() + "'" +
+            ", exitAvgPrice='" + getExitAvgPrice() + "'" +
+            ", exitAmount='" + getExitAmount() + "'" +
+            ", txCosts='" + getTxCosts() + "'" +
             "}";
     }
 }

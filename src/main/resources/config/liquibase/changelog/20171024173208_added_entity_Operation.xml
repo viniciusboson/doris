@@ -29,6 +29,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="executed_at" type="timestamp">
                 <constraints nullable="false" />
             </column>

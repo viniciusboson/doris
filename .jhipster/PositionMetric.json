@@ -3,25 +3,15 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "portfolio",
-            "otherEntityName": "portfolio",
+            "relationshipName": "position",
+            "otherEntityName": "position",
             "otherEntityField": "description"
         },
         {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "assets",
+            "relationshipType": "many-to-one",
+            "relationshipName": "assetComparison",
             "otherEntityName": "asset",
-            "otherEntityField": "code",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "institutions",
-            "otherEntityName": "institution",
-            "otherEntityField": "description",
-            "ownerSide": true
+            "otherEntityField": "code"
         }
     ],
     "fields": [
@@ -47,15 +37,28 @@
             ]
         },
         {
-            "fieldName": "description",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "entryAvgPrice",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "entryAmount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "exitAvgPrice",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "exitAmount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "txCosts",
+            "fieldType": "Double"
         }
     ],
-    "changelogDate": "20171024173206",
-    "entityTableName": "accounts",
+    "changelogDate": "20171025022943",
+    "entityTableName": "position_metric",
     "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",

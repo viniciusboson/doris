@@ -22,6 +22,9 @@ public class OperationDTO implements Serializable {
     private ZonedDateTime updatedAt;
 
     @NotNull
+    private String modifiedBy;
+
+    @NotNull
     private ZonedDateTime executedAt;
 
     @NotNull
@@ -68,6 +71,14 @@ public class OperationDTO implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public ZonedDateTime getExecutedAt() {
@@ -185,6 +196,7 @@ public class OperationDTO implements Serializable {
             "id=" + getId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", modifiedBy='" + getModifiedBy() + "'" +
             ", executedAt='" + getExecutedAt() + "'" +
             ", amountFrom='" + getAmountFrom() + "'" +
             ", amountTo='" + getAmountTo() + "'" +

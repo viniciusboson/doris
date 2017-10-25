@@ -68,7 +68,7 @@ class TransactionGatlingTest extends Simulation {
             .exec(http("Create new transaction")
             .post("/doris/api/transactions")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "executedAt":"2020-01-01T00:00:00.000Z", "description":"SAMPLE_TEXT", "amount":null, "type":null, "balance":null}""")).asJSON
+            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "modifiedBy":"SAMPLE_TEXT", "executedAt":"2020-01-01T00:00:00.000Z", "description":"SAMPLE_TEXT", "amount":null, "type":null, "balance":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_transaction_url"))).exitHereIfFailed
             .pause(10)
