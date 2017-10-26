@@ -14,5 +14,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="institution"/>
 
+        <addForeignKeyConstraint baseColumnNames="charges_id"
+                                 baseTableName="charge_asset"
+                                 constraintName="fk_charge_asset_charges_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="charge"/>
+        <addForeignKeyConstraint baseColumnNames="assets_id"
+                                 baseTableName="charge_asset"
+                                 constraintName="fk_charge_asset_assets_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="asset"/>
+        
     </changeSet>
 </databaseChangeLog>

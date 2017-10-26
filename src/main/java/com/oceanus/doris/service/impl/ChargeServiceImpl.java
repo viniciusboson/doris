@@ -55,7 +55,7 @@ public class ChargeServiceImpl implements ChargeService{
     @Transactional(readOnly = true)
     public List<ChargeDTO> findAll() {
         log.debug("Request to get all Charges");
-        return chargeRepository.findAll().stream()
+        return chargeRepository.findAllWithEagerRelationships().stream()
             .map(chargeMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -70,7 +70,7 @@ public class ChargeServiceImpl implements ChargeService{
     @Transactional(readOnly = true)
     public ChargeDTO findOne(Long id) {
         log.debug("Request to get Charge : {}", id);
-        Charge charge = chargeRepository.findOne(id);
+        Charge charge = chargeRepository.findOneWithEagerRelationships(id);
         return chargeMapper.toDto(charge);
     }
 

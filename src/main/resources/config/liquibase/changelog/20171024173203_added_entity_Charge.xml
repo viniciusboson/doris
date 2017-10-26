@@ -58,6 +58,17 @@
         <dropDefaultValue tableName="charge" columnName="created_at" columnDataType="datetime"/>
         <dropDefaultValue tableName="charge" columnName="updated_at" columnDataType="datetime"/>
         
+        <createTable tableName="charge_asset">
+            <column name="assets_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="charges_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="charges_id, assets_id" tableName="charge_asset"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

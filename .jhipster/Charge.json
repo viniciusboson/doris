@@ -6,6 +6,14 @@
             "relationshipName": "institution",
             "otherEntityName": "institution",
             "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "asset",
+            "otherEntityName": "asset",
+            "otherEntityField": "code",
+            "ownerSide": true
         }
     ],
     "fields": [

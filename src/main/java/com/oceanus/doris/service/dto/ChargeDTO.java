@@ -42,6 +42,8 @@ public class ChargeDTO implements Serializable {
 
     private String institutionDescription;
 
+    private Set<AssetDTO> assets = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -120,6 +122,14 @@ public class ChargeDTO implements Serializable {
 
     public void setInstitutionDescription(String institutionDescription) {
         this.institutionDescription = institutionDescription;
+    }
+
+    public Set<AssetDTO> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(Set<AssetDTO> assets) {
+        this.assets = assets;
     }
 
     @Override

@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import com.oceanus.doris.domain.enumeration.ChargeType;
@@ -60,6 +62,13 @@ public class Charge implements Serializable {
 
     @ManyToOne
     private Institution institution;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "charge_asset",
+               joinColumns = @JoinColumn(name="charges_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"))
+    private Set<Asset> assets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -172,6 +181,29 @@ public class Charge implements Serializable {
 
     public void setInstitution(Institution institution) {
         this.institution = institution;
+    }
+
+    public Set<Asset> getAssets() {
+        return assets;
+    }
+
+    public Charge assets(Set<Asset> assets) {
+        this.assets = assets;
+        return this;
+    }
+
+    public Charge addAsset(Asset asset) {
+        this.assets.add(asset);
+        return this;
+    }
+
+    public Charge removeAsset(Asset asset) {
+        this.assets.remove(asset);
+        return this;
+    }
+
+    public void setAssets(Set<Asset> assets) {
+        this.assets = assets;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
