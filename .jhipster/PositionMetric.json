@@ -1,0 +1,67 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "position",
+            "otherEntityName": "position",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "assetComparison",
+            "otherEntityName": "asset",
+            "otherEntityField": "code"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdAt",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "updatedAt",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "modifiedBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "entryAvgPrice",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "entryAmount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "exitAvgPrice",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "exitAmount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "txCosts",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20171025022943",
+    "entityTableName": "position_metric",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris"
+}

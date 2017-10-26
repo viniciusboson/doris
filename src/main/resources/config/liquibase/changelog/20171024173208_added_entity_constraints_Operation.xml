@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Operation.
+    -->
+    <changeSet id="20171024173208-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="position_from_id"
+                                 baseTableName="operation"
+                                 constraintName="fk_operation_position_from_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="position"/>
+
+        <addForeignKeyConstraint baseColumnNames="institution_from_id"
+                                 baseTableName="operation"
+                                 constraintName="fk_operation_institution_from_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="institution"/>
+
+        <addForeignKeyConstraint baseColumnNames="position_to_id"
+                                 baseTableName="operation"
+                                 constraintName="fk_operation_position_to_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="position"/>
+
+        <addForeignKeyConstraint baseColumnNames="institution_to_id"
+                                 baseTableName="operation"
+                                 constraintName="fk_operation_institution_to_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="institution"/>
+
+    </changeSet>
+</databaseChangeLog>
