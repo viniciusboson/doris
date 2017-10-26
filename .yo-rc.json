@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "com.oceanus.doris"
     },
-    "jhipsterVersion": "4.10.0",
+    "jhipsterVersion": "4.10.1",
     "baseName": "doris",
     "packageName": "com.oceanus.doris",
     "packageFolder": "com/oceanus/doris",
