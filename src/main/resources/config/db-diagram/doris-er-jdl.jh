@@ -6,6 +6,21 @@ entity Institution {
   description String required // Poloniex, XP, Exodus, Santander
 }
 
+entity Asset {
+  id Long
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  modifiedBy String required
+  description String required // US Dollar, Real, Bitcoin
+  code String required //USD, BRL, BTC
+  symbol String // $, £
+  type AssetType required
+}
+
+enum AssetType {
+  COMMODITY, CURRENCY, FUTURE, INDICE, OPTION, STOCK
+}
+
 entity Charge {
   id Long
   createdAt ZonedDateTime required
@@ -27,21 +42,6 @@ relationship ManyToOne {
 
 relationship ManyToMany {
   Charge{asset(code)} to Asset
-}
-
-entity Asset {
-  id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
-  description String required // US Dollar, Real, Bitcoin
-  code String required //USD, BRL, BTC
-  symbol String // $, £
-  type AssetType required
-}
-
-enum AssetType {
-  COMMODITY, CURRENCY, FUTURE, INDICE, OPTION, STOCK
 }
 
 entity Portfolio {
