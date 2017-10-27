@@ -3,6 +3,8 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.PositionMetric;
+import com.oceanus.doris.domain.Position;
+import com.oceanus.doris.domain.Asset;
 import com.oceanus.doris.repository.PositionMetricRepository;
 import com.oceanus.doris.service.PositionMetricService;
 import com.oceanus.doris.service.dto.PositionMetricDTO;
@@ -122,6 +124,16 @@ public class PositionMetricResourceIntTest {
             .exitAvgPrice(DEFAULT_EXIT_AVG_PRICE)
             .exitAmount(DEFAULT_EXIT_AMOUNT)
             .txCosts(DEFAULT_TX_COSTS);
+        // Add required entity
+        Position position = PositionResourceIntTest.createEntity(em);
+        em.persist(position);
+        em.flush();
+        positionMetric.setPosition(position);
+        // Add required entity
+        Asset assetComparison = AssetResourceIntTest.createEntity(em);
+        em.persist(assetComparison);
+        em.flush();
+        positionMetric.setAssetComparison(assetComparison);
         return positionMetric;
     }
 

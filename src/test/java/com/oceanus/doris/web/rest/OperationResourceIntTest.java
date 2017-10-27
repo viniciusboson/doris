@@ -3,6 +3,10 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Operation;
+import com.oceanus.doris.domain.Position;
+import com.oceanus.doris.domain.Institution;
+import com.oceanus.doris.domain.Position;
+import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.OperationRepository;
 import com.oceanus.doris.service.OperationService;
 import com.oceanus.doris.service.dto.OperationDTO;
@@ -114,6 +118,26 @@ public class OperationResourceIntTest {
             .executedAt(DEFAULT_EXECUTED_AT)
             .amountFrom(DEFAULT_AMOUNT_FROM)
             .amountTo(DEFAULT_AMOUNT_TO);
+        // Add required entity
+        Position positionFrom = PositionResourceIntTest.createEntity(em);
+        em.persist(positionFrom);
+        em.flush();
+        operation.setPositionFrom(positionFrom);
+        // Add required entity
+        Institution institutionFrom = InstitutionResourceIntTest.createEntity(em);
+        em.persist(institutionFrom);
+        em.flush();
+        operation.setInstitutionFrom(institutionFrom);
+        // Add required entity
+        Position positionTo = PositionResourceIntTest.createEntity(em);
+        em.persist(positionTo);
+        em.flush();
+        operation.setPositionTo(positionTo);
+        // Add required entity
+        Institution institutionTo = InstitutionResourceIntTest.createEntity(em);
+        em.persist(institutionTo);
+        em.flush();
+        operation.setInstitutionTo(institutionTo);
         return operation;
     }
 

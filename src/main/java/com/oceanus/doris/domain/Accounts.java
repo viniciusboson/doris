@@ -42,11 +42,13 @@ public class Accounts implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Portfolio portfolio;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @NotNull
     @JoinTable(name = "accounts_assets",
                joinColumns = @JoinColumn(name="accounts_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"))
@@ -54,6 +56,7 @@ public class Accounts implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @NotNull
     @JoinTable(name = "accounts_institutions",
                joinColumns = @JoinColumn(name="accounts_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="institutions_id", referencedColumnName="id"))

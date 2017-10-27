@@ -3,6 +3,8 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Transaction;
+import com.oceanus.doris.domain.Operation;
+import com.oceanus.doris.domain.Position;
 import com.oceanus.doris.repository.TransactionRepository;
 import com.oceanus.doris.service.TransactionService;
 import com.oceanus.doris.service.dto.TransactionDTO;
@@ -123,6 +125,16 @@ public class TransactionResourceIntTest {
             .amount(DEFAULT_AMOUNT)
             .type(DEFAULT_TYPE)
             .balance(DEFAULT_BALANCE);
+        // Add required entity
+        Operation operation = OperationResourceIntTest.createEntity(em);
+        em.persist(operation);
+        em.flush();
+        transaction.setOperation(operation);
+        // Add required entity
+        Position position = PositionResourceIntTest.createEntity(em);
+        em.persist(position);
+        em.flush();
+        transaction.setPosition(position);
         return transaction;
     }
 

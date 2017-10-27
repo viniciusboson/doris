@@ -51,10 +51,12 @@ public class PositionMetric implements Serializable {
     @Column(name = "tx_costs")
     private Double txCosts;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Position position;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Asset assetComparison;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

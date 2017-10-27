@@ -3,6 +3,8 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Position;
+import com.oceanus.doris.domain.Asset;
+import com.oceanus.doris.domain.Accounts;
 import com.oceanus.doris.repository.PositionRepository;
 import com.oceanus.doris.service.PositionService;
 import com.oceanus.doris.service.dto.PositionDTO;
@@ -120,6 +122,16 @@ public class PositionResourceIntTest {
             .balance(DEFAULT_BALANCE)
             .type(DEFAULT_TYPE)
             .status(DEFAULT_STATUS);
+        // Add required entity
+        Asset asset = AssetResourceIntTest.createEntity(em);
+        em.persist(asset);
+        em.flush();
+        position.setAsset(asset);
+        // Add required entity
+        Accounts account = AccountsResourceIntTest.createEntity(em);
+        em.persist(account);
+        em.flush();
+        position.setAccount(account);
         return position;
     }
 

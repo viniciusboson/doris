@@ -48,16 +48,20 @@ public class Operation implements Serializable {
     @Column(name = "amount_to", nullable = false)
     private Double amountTo;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Position positionFrom;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Institution institutionFrom;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Position positionTo;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Institution institutionTo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

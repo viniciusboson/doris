@@ -59,10 +59,12 @@ public class Transaction implements Serializable {
     @Column(name = "balance", nullable = false)
     private Double balance;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Operation operation;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Position position;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

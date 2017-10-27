@@ -60,7 +60,8 @@ public class Charge implements Serializable {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Institution institution;
 
     @ManyToMany

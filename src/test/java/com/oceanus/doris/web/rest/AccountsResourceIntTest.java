@@ -3,6 +3,9 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Accounts;
+import com.oceanus.doris.domain.Portfolio;
+import com.oceanus.doris.domain.Asset;
+import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.AccountsRepository;
 import com.oceanus.doris.service.AccountsService;
 import com.oceanus.doris.service.dto.AccountsDTO;
@@ -106,6 +109,21 @@ public class AccountsResourceIntTest {
             .updatedAt(DEFAULT_UPDATED_AT)
             .modifiedBy(DEFAULT_MODIFIED_BY)
             .description(DEFAULT_DESCRIPTION);
+        // Add required entity
+        Portfolio portfolio = PortfolioResourceIntTest.createEntity(em);
+        em.persist(portfolio);
+        em.flush();
+        accounts.setPortfolio(portfolio);
+        // Add required entity
+        Asset assets = AssetResourceIntTest.createEntity(em);
+        em.persist(assets);
+        em.flush();
+        accounts.getAssets().add(assets);
+        // Add required entity
+        Institution institutions = InstitutionResourceIntTest.createEntity(em);
+        em.persist(institutions);
+        em.flush();
+        accounts.getInstitutions().add(institutions);
         return accounts;
     }
 

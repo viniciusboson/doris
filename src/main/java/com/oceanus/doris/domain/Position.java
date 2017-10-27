@@ -61,10 +61,12 @@ public class Position implements Serializable {
     @Column(name = "status", nullable = false)
     private PositionStatus status;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Asset asset;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Accounts account;
 
     @OneToMany(mappedBy = "position")

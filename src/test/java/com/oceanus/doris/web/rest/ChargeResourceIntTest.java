@@ -3,6 +3,7 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Charge;
+import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.ChargeRepository;
 import com.oceanus.doris.service.ChargeService;
 import com.oceanus.doris.service.dto.ChargeDTO;
@@ -120,6 +121,11 @@ public class ChargeResourceIntTest {
             .chargeType(DEFAULT_CHARGE_TYPE)
             .operationType(DEFAULT_OPERATION_TYPE)
             .amount(DEFAULT_AMOUNT);
+        // Add required entity
+        Institution institution = InstitutionResourceIntTest.createEntity(em);
+        em.persist(institution);
+        em.flush();
+        charge.setInstitution(institution);
         return charge;
     }
 

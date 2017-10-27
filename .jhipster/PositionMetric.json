@@ -3,12 +3,14 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "position",
             "otherEntityName": "position",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "assetComparison",
             "otherEntityName": "asset",
             "otherEntityField": "code"

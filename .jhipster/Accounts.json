@@ -3,12 +3,14 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "portfolio",
             "otherEntityName": "portfolio",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-many",
+            "relationshipValidateRules": "required",
             "otherEntityRelationshipName": "",
             "relationshipName": "assets",
             "otherEntityName": "asset",
@@ -17,6 +19,7 @@
         },
         {
             "relationshipType": "many-to-many",
+            "relationshipValidateRules": "required",
             "otherEntityRelationshipName": "",
             "relationshipName": "institutions",
             "otherEntityName": "institution",

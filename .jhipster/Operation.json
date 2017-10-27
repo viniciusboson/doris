@@ -3,24 +3,28 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "positionFrom",
             "otherEntityName": "position",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "institutionFrom",
             "otherEntityName": "institution",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "positionTo",
             "otherEntityName": "position",
             "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "institutionTo",
             "otherEntityName": "institution",
             "otherEntityField": "description"
