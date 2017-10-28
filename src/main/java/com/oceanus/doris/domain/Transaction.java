@@ -17,7 +17,7 @@ import com.oceanus.doris.domain.enumeration.TransactionType;
 @Entity
 @Table(name = "transaction")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Transaction implements Serializable {
+public class Transaction extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

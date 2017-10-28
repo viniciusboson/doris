@@ -21,7 +21,7 @@ import com.oceanus.doris.domain.enumeration.OperationType;
 @Entity
 @Table(name = "charge")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Charge implements Serializable {
+public class Charge extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -14,6 +14,7 @@
     <include file="config/liquibase/changelog/20171024173208_added_entity_Operation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171024173209_added_entity_Transaction.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171025022943_added_entity_PositionMetric.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20171028201930_added_entity_EntityAuditEvent.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20171024173203_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171024173206_added_entity_constraints_Accounts.xml" relativeToChangelogFile="false"/>

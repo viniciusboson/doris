@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * A DTO for the Portfolio entity.
  */
-public class PortfolioDTO implements Serializable {
+public class PortfolioDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "position_metric")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class PositionMetric implements Serializable {
+public class PositionMetric extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

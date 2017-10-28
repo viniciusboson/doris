@@ -13,7 +13,7 @@ import com.oceanus.doris.domain.enumeration.PositionStatus;
 /**
  * A DTO for the Position entity.
  */
-public class PositionDTO implements Serializable {
+public class PositionDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

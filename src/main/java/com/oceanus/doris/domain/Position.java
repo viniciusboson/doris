@@ -22,7 +22,7 @@ import com.oceanus.doris.domain.enumeration.PositionStatus;
 @Entity
 @Table(name = "position")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Position implements Serializable {
+public class Position extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

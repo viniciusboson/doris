@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * A DTO for the Operation entity.
  */
-public class OperationDTO implements Serializable {
+public class OperationDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

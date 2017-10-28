@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * A DTO for the PositionMetric entity.
  */
-public class PositionMetricDTO implements Serializable {
+public class PositionMetricDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

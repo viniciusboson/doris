@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * A DTO for the Accounts entity.
  */
-public class AccountsDTO implements Serializable {
+public class AccountsDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

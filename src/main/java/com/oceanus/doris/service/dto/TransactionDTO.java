@@ -12,7 +12,7 @@ import com.oceanus.doris.domain.enumeration.TransactionType;
 /**
  * A DTO for the Transaction entity.
  */
-public class TransactionDTO implements Serializable {
+public class TransactionDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

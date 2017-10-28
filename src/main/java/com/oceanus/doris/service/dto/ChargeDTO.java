@@ -13,7 +13,7 @@ import com.oceanus.doris.domain.enumeration.OperationType;
 /**
  * A DTO for the Charge entity.
  */
-public class ChargeDTO implements Serializable {
+public class ChargeDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

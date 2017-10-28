@@ -10,7 +10,7 @@ import com.oceanus.doris.domain.enumeration.AssetType;
 /**
  * A DTO for the Asset entity.
  */
-public class AssetDTO implements Serializable {
+public class AssetDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 

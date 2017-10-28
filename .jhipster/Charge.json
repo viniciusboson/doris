@@ -76,5 +76,6 @@
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
-    "microserviceName": "doris"
+    "microserviceName": "doris",
+    "enableEntityAudit": true
 }

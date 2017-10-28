@@ -17,7 +17,7 @@ import com.oceanus.doris.domain.enumeration.AssetType;
 @Entity
 @Table(name = "asset")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Asset implements Serializable {
+public class Asset extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * A DTO for the Institution entity.
  */
-public class InstitutionDTO implements Serializable {
+public class InstitutionDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 
