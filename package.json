@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "generator-jhipster": "4.10.1"
+  },
+  "dependencies": {
+    "ng-diff-match-patch": "2.0.6"
   }
 }

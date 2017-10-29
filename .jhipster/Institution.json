@@ -3,27 +3,6 @@
     "relationships": [],
     "fields": [
         {
-            "fieldName": "createdAt",
-            "fieldType": "ZonedDateTime",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "updatedAt",
-            "fieldType": "ZonedDateTime",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "modifiedBy",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "description",
             "fieldType": "String",
             "fieldValidateRules": [

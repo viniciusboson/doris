@@ -68,7 +68,7 @@ class PositionMetricGatlingTest extends Simulation {
             .exec(http("Create new positionMetric")
             .post("/doris/api/position-metrics")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "modifiedBy":"SAMPLE_TEXT", "entryAvgPrice":null, "entryAmount":null, "exitAvgPrice":null, "exitAmount":null, "txCosts":null}""")).asJSON
+            .body(StringBody("""{"id":null, "entryAvgPrice":null, "entryAmount":null, "exitAvgPrice":null, "exitAmount":null, "txCosts":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_positionMetric_url"))).exitHereIfFailed
             .pause(10)

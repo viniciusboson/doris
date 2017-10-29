@@ -16,15 +16,6 @@ public class OperationDTO extends AbstractAuditingDTO implements Serializable {
     private Long id;
 
     @NotNull
-    private ZonedDateTime createdAt;
-
-    @NotNull
-    private ZonedDateTime updatedAt;
-
-    @NotNull
-    private String modifiedBy;
-
-    @NotNull
     private ZonedDateTime executedAt;
 
     @NotNull
@@ -55,30 +46,6 @@ public class OperationDTO extends AbstractAuditingDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
     }
 
     public ZonedDateTime getExecutedAt() {
@@ -194,9 +161,6 @@ public class OperationDTO extends AbstractAuditingDTO implements Serializable {
     public String toString() {
         return "OperationDTO{" +
             "id=" + getId() +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-            ", modifiedBy='" + getModifiedBy() + "'" +
             ", executedAt='" + getExecutedAt() + "'" +
             ", amountFrom='" + getAmountFrom() + "'" +
             ", amountTo='" + getAmountTo() + "'" +

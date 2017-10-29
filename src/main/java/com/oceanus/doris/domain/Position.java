@@ -7,7 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -30,18 +29,6 @@ public class Position extends AbstractAuditingEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
-
-    @NotNull
-    @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
-
-    @NotNull
-    @Column(name = "updated_at", nullable = false)
-    private ZonedDateTime updatedAt;
-
-    @NotNull
-    @Column(name = "modified_by", nullable = false)
-    private String modifiedBy;
 
     @NotNull
     @Column(name = "description", nullable = false)
@@ -81,45 +68,6 @@ public class Position extends AbstractAuditingEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public Position createdAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Position updatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public Position modifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-        return this;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
     }
 
     public String getDescription() {
@@ -250,9 +198,6 @@ public class Position extends AbstractAuditingEntity implements Serializable {
     public String toString() {
         return "Position{" +
             "id=" + getId() +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-            ", modifiedBy='" + getModifiedBy() + "'" +
             ", description='" + getDescription() + "'" +
             ", balance='" + getBalance() + "'" +
             ", type='" + getType() + "'" +

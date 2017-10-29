@@ -27,18 +27,6 @@ public class Transaction extends AbstractAuditingEntity implements Serializable 
     private Long id;
 
     @NotNull
-    @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
-
-    @NotNull
-    @Column(name = "updated_at", nullable = false)
-    private ZonedDateTime updatedAt;
-
-    @NotNull
-    @Column(name = "modified_by", nullable = false)
-    private String modifiedBy;
-
-    @NotNull
     @Column(name = "executed_at", nullable = false)
     private ZonedDateTime executedAt;
 
@@ -74,45 +62,6 @@ public class Transaction extends AbstractAuditingEntity implements Serializable 
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public Transaction createdAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Transaction updatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public Transaction modifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-        return this;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
     }
 
     public ZonedDateTime getExecutedAt() {
@@ -231,9 +180,6 @@ public class Transaction extends AbstractAuditingEntity implements Serializable 
     public String toString() {
         return "Transaction{" +
             "id=" + getId() +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-            ", modifiedBy='" + getModifiedBy() + "'" +
             ", executedAt='" + getExecutedAt() + "'" +
             ", description='" + getDescription() + "'" +
             ", amount='" + getAmount() + "'" +

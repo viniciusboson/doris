@@ -68,7 +68,7 @@ class AccountsGatlingTest extends Simulation {
             .exec(http("Create new accounts")
             .post("/doris/api/accounts")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "modifiedBy":"SAMPLE_TEXT", "description":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "description":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_accounts_url"))).exitHereIfFailed
             .pause(10)

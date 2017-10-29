@@ -26,13 +26,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
 import java.util.List;
 
-import static com.oceanus.doris.web.rest.TestUtil.sameInstant;
 import static com.oceanus.doris.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -47,15 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DorisApp.class)
 public class PositionMetricResourceIntTest {
-
-    private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final String DEFAULT_MODIFIED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_MODIFIED_BY = "BBBBBBBBBB";
 
     private static final Double DEFAULT_ENTRY_AVG_PRICE = 1D;
     private static final Double UPDATED_ENTRY_AVG_PRICE = 2D;
@@ -116,9 +102,6 @@ public class PositionMetricResourceIntTest {
      */
     public static PositionMetric createEntity(EntityManager em) {
         PositionMetric positionMetric = new PositionMetric()
-            .createdAt(DEFAULT_CREATED_AT)
-            .updatedAt(DEFAULT_UPDATED_AT)
-            .modifiedBy(DEFAULT_MODIFIED_BY)
             .entryAvgPrice(DEFAULT_ENTRY_AVG_PRICE)
             .entryAmount(DEFAULT_ENTRY_AMOUNT)
             .exitAvgPrice(DEFAULT_EXIT_AVG_PRICE)
@@ -158,9 +141,6 @@ public class PositionMetricResourceIntTest {
         List<PositionMetric> positionMetricList = positionMetricRepository.findAll();
         assertThat(positionMetricList).hasSize(databaseSizeBeforeCreate + 1);
         PositionMetric testPositionMetric = positionMetricList.get(positionMetricList.size() - 1);
-        assertThat(testPositionMetric.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testPositionMetric.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
-        assertThat(testPositionMetric.getModifiedBy()).isEqualTo(DEFAULT_MODIFIED_BY);
         assertThat(testPositionMetric.getEntryAvgPrice()).isEqualTo(DEFAULT_ENTRY_AVG_PRICE);
         assertThat(testPositionMetric.getEntryAmount()).isEqualTo(DEFAULT_ENTRY_AMOUNT);
         assertThat(testPositionMetric.getExitAvgPrice()).isEqualTo(DEFAULT_EXIT_AVG_PRICE);
@@ -190,63 +170,6 @@ public class PositionMetricResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCreatedAtIsRequired() throws Exception {
-        int databaseSizeBeforeTest = positionMetricRepository.findAll().size();
-        // set the field null
-        positionMetric.setCreatedAt(null);
-
-        // Create the PositionMetric, which fails.
-        PositionMetricDTO positionMetricDTO = positionMetricMapper.toDto(positionMetric);
-
-        restPositionMetricMockMvc.perform(post("/api/position-metrics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(positionMetricDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<PositionMetric> positionMetricList = positionMetricRepository.findAll();
-        assertThat(positionMetricList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkUpdatedAtIsRequired() throws Exception {
-        int databaseSizeBeforeTest = positionMetricRepository.findAll().size();
-        // set the field null
-        positionMetric.setUpdatedAt(null);
-
-        // Create the PositionMetric, which fails.
-        PositionMetricDTO positionMetricDTO = positionMetricMapper.toDto(positionMetric);
-
-        restPositionMetricMockMvc.perform(post("/api/position-metrics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(positionMetricDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<PositionMetric> positionMetricList = positionMetricRepository.findAll();
-        assertThat(positionMetricList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkModifiedByIsRequired() throws Exception {
-        int databaseSizeBeforeTest = positionMetricRepository.findAll().size();
-        // set the field null
-        positionMetric.setModifiedBy(null);
-
-        // Create the PositionMetric, which fails.
-        PositionMetricDTO positionMetricDTO = positionMetricMapper.toDto(positionMetric);
-
-        restPositionMetricMockMvc.perform(post("/api/position-metrics")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(positionMetricDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<PositionMetric> positionMetricList = positionMetricRepository.findAll();
-        assertThat(positionMetricList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllPositionMetrics() throws Exception {
         // Initialize the database
         positionMetricRepository.saveAndFlush(positionMetric);
@@ -256,9 +179,6 @@ public class PositionMetricResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(positionMetric.getId().intValue())))
-            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
-            .andExpect(jsonPath("$.[*].modifiedBy").value(hasItem(DEFAULT_MODIFIED_BY.toString())))
             .andExpect(jsonPath("$.[*].entryAvgPrice").value(hasItem(DEFAULT_ENTRY_AVG_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].entryAmount").value(hasItem(DEFAULT_ENTRY_AMOUNT.doubleValue())))
             .andExpect(jsonPath("$.[*].exitAvgPrice").value(hasItem(DEFAULT_EXIT_AVG_PRICE.doubleValue())))
@@ -277,9 +197,6 @@ public class PositionMetricResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(positionMetric.getId().intValue()))
-            .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
-            .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
-            .andExpect(jsonPath("$.modifiedBy").value(DEFAULT_MODIFIED_BY.toString()))
             .andExpect(jsonPath("$.entryAvgPrice").value(DEFAULT_ENTRY_AVG_PRICE.doubleValue()))
             .andExpect(jsonPath("$.entryAmount").value(DEFAULT_ENTRY_AMOUNT.doubleValue()))
             .andExpect(jsonPath("$.exitAvgPrice").value(DEFAULT_EXIT_AVG_PRICE.doubleValue()))
@@ -305,9 +222,6 @@ public class PositionMetricResourceIntTest {
         // Update the positionMetric
         PositionMetric updatedPositionMetric = positionMetricRepository.findOne(positionMetric.getId());
         updatedPositionMetric
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT)
-            .modifiedBy(UPDATED_MODIFIED_BY)
             .entryAvgPrice(UPDATED_ENTRY_AVG_PRICE)
             .entryAmount(UPDATED_ENTRY_AMOUNT)
             .exitAvgPrice(UPDATED_EXIT_AVG_PRICE)
@@ -324,9 +238,6 @@ public class PositionMetricResourceIntTest {
         List<PositionMetric> positionMetricList = positionMetricRepository.findAll();
         assertThat(positionMetricList).hasSize(databaseSizeBeforeUpdate);
         PositionMetric testPositionMetric = positionMetricList.get(positionMetricList.size() - 1);
-        assertThat(testPositionMetric.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testPositionMetric.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
-        assertThat(testPositionMetric.getModifiedBy()).isEqualTo(UPDATED_MODIFIED_BY);
         assertThat(testPositionMetric.getEntryAvgPrice()).isEqualTo(UPDATED_ENTRY_AVG_PRICE);
         assertThat(testPositionMetric.getEntryAmount()).isEqualTo(UPDATED_ENTRY_AMOUNT);
         assertThat(testPositionMetric.getExitAvgPrice()).isEqualTo(UPDATED_EXIT_AVG_PRICE);

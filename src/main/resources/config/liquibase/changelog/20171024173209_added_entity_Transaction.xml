@@ -21,18 +21,6 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="created_at" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="updated_at" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="modified_by" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
             <column name="executed_at" type="timestamp">
                 <constraints nullable="false" />
             </column>
@@ -63,14 +51,12 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="transaction" columnName="created_at" columnDataType="datetime"/>
-        <dropDefaultValue tableName="transaction" columnName="updated_at" columnDataType="datetime"/>
         <dropDefaultValue tableName="transaction" columnName="executed_at" columnDataType="datetime"/>
         
     </changeSet>
     
     <!-- Added the entity audit columns -->
-    <changeSet id="20171028201930-audit-1" author="jhipster-entity-audit">
+    <changeSet id="20171028224339-audit-1" author="jhipster-entity-audit">
         <addColumn tableName="transaction">
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>

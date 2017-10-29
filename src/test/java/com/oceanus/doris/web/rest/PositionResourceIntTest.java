@@ -26,13 +26,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
 import java.util.List;
 
-import static com.oceanus.doris.web.rest.TestUtil.sameInstant;
 import static com.oceanus.doris.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -49,15 +44,6 @@ import com.oceanus.doris.domain.enumeration.PositionStatus;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DorisApp.class)
 public class PositionResourceIntTest {
-
-    private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final String DEFAULT_MODIFIED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_MODIFIED_BY = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -115,9 +101,6 @@ public class PositionResourceIntTest {
      */
     public static Position createEntity(EntityManager em) {
         Position position = new Position()
-            .createdAt(DEFAULT_CREATED_AT)
-            .updatedAt(DEFAULT_UPDATED_AT)
-            .modifiedBy(DEFAULT_MODIFIED_BY)
             .description(DEFAULT_DESCRIPTION)
             .balance(DEFAULT_BALANCE)
             .type(DEFAULT_TYPE)
@@ -156,9 +139,6 @@ public class PositionResourceIntTest {
         List<Position> positionList = positionRepository.findAll();
         assertThat(positionList).hasSize(databaseSizeBeforeCreate + 1);
         Position testPosition = positionList.get(positionList.size() - 1);
-        assertThat(testPosition.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testPosition.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
-        assertThat(testPosition.getModifiedBy()).isEqualTo(DEFAULT_MODIFIED_BY);
         assertThat(testPosition.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testPosition.getBalance()).isEqualTo(DEFAULT_BALANCE);
         assertThat(testPosition.getType()).isEqualTo(DEFAULT_TYPE);
@@ -183,63 +163,6 @@ public class PositionResourceIntTest {
         // Validate the Position in the database
         List<Position> positionList = positionRepository.findAll();
         assertThat(positionList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    public void checkCreatedAtIsRequired() throws Exception {
-        int databaseSizeBeforeTest = positionRepository.findAll().size();
-        // set the field null
-        position.setCreatedAt(null);
-
-        // Create the Position, which fails.
-        PositionDTO positionDTO = positionMapper.toDto(position);
-
-        restPositionMockMvc.perform(post("/api/positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Position> positionList = positionRepository.findAll();
-        assertThat(positionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkUpdatedAtIsRequired() throws Exception {
-        int databaseSizeBeforeTest = positionRepository.findAll().size();
-        // set the field null
-        position.setUpdatedAt(null);
-
-        // Create the Position, which fails.
-        PositionDTO positionDTO = positionMapper.toDto(position);
-
-        restPositionMockMvc.perform(post("/api/positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Position> positionList = positionRepository.findAll();
-        assertThat(positionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkModifiedByIsRequired() throws Exception {
-        int databaseSizeBeforeTest = positionRepository.findAll().size();
-        // set the field null
-        position.setModifiedBy(null);
-
-        // Create the Position, which fails.
-        PositionDTO positionDTO = positionMapper.toDto(position);
-
-        restPositionMockMvc.perform(post("/api/positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(positionDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Position> positionList = positionRepository.findAll();
-        assertThat(positionList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -329,9 +252,6 @@ public class PositionResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(position.getId().intValue())))
-            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
-            .andExpect(jsonPath("$.[*].modifiedBy").value(hasItem(DEFAULT_MODIFIED_BY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
@@ -349,9 +269,6 @@ public class PositionResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(position.getId().intValue()))
-            .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
-            .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
-            .andExpect(jsonPath("$.modifiedBy").value(DEFAULT_MODIFIED_BY.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.doubleValue()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
@@ -376,9 +293,6 @@ public class PositionResourceIntTest {
         // Update the position
         Position updatedPosition = positionRepository.findOne(position.getId());
         updatedPosition
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT)
-            .modifiedBy(UPDATED_MODIFIED_BY)
             .description(UPDATED_DESCRIPTION)
             .balance(UPDATED_BALANCE)
             .type(UPDATED_TYPE)
@@ -394,9 +308,6 @@ public class PositionResourceIntTest {
         List<Position> positionList = positionRepository.findAll();
         assertThat(positionList).hasSize(databaseSizeBeforeUpdate);
         Position testPosition = positionList.get(positionList.size() - 1);
-        assertThat(testPosition.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testPosition.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
-        assertThat(testPosition.getModifiedBy()).isEqualTo(UPDATED_MODIFIED_BY);
         assertThat(testPosition.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testPosition.getBalance()).isEqualTo(UPDATED_BALANCE);
         assertThat(testPosition.getType()).isEqualTo(UPDATED_TYPE);

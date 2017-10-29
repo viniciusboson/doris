@@ -24,13 +24,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
 import java.util.List;
 
-import static com.oceanus.doris.web.rest.TestUtil.sameInstant;
 import static com.oceanus.doris.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -45,15 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DorisApp.class)
 public class PortfolioResourceIntTest {
-
-    private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final String DEFAULT_MODIFIED_BY = "AAAAAAAAAA";
-    private static final String UPDATED_MODIFIED_BY = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -102,9 +88,6 @@ public class PortfolioResourceIntTest {
      */
     public static Portfolio createEntity(EntityManager em) {
         Portfolio portfolio = new Portfolio()
-            .createdAt(DEFAULT_CREATED_AT)
-            .updatedAt(DEFAULT_UPDATED_AT)
-            .modifiedBy(DEFAULT_MODIFIED_BY)
             .description(DEFAULT_DESCRIPTION);
         return portfolio;
     }
@@ -130,9 +113,6 @@ public class PortfolioResourceIntTest {
         List<Portfolio> portfolioList = portfolioRepository.findAll();
         assertThat(portfolioList).hasSize(databaseSizeBeforeCreate + 1);
         Portfolio testPortfolio = portfolioList.get(portfolioList.size() - 1);
-        assertThat(testPortfolio.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testPortfolio.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
-        assertThat(testPortfolio.getModifiedBy()).isEqualTo(DEFAULT_MODIFIED_BY);
         assertThat(testPortfolio.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
@@ -154,63 +134,6 @@ public class PortfolioResourceIntTest {
         // Validate the Portfolio in the database
         List<Portfolio> portfolioList = portfolioRepository.findAll();
         assertThat(portfolioList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    public void checkCreatedAtIsRequired() throws Exception {
-        int databaseSizeBeforeTest = portfolioRepository.findAll().size();
-        // set the field null
-        portfolio.setCreatedAt(null);
-
-        // Create the Portfolio, which fails.
-        PortfolioDTO portfolioDTO = portfolioMapper.toDto(portfolio);
-
-        restPortfolioMockMvc.perform(post("/api/portfolios")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(portfolioDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Portfolio> portfolioList = portfolioRepository.findAll();
-        assertThat(portfolioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkUpdatedAtIsRequired() throws Exception {
-        int databaseSizeBeforeTest = portfolioRepository.findAll().size();
-        // set the field null
-        portfolio.setUpdatedAt(null);
-
-        // Create the Portfolio, which fails.
-        PortfolioDTO portfolioDTO = portfolioMapper.toDto(portfolio);
-
-        restPortfolioMockMvc.perform(post("/api/portfolios")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(portfolioDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Portfolio> portfolioList = portfolioRepository.findAll();
-        assertThat(portfolioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkModifiedByIsRequired() throws Exception {
-        int databaseSizeBeforeTest = portfolioRepository.findAll().size();
-        // set the field null
-        portfolio.setModifiedBy(null);
-
-        // Create the Portfolio, which fails.
-        PortfolioDTO portfolioDTO = portfolioMapper.toDto(portfolio);
-
-        restPortfolioMockMvc.perform(post("/api/portfolios")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(portfolioDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Portfolio> portfolioList = portfolioRepository.findAll();
-        assertThat(portfolioList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -243,9 +166,6 @@ public class PortfolioResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(portfolio.getId().intValue())))
-            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
-            .andExpect(jsonPath("$.[*].modifiedBy").value(hasItem(DEFAULT_MODIFIED_BY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
@@ -260,9 +180,6 @@ public class PortfolioResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(portfolio.getId().intValue()))
-            .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
-            .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
-            .andExpect(jsonPath("$.modifiedBy").value(DEFAULT_MODIFIED_BY.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
@@ -284,9 +201,6 @@ public class PortfolioResourceIntTest {
         // Update the portfolio
         Portfolio updatedPortfolio = portfolioRepository.findOne(portfolio.getId());
         updatedPortfolio
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT)
-            .modifiedBy(UPDATED_MODIFIED_BY)
             .description(UPDATED_DESCRIPTION);
         PortfolioDTO portfolioDTO = portfolioMapper.toDto(updatedPortfolio);
 
@@ -299,9 +213,6 @@ public class PortfolioResourceIntTest {
         List<Portfolio> portfolioList = portfolioRepository.findAll();
         assertThat(portfolioList).hasSize(databaseSizeBeforeUpdate);
         Portfolio testPortfolio = portfolioList.get(portfolioList.size() - 1);
-        assertThat(testPortfolio.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testPortfolio.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
-        assertThat(testPortfolio.getModifiedBy()).isEqualTo(UPDATED_MODIFIED_BY);
         assertThat(testPortfolio.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 

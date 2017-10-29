@@ -1,7 +1,6 @@
 package com.oceanus.doris.service.dto;
 
 
-import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -14,15 +13,6 @@ import java.util.Objects;
 public class PositionMetricDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
-
-    @NotNull
-    private ZonedDateTime createdAt;
-
-    @NotNull
-    private ZonedDateTime updatedAt;
-
-    @NotNull
-    private String modifiedBy;
 
     private Double entryAvgPrice;
 
@@ -48,30 +38,6 @@ public class PositionMetricDTO extends AbstractAuditingDTO implements Serializab
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
     }
 
     public Double getEntryAvgPrice() {
@@ -171,9 +137,6 @@ public class PositionMetricDTO extends AbstractAuditingDTO implements Serializab
     public String toString() {
         return "PositionMetricDTO{" +
             "id=" + getId() +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-            ", modifiedBy='" + getModifiedBy() + "'" +
             ", entryAvgPrice='" + getEntryAvgPrice() + "'" +
             ", entryAmount='" + getEntryAmount() + "'" +
             ", exitAvgPrice='" + getExitAvgPrice() + "'" +

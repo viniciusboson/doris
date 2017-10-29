@@ -1,7 +1,6 @@
 package com.oceanus.doris.service.dto;
 
 
-import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -16,15 +15,6 @@ import com.oceanus.doris.domain.enumeration.OperationType;
 public class ChargeDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
-
-    @NotNull
-    private ZonedDateTime createdAt;
-
-    @NotNull
-    private ZonedDateTime updatedAt;
-
-    @NotNull
-    private String modifiedBy;
 
     @NotNull
     private String description;
@@ -50,30 +40,6 @@ public class ChargeDTO extends AbstractAuditingDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
     }
 
     public String getDescription() {
@@ -157,9 +123,6 @@ public class ChargeDTO extends AbstractAuditingDTO implements Serializable {
     public String toString() {
         return "ChargeDTO{" +
             "id=" + getId() +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-            ", modifiedBy='" + getModifiedBy() + "'" +
             ", description='" + getDescription() + "'" +
             ", chargeType='" + getChargeType() + "'" +
             ", operationType='" + getOperationType() + "'" +

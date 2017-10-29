@@ -68,7 +68,7 @@ class AssetGatlingTest extends Simulation {
             .exec(http("Create new asset")
             .post("/doris/api/assets")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "createdAt":"2020-01-01T00:00:00.000Z", "updatedAt":"2020-01-01T00:00:00.000Z", "modifiedBy":"SAMPLE_TEXT", "description":"SAMPLE_TEXT", "code":"SAMPLE_TEXT", "symbol":"SAMPLE_TEXT", "type":null}""")).asJSON
+            .body(StringBody("""{"id":null, "description":"SAMPLE_TEXT", "code":"SAMPLE_TEXT", "symbol":"SAMPLE_TEXT", "type":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_asset_url"))).exitHereIfFailed
             .pause(10)
