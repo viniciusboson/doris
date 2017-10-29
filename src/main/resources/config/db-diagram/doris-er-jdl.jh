@@ -1,16 +1,10 @@
 entity Institution {
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   description String required // Poloniex, XP, Exodus, Santander
 }
 
 entity Asset {
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   description String required // US Dollar, Real, Bitcoin
   code String required //USD, BRL, BTC
   symbol String // $, £
@@ -23,9 +17,6 @@ enum AssetType {
 
 entity Charge {
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   description String required  //wire transfer, transaction fee
   chargeType ChargeType required
   operationType OperationType required
@@ -37,7 +28,7 @@ enum ChargeType {
 }
 
 relationship ManyToOne {
-  Charge{institution(description)} to Institution
+  Charge{institution(description) required} to Institution
 }
 
 relationship ManyToMany {
@@ -46,34 +37,25 @@ relationship ManyToMany {
 
 entity Portfolio {
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   description String required //Personal, Exchange A, Exchange B
 }
 
 entity Accounts {
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   description String required // Bounds, Stocks, CryptoCoins
 }
 
 relationship ManyToOne {
-  Accounts{portfolio(description)} to Portfolio{accounts}
+  Accounts{portfolio(description) required} to Portfolio{accounts}
 }
 
 relationship ManyToMany {
-  Accounts{assets(code)} to Asset,
-  Accounts{institutions(description)} to Institution
+  Accounts{assets(code) required} to Asset,
+  Accounts{institutions(description) required} to Institution
 }
 
 entity Position { //history: balance, etc
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   description String required
   balance Double required
   type PositionType required
@@ -89,15 +71,12 @@ enum PositionStatus {
 }
 
 relationship ManyToOne {
-  Position{asset(code)} to Asset,
-  Position{account(description)} to Accounts
+  Position{asset(code) required} to Asset,
+  Position{account(description) required} to Accounts
 }
 
 entity Operation {
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   executedAt ZonedDateTime required
   amountFrom Double required
   amountTo Double required
@@ -108,17 +87,14 @@ enum OperationType {
 }
 
 relationship ManyToOne {
-  Operation{positionFrom(description)} to Position,
-  Operation{institutionFrom(description)} to Institution,
-  Operation{positionTo(description)} to Position,
-  Operation{institutionTo(description)} to Institution
+  Operation{positionFrom(description) required} to Position,
+  Operation{institutionFrom(description) required} to Institution,
+  Operation{positionTo(description) required} to Position,
+  Operation{institutionTo(description) required} to Institution
 }
 
 entity Transaction {
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   executedAt ZonedDateTime required
   description String required
   amount Double required
@@ -131,15 +107,12 @@ enum TransactionType {
 }
 
 relationship ManyToOne {
-  Transaction{operation} to Operation,
-  Transaction{position(description)} to Position
+  Transaction{operation required} to Operation,
+  Transaction{position(description) required} to Position
 }
 
 entity PositionMetric {
   id Long
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
-  modifiedBy String required
   entryAvgPrice Double
   entryAmount Double
   exitAvgPrice Double
@@ -148,8 +121,8 @@ entity PositionMetric {
 }
 
 relationship ManyToOne {
-  PositionMetric{position(description)} to Position{metrics},
-  PositionMetric{assetComparison(code)} to Asset
+  PositionMetric{position(description) required} to Position{metrics},
+  PositionMetric{assetComparison(code) required} to Asset
 }
 
 dto * with mapstruct
