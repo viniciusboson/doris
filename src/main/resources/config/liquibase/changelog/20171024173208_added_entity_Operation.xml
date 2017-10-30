@@ -33,6 +33,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="operation_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="position_from_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -52,9 +56,9 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="operation" columnName="executed_at" columnDataType="datetime"/>
-        
+
     </changeSet>
-    
+
     <!-- Added the entity audit columns -->
     <changeSet id="20171028224339-audit-1" author="jhipster-entity-audit">
         <addColumn tableName="operation">

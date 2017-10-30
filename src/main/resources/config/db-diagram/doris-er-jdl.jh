@@ -80,6 +80,7 @@ entity Operation {
   executedAt ZonedDateTime required
   amountFrom Double required
   amountTo Double required
+  operationType OperationType required
 }
 
 enum OperationType {

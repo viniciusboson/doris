@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import com.oceanus.doris.domain.enumeration.OperationType;
 
 /**
  * A DTO for the Operation entity.
@@ -23,6 +24,9 @@ public class OperationDTO extends AbstractAuditingDTO implements Serializable {
 
     @NotNull
     private Double amountTo;
+
+    @NotNull
+    private OperationType operationType;
 
     private Long positionFromId;
 
@@ -70,6 +74,14 @@ public class OperationDTO extends AbstractAuditingDTO implements Serializable {
 
     public void setAmountTo(Double amountTo) {
         this.amountTo = amountTo;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(OperationType operationType) {
+        this.operationType = operationType;
     }
 
     public Long getPositionFromId() {
@@ -164,6 +176,7 @@ public class OperationDTO extends AbstractAuditingDTO implements Serializable {
             ", executedAt='" + getExecutedAt() + "'" +
             ", amountFrom='" + getAmountFrom() + "'" +
             ", amountTo='" + getAmountTo() + "'" +
+            ", operationType='" + getOperationType() + "'" +
             "}";
     }
 }

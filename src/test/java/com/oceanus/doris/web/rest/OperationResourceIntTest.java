@@ -41,6 +41,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.oceanus.doris.domain.enumeration.OperationType;
 /**
  * Test class for the OperationResource REST controller.
  *
@@ -58,6 +59,9 @@ public class OperationResourceIntTest {
 
     private static final Double DEFAULT_AMOUNT_TO = 1D;
     private static final Double UPDATED_AMOUNT_TO = 2D;
+
+    private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WIRE_TRANSFER;
+    private static final OperationType UPDATED_OPERATION_TYPE = OperationType.WITHDRAW;
 
     @Autowired
     private OperationRepository operationRepository;
@@ -105,7 +109,8 @@ public class OperationResourceIntTest {
         Operation operation = new Operation()
             .executedAt(DEFAULT_EXECUTED_AT)
             .amountFrom(DEFAULT_AMOUNT_FROM)
-            .amountTo(DEFAULT_AMOUNT_TO);
+            .amountTo(DEFAULT_AMOUNT_TO)
+            .operationType(DEFAULT_OPERATION_TYPE);
         // Add required entity
         Position positionFrom = PositionResourceIntTest.createEntity(em);
         em.persist(positionFrom);
@@ -153,6 +158,7 @@ public class OperationResourceIntTest {
         assertThat(testOperation.getExecutedAt()).isEqualTo(DEFAULT_EXECUTED_AT);
         assertThat(testOperation.getAmountFrom()).isEqualTo(DEFAULT_AMOUNT_FROM);
         assertThat(testOperation.getAmountTo()).isEqualTo(DEFAULT_AMOUNT_TO);
+        assertThat(testOperation.getOperationType()).isEqualTo(DEFAULT_OPERATION_TYPE);
     }
 
     @Test
@@ -234,6 +240,25 @@ public class OperationResourceIntTest {
 
     @Test
     @Transactional
+    public void checkOperationTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = operationRepository.findAll().size();
+        // set the field null
+        operation.setOperationType(null);
+
+        // Create the Operation, which fails.
+        OperationDTO operationDTO = operationMapper.toDto(operation);
+
+        restOperationMockMvc.perform(post("/api/operations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(operationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Operation> operationList = operationRepository.findAll();
+        assertThat(operationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllOperations() throws Exception {
         // Initialize the database
         operationRepository.saveAndFlush(operation);
@@ -245,7 +270,8 @@ public class OperationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(operation.getId().intValue())))
             .andExpect(jsonPath("$.[*].executedAt").value(hasItem(sameInstant(DEFAULT_EXECUTED_AT))))
             .andExpect(jsonPath("$.[*].amountFrom").value(hasItem(DEFAULT_AMOUNT_FROM.doubleValue())))
-            .andExpect(jsonPath("$.[*].amountTo").value(hasItem(DEFAULT_AMOUNT_TO.doubleValue())));
+            .andExpect(jsonPath("$.[*].amountTo").value(hasItem(DEFAULT_AMOUNT_TO.doubleValue())))
+            .andExpect(jsonPath("$.[*].operationType").value(hasItem(DEFAULT_OPERATION_TYPE.toString())));
     }
 
     @Test
@@ -261,7 +287,8 @@ public class OperationResourceIntTest {
             .andExpect(jsonPath("$.id").value(operation.getId().intValue()))
             .andExpect(jsonPath("$.executedAt").value(sameInstant(DEFAULT_EXECUTED_AT)))
             .andExpect(jsonPath("$.amountFrom").value(DEFAULT_AMOUNT_FROM.doubleValue()))
-            .andExpect(jsonPath("$.amountTo").value(DEFAULT_AMOUNT_TO.doubleValue()));
+            .andExpect(jsonPath("$.amountTo").value(DEFAULT_AMOUNT_TO.doubleValue()))
+            .andExpect(jsonPath("$.operationType").value(DEFAULT_OPERATION_TYPE.toString()));
     }
 
     @Test
@@ -284,7 +311,8 @@ public class OperationResourceIntTest {
         updatedOperation
             .executedAt(UPDATED_EXECUTED_AT)
             .amountFrom(UPDATED_AMOUNT_FROM)
-            .amountTo(UPDATED_AMOUNT_TO);
+            .amountTo(UPDATED_AMOUNT_TO)
+            .operationType(UPDATED_OPERATION_TYPE);
         OperationDTO operationDTO = operationMapper.toDto(updatedOperation);
 
         restOperationMockMvc.perform(put("/api/operations")
@@ -299,6 +327,7 @@ public class OperationResourceIntTest {
         assertThat(testOperation.getExecutedAt()).isEqualTo(UPDATED_EXECUTED_AT);
         assertThat(testOperation.getAmountFrom()).isEqualTo(UPDATED_AMOUNT_FROM);
         assertThat(testOperation.getAmountTo()).isEqualTo(UPDATED_AMOUNT_TO);
+        assertThat(testOperation.getOperationType()).isEqualTo(UPDATED_OPERATION_TYPE);
     }
 
     @Test

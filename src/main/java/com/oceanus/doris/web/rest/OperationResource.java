@@ -49,7 +49,7 @@ public class OperationResource {
         if (operationDTO.getId() != null) {
             throw new BadRequestAlertException("A new operation cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        OperationDTO result = operationService.save(operationDTO);
+        OperationDTO result = operationService.create(operationDTO);
         return ResponseEntity.created(new URI("/api/operations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

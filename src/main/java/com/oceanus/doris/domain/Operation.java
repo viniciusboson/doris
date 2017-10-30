@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import com.oceanus.doris.domain.enumeration.OperationType;
+
 /**
  * A Operation.
  */
@@ -35,6 +37,11 @@ public class Operation extends AbstractAuditingEntity implements Serializable {
     @NotNull
     @Column(name = "amount_to", nullable = false)
     private Double amountTo;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "operation_type", nullable = false)
+    private OperationType operationType;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -98,6 +105,19 @@ public class Operation extends AbstractAuditingEntity implements Serializable {
 
     public void setAmountTo(Double amountTo) {
         this.amountTo = amountTo;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public Operation operationType(OperationType operationType) {
+        this.operationType = operationType;
+        return this;
+    }
+
+    public void setOperationType(OperationType operationType) {
+        this.operationType = operationType;
     }
 
     public Position getPositionFrom() {
@@ -180,6 +200,7 @@ public class Operation extends AbstractAuditingEntity implements Serializable {
             ", executedAt='" + getExecutedAt() + "'" +
             ", amountFrom='" + getAmountFrom() + "'" +
             ", amountTo='" + getAmountTo() + "'" +
+            ", operationType='" + getOperationType() + "'" +
             "}";
     }
 }

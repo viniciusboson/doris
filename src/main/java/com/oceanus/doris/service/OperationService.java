@@ -9,6 +9,15 @@ import java.util.List;
 public interface OperationService {
 
     /**
+     * Create an operation and all its dependencies. See {@link com.oceanus.doris.domain.Position},
+     * {@link com.oceanus.doris.domain.Transaction}, {@link com.oceanus.doris.domain.PositionMetric}
+     *
+     * @param operationDTO the entity to save
+     * @return the persisted entity
+     */
+    OperationDTO create(OperationDTO operationDTO);
+
+    /**
      * Save a operation.
      *
      * @param operationDTO the entity to save

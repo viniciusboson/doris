@@ -51,6 +51,14 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "operationType",
+            "fieldType": "OperationType",
+            "fieldValues": "WIRE_TRANSFER,WITHDRAW,DEPOSIT,BUY,SELL",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20171024173208",
