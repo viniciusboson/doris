@@ -6,6 +6,7 @@ import com.oceanus.doris.domain.Transaction;
 import com.oceanus.doris.domain.Operation;
 import com.oceanus.doris.domain.Position;
 import com.oceanus.doris.repository.TransactionRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.TransactionService;
 import com.oceanus.doris.service.dto.TransactionDTO;
 import com.oceanus.doris.service.mapper.TransactionMapper;
@@ -49,19 +50,19 @@ import com.oceanus.doris.domain.enumeration.TransactionType;
 @SpringBootTest(classes = DorisApp.class)
 public class TransactionResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_EXECUTED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_EXECUTED_AT = EntityCreation.Transaction.DEFAULT_EXECUTED_AT;
     private static final ZonedDateTime UPDATED_EXECUTED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String DEFAULT_DESCRIPTION = EntityCreation.Transaction.DEFAULT_DESCRIPTION;
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final Double DEFAULT_AMOUNT = 1D;
+    private static final Double DEFAULT_AMOUNT = EntityCreation.Transaction.DEFAULT_AMOUNT;
     private static final Double UPDATED_AMOUNT = 2D;
 
-    private static final TransactionType DEFAULT_TYPE = TransactionType.DEBIT;
+    private static final TransactionType DEFAULT_TYPE = EntityCreation.Transaction.DEFAULT_TYPE;
     private static final TransactionType UPDATED_TYPE = TransactionType.CREDIT;
 
-    private static final Double DEFAULT_BALANCE = 1D;
+    private static final Double DEFAULT_BALANCE = EntityCreation.Transaction.DEFAULT_BALANCE;
     private static final Double UPDATED_BALANCE = 2D;
 
     @Autowired
@@ -100,35 +101,9 @@ public class TransactionResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Transaction createEntity(EntityManager em) {
-        Transaction transaction = new Transaction()
-            .executedAt(DEFAULT_EXECUTED_AT)
-            .description(DEFAULT_DESCRIPTION)
-            .amount(DEFAULT_AMOUNT)
-            .type(DEFAULT_TYPE)
-            .balance(DEFAULT_BALANCE);
-        // Add required entity
-        Operation operation = OperationResourceIntTest.createEntity(em);
-        em.persist(operation);
-        em.flush();
-        transaction.setOperation(operation);
-        // Add required entity
-        Position position = PositionResourceIntTest.createEntity(em);
-        em.persist(position);
-        em.flush();
-        transaction.setPosition(position);
-        return transaction;
-    }
-
     @Before
     public void initTest() {
-        transaction = createEntity(em);
+        transaction = EntityCreation.Transaction.createEntity(em);
     }
 
     @Test

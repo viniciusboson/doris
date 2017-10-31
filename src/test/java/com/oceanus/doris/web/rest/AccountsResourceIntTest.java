@@ -7,6 +7,7 @@ import com.oceanus.doris.domain.Portfolio;
 import com.oceanus.doris.domain.Asset;
 import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.AccountsRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.AccountsService;
 import com.oceanus.doris.service.dto.AccountsDTO;
 import com.oceanus.doris.service.mapper.AccountsMapper;
@@ -44,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DorisApp.class)
 public class AccountsResourceIntTest {
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String DEFAULT_DESCRIPTION = EntityCreation.Accounts.DEFAULT_DESCRIPTION;
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     @Autowired
@@ -83,36 +84,9 @@ public class AccountsResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Accounts createEntity(EntityManager em) {
-        Accounts accounts = new Accounts()
-            .description(DEFAULT_DESCRIPTION);
-        // Add required entity
-        Portfolio portfolio = PortfolioResourceIntTest.createEntity(em);
-        em.persist(portfolio);
-        em.flush();
-        accounts.setPortfolio(portfolio);
-        // Add required entity
-        Asset assets = AssetResourceIntTest.createEntity(em);
-        em.persist(assets);
-        em.flush();
-        accounts.getAssets().add(assets);
-        // Add required entity
-        Institution institutions = InstitutionResourceIntTest.createEntity(em);
-        em.persist(institutions);
-        em.flush();
-        accounts.getInstitutions().add(institutions);
-        return accounts;
-    }
-
     @Before
     public void initTest() {
-        accounts = createEntity(em);
+        accounts = EntityCreation.Accounts.createEntity(em);
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Asset;
 import com.oceanus.doris.repository.AssetRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.AssetService;
 import com.oceanus.doris.service.dto.AssetDTO;
 import com.oceanus.doris.service.mapper.AssetMapper;
@@ -42,16 +43,16 @@ import com.oceanus.doris.domain.enumeration.AssetType;
 @SpringBootTest(classes = DorisApp.class)
 public class AssetResourceIntTest {
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String DEFAULT_DESCRIPTION = EntityCreation.Asset.DEFAULT_DESCRIPTION;
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CODE = "AAAAAAAAAA";
+    private static final String DEFAULT_CODE = EntityCreation.Asset.DEFAULT_CODE;
     private static final String UPDATED_CODE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_SYMBOL = "AAAAAAAAAA";
+    private static final String DEFAULT_SYMBOL = EntityCreation.Asset.DEFAULT_SYMBOL;
     private static final String UPDATED_SYMBOL = "BBBBBBBBBB";
 
-    private static final AssetType DEFAULT_TYPE = AssetType.COMMODITY;
+    private static final AssetType DEFAULT_TYPE = EntityCreation.Asset.DEFAULT_TYPE;
     private static final AssetType UPDATED_TYPE = AssetType.CURRENCY;
 
     @Autowired
@@ -90,24 +91,9 @@ public class AssetResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Asset createEntity(EntityManager em) {
-        Asset asset = new Asset()
-            .description(DEFAULT_DESCRIPTION)
-            .code(DEFAULT_CODE)
-            .symbol(DEFAULT_SYMBOL)
-            .type(DEFAULT_TYPE);
-        return asset;
-    }
-
     @Before
     public void initTest() {
-        asset = createEntity(em);
+        asset = EntityCreation.Asset.createEntity(em);
     }
 
     @Test

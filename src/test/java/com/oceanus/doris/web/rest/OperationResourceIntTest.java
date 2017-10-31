@@ -8,6 +8,7 @@ import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.domain.Position;
 import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.OperationRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.OperationService;
 import com.oceanus.doris.service.dto.OperationDTO;
 import com.oceanus.doris.service.mapper.OperationMapper;
@@ -51,16 +52,16 @@ import com.oceanus.doris.domain.enumeration.OperationType;
 @SpringBootTest(classes = DorisApp.class)
 public class OperationResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_EXECUTED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_EXECUTED_AT = EntityCreation.Operation.DEFAULT_EXECUTED_AT;
     private static final ZonedDateTime UPDATED_EXECUTED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final Double DEFAULT_AMOUNT_FROM = 1D;
+    private static final Double DEFAULT_AMOUNT_FROM = EntityCreation.Operation.DEFAULT_AMOUNT_FROM;
     private static final Double UPDATED_AMOUNT_FROM = 2D;
 
-    private static final Double DEFAULT_AMOUNT_TO = 1D;
+    private static final Double DEFAULT_AMOUNT_TO = EntityCreation.Operation.DEFAULT_AMOUNT_TO;
     private static final Double UPDATED_AMOUNT_TO = 2D;
 
-    private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WIRE_TRANSFER;
+    private static final OperationType DEFAULT_OPERATION_TYPE = EntityCreation.Operation.DEFAULT_OPERATION_TYPE;
     private static final OperationType UPDATED_OPERATION_TYPE = OperationType.WITHDRAW;
 
     @Autowired
@@ -99,44 +100,9 @@ public class OperationResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Operation createEntity(EntityManager em) {
-        Operation operation = new Operation()
-            .executedAt(DEFAULT_EXECUTED_AT)
-            .amountFrom(DEFAULT_AMOUNT_FROM)
-            .amountTo(DEFAULT_AMOUNT_TO)
-            .operationType(DEFAULT_OPERATION_TYPE);
-        // Add required entity
-        Position positionFrom = PositionResourceIntTest.createEntity(em);
-        em.persist(positionFrom);
-        em.flush();
-        operation.setPositionFrom(positionFrom);
-        // Add required entity
-        Institution institutionFrom = InstitutionResourceIntTest.createEntity(em);
-        em.persist(institutionFrom);
-        em.flush();
-        operation.setInstitutionFrom(institutionFrom);
-        // Add required entity
-        Position positionTo = PositionResourceIntTest.createEntity(em);
-        em.persist(positionTo);
-        em.flush();
-        operation.setPositionTo(positionTo);
-        // Add required entity
-        Institution institutionTo = InstitutionResourceIntTest.createEntity(em);
-        em.persist(institutionTo);
-        em.flush();
-        operation.setInstitutionTo(institutionTo);
-        return operation;
-    }
-
     @Before
     public void initTest() {
-        operation = createEntity(em);
+        operation = EntityCreation.Operation.createEntity(em);
     }
 
     @Test

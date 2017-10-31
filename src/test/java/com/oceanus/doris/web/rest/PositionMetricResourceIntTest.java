@@ -6,6 +6,7 @@ import com.oceanus.doris.domain.PositionMetric;
 import com.oceanus.doris.domain.Position;
 import com.oceanus.doris.domain.Asset;
 import com.oceanus.doris.repository.PositionMetricRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.PositionMetricService;
 import com.oceanus.doris.service.dto.PositionMetricDTO;
 import com.oceanus.doris.service.mapper.PositionMetricMapper;
@@ -94,35 +95,9 @@ public class PositionMetricResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static PositionMetric createEntity(EntityManager em) {
-        PositionMetric positionMetric = new PositionMetric()
-            .entryAvgPrice(DEFAULT_ENTRY_AVG_PRICE)
-            .entryAmount(DEFAULT_ENTRY_AMOUNT)
-            .exitAvgPrice(DEFAULT_EXIT_AVG_PRICE)
-            .exitAmount(DEFAULT_EXIT_AMOUNT)
-            .txCosts(DEFAULT_TX_COSTS);
-        // Add required entity
-        Position position = PositionResourceIntTest.createEntity(em);
-        em.persist(position);
-        em.flush();
-        positionMetric.setPosition(position);
-        // Add required entity
-        Asset assetComparison = AssetResourceIntTest.createEntity(em);
-        em.persist(assetComparison);
-        em.flush();
-        positionMetric.setAssetComparison(assetComparison);
-        return positionMetric;
-    }
-
     @Before
     public void initTest() {
-        positionMetric = createEntity(em);
+        positionMetric = EntityCreation.PositionMetric.createEntity(em);
     }
 
     @Test

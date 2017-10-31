@@ -5,6 +5,7 @@ import com.oceanus.doris.DorisApp;
 import com.oceanus.doris.domain.Charge;
 import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.ChargeRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.ChargeService;
 import com.oceanus.doris.service.dto.ChargeDTO;
 import com.oceanus.doris.service.mapper.ChargeMapper;
@@ -44,16 +45,16 @@ import com.oceanus.doris.domain.enumeration.OperationType;
 @SpringBootTest(classes = DorisApp.class)
 public class ChargeResourceIntTest {
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String DEFAULT_DESCRIPTION = EntityCreation.Charge.DEFAULT_DESCRIPTION;
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final ChargeType DEFAULT_CHARGE_TYPE = ChargeType.FLAT_FEE;
+    private static final ChargeType DEFAULT_CHARGE_TYPE = EntityCreation.Charge.DEFAULT_CHARGE_TYPE;
     private static final ChargeType UPDATED_CHARGE_TYPE = ChargeType.PERCENTAGE;
 
-    private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WIRE_TRANSFER;
+    private static final OperationType DEFAULT_OPERATION_TYPE = EntityCreation.Charge.DEFAULT_OPERATION_TYPE;
     private static final OperationType UPDATED_OPERATION_TYPE = OperationType.WITHDRAW;
 
-    private static final Double DEFAULT_AMOUNT = 1D;
+    private static final Double DEFAULT_AMOUNT = EntityCreation.Charge.DEFAULT_AMOUNT;
     private static final Double UPDATED_AMOUNT = 2D;
 
     @Autowired
@@ -92,29 +93,9 @@ public class ChargeResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Charge createEntity(EntityManager em) {
-        Charge charge = new Charge()
-            .description(DEFAULT_DESCRIPTION)
-            .chargeType(DEFAULT_CHARGE_TYPE)
-            .operationType(DEFAULT_OPERATION_TYPE)
-            .amount(DEFAULT_AMOUNT);
-        // Add required entity
-        Institution institution = InstitutionResourceIntTest.createEntity(em);
-        em.persist(institution);
-        em.flush();
-        charge.setInstitution(institution);
-        return charge;
-    }
-
     @Before
     public void initTest() {
-        charge = createEntity(em);
+        charge = EntityCreation.Charge.createEntity(em);
     }
 
     @Test

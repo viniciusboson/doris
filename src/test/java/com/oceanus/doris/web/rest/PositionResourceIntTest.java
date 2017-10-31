@@ -3,9 +3,8 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Position;
-import com.oceanus.doris.domain.Asset;
-import com.oceanus.doris.domain.Accounts;
 import com.oceanus.doris.repository.PositionRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.PositionService;
 import com.oceanus.doris.service.dto.PositionDTO;
 import com.oceanus.doris.service.mapper.PositionMapper;
@@ -45,16 +44,16 @@ import com.oceanus.doris.domain.enumeration.PositionStatus;
 @SpringBootTest(classes = DorisApp.class)
 public class PositionResourceIntTest {
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String DEFAULT_DESCRIPTION = EntityCreation.Position.DEFAULT_DESCRIPTION;
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final Double DEFAULT_BALANCE = 1D;
+    private static final Double DEFAULT_BALANCE = EntityCreation.Position.DEFAULT_BALANCE;
     private static final Double UPDATED_BALANCE = 2D;
 
-    private static final PositionType DEFAULT_TYPE = PositionType.LONG;
+    private static final PositionType DEFAULT_TYPE = EntityCreation.Position.DEFAULT_TYPE;
     private static final PositionType UPDATED_TYPE = PositionType.SHORT;
 
-    private static final PositionStatus DEFAULT_STATUS = PositionStatus.OPEN;
+    private static final PositionStatus DEFAULT_STATUS = EntityCreation.Position.DEFAULT_STATUS;
     private static final PositionStatus UPDATED_STATUS = PositionStatus.CLOSED;
 
     @Autowired
@@ -93,34 +92,9 @@ public class PositionResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Position createEntity(EntityManager em) {
-        Position position = new Position()
-            .description(DEFAULT_DESCRIPTION)
-            .balance(DEFAULT_BALANCE)
-            .type(DEFAULT_TYPE)
-            .status(DEFAULT_STATUS);
-        // Add required entity
-        Asset asset = AssetResourceIntTest.createEntity(em);
-        em.persist(asset);
-        em.flush();
-        position.setAsset(asset);
-        // Add required entity
-        Accounts account = AccountsResourceIntTest.createEntity(em);
-        em.persist(account);
-        em.flush();
-        position.setAccount(account);
-        return position;
-    }
-
     @Before
     public void initTest() {
-        position = createEntity(em);
+        position = EntityCreation.Position.createEntity(em);
     }
 
     @Test

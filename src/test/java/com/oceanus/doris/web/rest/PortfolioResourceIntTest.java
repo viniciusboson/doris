@@ -4,6 +4,7 @@ import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Portfolio;
 import com.oceanus.doris.repository.PortfolioRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.PortfolioService;
 import com.oceanus.doris.service.dto.PortfolioDTO;
 import com.oceanus.doris.service.mapper.PortfolioMapper;
@@ -41,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DorisApp.class)
 public class PortfolioResourceIntTest {
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String DEFAULT_DESCRIPTION = EntityCreation.Portfolio.DEFAULT_DESCRIPTION;
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     @Autowired
@@ -80,21 +81,9 @@ public class PortfolioResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Portfolio createEntity(EntityManager em) {
-        Portfolio portfolio = new Portfolio()
-            .description(DEFAULT_DESCRIPTION);
-        return portfolio;
-    }
-
     @Before
     public void initTest() {
-        portfolio = createEntity(em);
+        portfolio = EntityCreation.Portfolio.createEntity(em);
     }
 
     @Test

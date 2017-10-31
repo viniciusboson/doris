@@ -4,6 +4,7 @@ import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.InstitutionRepository;
+import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.InstitutionService;
 import com.oceanus.doris.service.dto.InstitutionDTO;
 import com.oceanus.doris.service.mapper.InstitutionMapper;
@@ -41,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DorisApp.class)
 public class InstitutionResourceIntTest {
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String DEFAULT_DESCRIPTION = EntityCreation.Institution.DEFAULT_DESCRIPTION;
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     @Autowired
@@ -80,21 +81,9 @@ public class InstitutionResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Institution createEntity(EntityManager em) {
-        Institution institution = new Institution()
-            .description(DEFAULT_DESCRIPTION);
-        return institution;
-    }
-
     @Before
     public void initTest() {
-        institution = createEntity(em);
+        institution = EntityCreation.Institution.createEntity(em);
     }
 
     @Test
