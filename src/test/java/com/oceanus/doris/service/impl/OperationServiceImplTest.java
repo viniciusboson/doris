@@ -1,6 +1,5 @@
 package com.oceanus.doris.service.impl;
 
-import com.oceanus.doris.DorisApp;
 import com.oceanus.doris.domain.*;
 import com.oceanus.doris.domain.enumeration.OperationType;
 import com.oceanus.doris.repository.*;
@@ -11,8 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.ZonedDateTime;
@@ -20,10 +17,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.oceanus.doris.domain.enumeration.OperationType.DEPOSIT;
 import static com.oceanus.doris.domain.enumeration.OperationType.WITHDRAW;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
 /**
@@ -69,7 +66,8 @@ public class OperationServiceImplTest {
         positionTo.setId(2L);
 
         validOperation = new Operation().id(1L).executedAt(ZonedDateTime.now()).amountFrom(1D).amountTo(2D)
-            .operationType(WITHDRAW)
+            .operationTypeFrom(WITHDRAW)
+            .operationTypeTo(DEPOSIT)
             .positionFrom(new Position().id(1L).description("position from").balance(0D))
             .positionTo(new Position().id(2L).description("position to").balance(0D))
             .institutionFrom(new Institution().id(1L).description("institution from"))

@@ -139,7 +139,8 @@ public class EntityCreation {
                 .executedAt(DEFAULT_EXECUTED_AT)
                 .amountFrom(DEFAULT_AMOUNT_FROM)
                 .amountTo(DEFAULT_AMOUNT_TO)
-                .operationType(DEFAULT_OPERATION_TYPE);
+                .operationTypeFrom(DEFAULT_OPERATION_TYPE)
+                .operationTypeTo(DEFAULT_OPERATION_TYPE);
             // Add required entity
             operation.setPositionFrom(Position.createEntity(em, true));
             // Add required entity

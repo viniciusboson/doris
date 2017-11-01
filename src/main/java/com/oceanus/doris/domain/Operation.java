@@ -40,8 +40,13 @@ public class Operation extends AbstractAuditingEntity implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "operation_type", nullable = false)
-    private OperationType operationType;
+    @Column(name = "operation_type_from", nullable = false)
+    private OperationType operationTypeFrom;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "operation_type_to", nullable = false)
+    private OperationType operationTypeTo;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -112,17 +117,30 @@ public class Operation extends AbstractAuditingEntity implements Serializable {
         this.amountTo = amountTo;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
+    public OperationType getOperationTypeFrom() {
+        return operationTypeFrom;
     }
 
-    public Operation operationType(OperationType operationType) {
-        this.operationType = operationType;
+    public Operation operationTypeFrom(OperationType operationTypeFrom) {
+        this.operationTypeFrom = operationTypeFrom;
         return this;
     }
 
-    public void setOperationType(OperationType operationType) {
-        this.operationType = operationType;
+    public void setOperationTypeFrom(OperationType operationTypeFrom) {
+        this.operationTypeFrom = operationTypeFrom;
+    }
+
+    public OperationType getOperationTypeTo() {
+        return operationTypeTo;
+    }
+
+    public Operation operationTypeTo(OperationType operationTypeTo) {
+        this.operationTypeTo = operationTypeTo;
+        return this;
+    }
+
+    public void setOperationTypeTo(OperationType operationTypeTo) {
+        this.operationTypeTo = operationTypeTo;
     }
 
     public Position getPositionFrom() {
@@ -205,7 +223,8 @@ public class Operation extends AbstractAuditingEntity implements Serializable {
             ", executedAt='" + getExecutedAt() + "'" +
             ", amountFrom='" + getAmountFrom() + "'" +
             ", amountTo='" + getAmountTo() + "'" +
-            ", operationType='" + getOperationType() + "'" +
+            ", operationTypeFrom='" + getOperationTypeFrom() + "'" +
+            ", operationTypeTo='" + getOperationTypeTo() + "'" +
             "}";
     }
 }

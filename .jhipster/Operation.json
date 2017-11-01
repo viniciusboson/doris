@@ -53,7 +53,15 @@
             ]
         },
         {
-            "fieldName": "operationType",
+            "fieldName": "operationTypeFrom",
+            "fieldType": "OperationType",
+            "fieldValues": "WIRE_TRANSFER,WITHDRAW,DEPOSIT,BUY,SELL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "operationTypeTo",
             "fieldType": "OperationType",
             "fieldValues": "WIRE_TRANSFER,WITHDRAW,DEPOSIT,BUY,SELL",
             "fieldValidateRules": [

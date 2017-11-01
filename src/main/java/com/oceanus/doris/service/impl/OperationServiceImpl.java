@@ -96,7 +96,7 @@ public class OperationServiceImpl implements OperationService{
         log.debug("Process origin transactions of operation {} over position {}", operation,  origin);
 
         final String mainTransactionDescription = join(" - ",
-            operation.getOperationType().toString(),
+            operation.getOperationTypeFrom().toString(),
             institutionRepository.findOne(operation.getInstitutionFrom().getId()).getDescription());
 
         origin.subtract(operation.getAmountFrom());
@@ -123,14 +123,14 @@ public class OperationServiceImpl implements OperationService{
         log.debug("Process destination transactions of operation {} over position {}", operation,  destination);
 
         final String mainTransactionDescription = join(" - ",
-            operation.getOperationType().toString(),
+            operation.getOperationTypeTo().toString(),
             institutionRepository.findOne(operation.getInstitutionTo().getId()).getDescription());
 
         destination.add(operation.getAmountTo());
         createTransaction(operation, destination, mainTransactionDescription, operation.getAmountTo(), CREDIT);
 
         List<Charge> charges = getChargesToBeTransacted(operation.getInstitutionTo(),
-            destination.getAsset(), operation.getOperationType());
+            destination.getAsset(), operation.getOperationTypeTo());
         charges.forEach(charge -> {
             destination.subtract(charge.getAmount());
             createTransaction(operation, destination, charge.getDescription(), charge.getAmount(), DEBIT);

@@ -33,7 +33,11 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="operation_type" type="varchar(255)">
+            <column name="operation_type_from" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="operation_type_to" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
@@ -41,11 +45,11 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="institution_from_id" type="bigint">
+            <column name="position_to_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
-            <column name="position_to_id" type="bigint">
+            <column name="institution_from_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
