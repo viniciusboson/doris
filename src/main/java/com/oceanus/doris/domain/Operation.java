@@ -68,6 +68,11 @@ public class Operation extends AbstractAuditingEntity implements Serializable {
         this.id = id;
     }
 
+    public Operation id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public ZonedDateTime getExecutedAt() {
         return executedAt;
     }

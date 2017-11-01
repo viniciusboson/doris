@@ -36,6 +36,11 @@ public class Institution extends AbstractAuditingEntity implements Serializable 
         this.id = id;
     }
 
+    public Institution id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }

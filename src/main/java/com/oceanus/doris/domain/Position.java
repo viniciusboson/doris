@@ -70,6 +70,11 @@ public class Position extends AbstractAuditingEntity implements Serializable {
         this.id = id;
     }
 
+    public Position id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -89,6 +94,16 @@ public class Position extends AbstractAuditingEntity implements Serializable {
 
     public Position balance(Double balance) {
         this.balance = balance;
+        return this;
+    }
+
+    public Position add(Double amount) {
+        this.balance += amount;
+        return this;
+    }
+
+    public Position subtract(Double amount) {
+        this.balance -= amount;
         return this;
     }
 
