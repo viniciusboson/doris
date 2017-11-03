@@ -7,11 +7,11 @@ VALUES (11051, 'Real', 'BRL', 'R$', 'CURRENCY', 'admin', current_timestamp(), 'a
     (11052, 'Bitcoin', 'BTC', '$', 'CURRENCY', 'admin', current_timestamp(), 'admin', current_timestamp()),
     (11053, 'Litecoin', 'LTC', '$', 'CURRENCY', 'admin', current_timestamp(), 'admin', current_timestamp());
 
-INSERT INTO CHARGE (ID, DESCRIPTION, CHARGE_TYPE, OPERATION_TYPE, AMOUNT, INSTITUTION_ID, CREATED_BY, CREATED_DATE, LAST_MODIFIED_BY, LAST_MODIFIED_DATE)
-VALUES (11101, 'flat wire transfer fee', 'FLAT_FEE', 'WIRE_TRANSFER', 8.0, 1951, 'admin', current_timestamp(), 'admin', current_timestamp()),
-    (11102, '% transaction fee', 'PERCENTAGE', 'BUY', 0.0025, 1952, 'admin', current_timestamp(), 'admin', current_timestamp()),
-    (11103, 'flat withdraw fee', 'FLAT_FEE', 'WITHDRAW', 9.5, 1952, 'admin', current_timestamp(), 'admin', current_timestamp()),
-    (11104, '% withdraw fee', 'PERCENTAGE', 'WITHDRAW', 1.35, 1952, 'admin', current_timestamp(), 'admin', current_timestamp());
+INSERT INTO CHARGE (ID, DESCRIPTION, CHARGE_TYPE, OPERATION_TYPE, AMOUNT, TARGET, INSTITUTION_ID, CREATED_BY, CREATED_DATE, LAST_MODIFIED_BY, LAST_MODIFIED_DATE)
+VALUES (11101, '8 flat fee wire transfer', 'FLAT_FEE', 'WIRE_TRANSFER', 8.0, 'ORIGIN', 1951, 'admin', current_timestamp(), 'admin', current_timestamp()),
+    (11102, '0.0025% transaction fee', 'PERCENTAGE', 'BUY', 0.0025, 'DESTINATION',  1952, 'admin', current_timestamp(), 'admin', current_timestamp()),
+    (11103, '9.5 flat fee withdraw', 'FLAT_FEE', 'WITHDRAW', 9.5, 'DESTINATION', 1952, 'admin', current_timestamp(), 'admin', current_timestamp()),
+    (11104, '1.35% withdraw fee', 'PERCENTAGE', 'WITHDRAW', 1.35, 'DESTINATION', 1952, 'admin', current_timestamp(), 'admin', current_timestamp());
 
 INSERT INTO CHARGE_ASSET (ASSETS_ID, CHARGES_ID)
 VALUES (11051,  11101), (11052, 11102), (11053, 11102), (11051, 11103), (11051, 11104);

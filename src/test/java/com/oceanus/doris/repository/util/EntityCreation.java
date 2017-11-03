@@ -1,7 +1,5 @@
 package com.oceanus.doris.repository.util;
 
-import com.oceanus.doris.domain.PositionMetric;
-import com.oceanus.doris.domain.Transaction;
 import com.oceanus.doris.domain.enumeration.*;
 
 import javax.persistence.EntityManager;
@@ -73,10 +71,10 @@ public class EntityCreation {
     public static class Charge {
         public static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
         public static final ChargeType DEFAULT_CHARGE_TYPE = ChargeType.FLAT_FEE;
-
         public static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WIRE_TRANSFER;
-
         public static final Double DEFAULT_AMOUNT = 1D;
+        public static final ChargeTarget DEFAULT_TARGET = ChargeTarget.ORIGIN;
+
         public static com.oceanus.doris.domain.Charge createEntity(EntityManager em) {
             return createEntity(em, false);
         }
@@ -86,7 +84,8 @@ public class EntityCreation {
                 .description(DEFAULT_DESCRIPTION)
                 .chargeType(DEFAULT_CHARGE_TYPE)
                 .operationType(DEFAULT_OPERATION_TYPE)
-                .amount(DEFAULT_AMOUNT);
+                .amount(DEFAULT_AMOUNT)
+                .target(DEFAULT_TARGET);
             // Add required entity
             charge.setInstitution(Institution.createEntity(em, true));
 

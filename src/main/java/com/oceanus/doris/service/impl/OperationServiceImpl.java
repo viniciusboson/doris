@@ -1,6 +1,7 @@
 package com.oceanus.doris.service.impl;
 
 import com.oceanus.doris.domain.*;
+import com.oceanus.doris.domain.enumeration.ChargeTarget;
 import com.oceanus.doris.domain.enumeration.OperationType;
 import com.oceanus.doris.domain.enumeration.TransactionType;
 import com.oceanus.doris.repository.*;
@@ -13,10 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.oceanus.doris.domain.enumeration.ChargeTarget.BOTH;
+import static com.oceanus.doris.domain.enumeration.ChargeTarget.DESTINATION;
+import static com.oceanus.doris.domain.enumeration.ChargeTarget.ORIGIN;
+import static com.oceanus.doris.domain.enumeration.ChargeType.FLAT_FEE;
 import static com.oceanus.doris.domain.enumeration.TransactionType.CREDIT;
 import static com.oceanus.doris.domain.enumeration.TransactionType.DEBIT;
 import static java.lang.String.join;
@@ -74,14 +80,21 @@ public class OperationServiceImpl implements OperationService{
      * @param operationDTO the entity to save
      * @return the persisted entity
      */
-    public OperationDTO create(OperationDTO operationDTO) {
+    public OperationDTO create(final OperationDTO operationDTO) {
         log.debug("Request to create Operation : {}", operationDTO);
 
         Operation operation = operationMapper.toEntity(operationDTO);
         operation = operationRepository.save(operation);
 
-        processOriginTransactions(operation);
-        processDestinationTransactions(operation);
+        final Position origin = positionRepository.findOne(operation.getPositionFrom().getId());
+        final Position destination = positionRepository.findOne(operation.getPositionTo().getId());
+
+        final List<Charge> charges = new ArrayList<>();
+        charges.addAll(getChargesToBeTransacted(operation.getInstitutionFrom(), origin.getAsset(), operation.getOperationTypeFrom()));
+        charges.addAll(getChargesToBeTransacted(operation.getInstitutionTo(), destination.getAsset(), operation.getOperationTypeTo()));
+
+        processOriginTransactions(operation,  charges);
+        processDestinationTransactions(operation, charges);
 
         return operationMapper.toDto(operation);
     }
@@ -91,7 +104,7 @@ public class OperationServiceImpl implements OperationService{
      *
      * @param operation containing the transaction's details.
      */
-    void processOriginTransactions(final Operation operation) {
+    void processOriginTransactions(final Operation operation, List<Charge> charges) {
         Position origin = positionRepository.findOne(operation.getPositionFrom().getId());
         log.debug("Process origin transactions of operation {} over position {}", operation,  origin);
 
@@ -104,12 +117,14 @@ public class OperationServiceImpl implements OperationService{
 
         positionRepository.save(origin);
 
-        //All charges will be applied onto the destination position
-
-        //FIXME: Nao está aplicando taxas da origem, como withdraws.
-        //FIXME: NAo está aplicando taxa por %, só FLAT_FLEE
-        //FIXME: Supondo que seja BUY para o mesmo INstitution, nao pode cobrar duplicado da origem e destino
-        //talvez a solucao seja ter 2 typos de operacao, uma para cada ponta
+        charges.stream()
+            .filter(charge -> charge.getTarget().equals(ORIGIN) || charge.getTarget().equals(BOTH))
+            .forEach(charge -> {
+                Double amount = (FLAT_FEE.equals(charge.getChargeType())?
+                    charge.getAmount() : operation.getAmountFrom() * charge.getAmount() / 100);
+                origin.subtract(amount);
+                createTransaction(operation, origin, charge.getDescription(), amount, DEBIT);
+            });
     }
 
     /**
@@ -118,7 +133,7 @@ public class OperationServiceImpl implements OperationService{
      *
      * @param operation containing the transaction's details.
      */
-    void processDestinationTransactions(final Operation operation) {
+    void processDestinationTransactions(final Operation operation, List<Charge> charges) {
         final Position destination = positionRepository.findOne(operation.getPositionTo().getId());
         log.debug("Process destination transactions of operation {} over position {}", operation,  destination);
 
@@ -129,12 +144,14 @@ public class OperationServiceImpl implements OperationService{
         destination.add(operation.getAmountTo());
         createTransaction(operation, destination, mainTransactionDescription, operation.getAmountTo(), CREDIT);
 
-        List<Charge> charges = getChargesToBeTransacted(operation.getInstitutionTo(),
-            destination.getAsset(), operation.getOperationTypeTo());
-        charges.forEach(charge -> {
-            destination.subtract(charge.getAmount());
-            createTransaction(operation, destination, charge.getDescription(), charge.getAmount(), DEBIT);
-        });
+        charges.stream()
+            .filter(charge -> charge.getTarget().equals(DESTINATION) || charge.getTarget().equals(BOTH))
+            .forEach(charge -> {
+                Double amount = (FLAT_FEE.equals(charge.getChargeType())?
+                    charge.getAmount() : operation.getAmountTo() * charge.getAmount() / 100 );
+                destination.subtract(amount);
+                createTransaction(operation, destination, charge.getDescription(), amount, DEBIT);
+            });
 
         positionRepository.save(destination);
     }

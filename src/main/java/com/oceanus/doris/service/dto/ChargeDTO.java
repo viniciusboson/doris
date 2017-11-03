@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+
+import com.oceanus.doris.domain.enumeration.ChargeTarget;
 import com.oceanus.doris.domain.enumeration.ChargeType;
 import com.oceanus.doris.domain.enumeration.OperationType;
 
@@ -27,6 +29,9 @@ public class ChargeDTO extends AbstractAuditingDTO implements Serializable {
 
     @NotNull
     private Double amount;
+
+    @NotNull
+    private ChargeTarget target;
 
     private Long institutionId;
 
@@ -72,6 +77,14 @@ public class ChargeDTO extends AbstractAuditingDTO implements Serializable {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public ChargeTarget getTarget() {
+        return target;
+    }
+
+    public void setTarget(ChargeTarget target) {
+        this.target = target;
     }
 
     public Long getInstitutionId() {
@@ -127,6 +140,7 @@ public class ChargeDTO extends AbstractAuditingDTO implements Serializable {
             ", chargeType='" + getChargeType() + "'" +
             ", operationType='" + getOperationType() + "'" +
             ", amount='" + getAmount() + "'" +
+            ", target='" + getTarget() + "'" +
             "}";
     }
 }

@@ -37,13 +37,17 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="target" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="institution_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="charge_asset">
             <column name="assets_id" type="bigint">
                 <constraints nullable="false"/>
@@ -54,9 +58,9 @@
         </createTable>
 
         <addPrimaryKey columnNames="charges_id, assets_id" tableName="charge_asset"/>
-        
+
     </changeSet>
-    
+
     <!-- Added the entity audit columns -->
     <changeSet id="20171028224339-audit-1" author="jhipster-entity-audit">
         <addColumn tableName="charge">

@@ -47,6 +47,14 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "target",
+            "fieldType": "ChargeTarget",
+            "fieldValues": "ORIGIN,DESTINATION,BOTH",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20171024173203",
@@ -55,6 +63,5 @@
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
-    "microserviceName": "doris",
-    "enableEntityAudit": true
+    "microserviceName": "doris"
 }

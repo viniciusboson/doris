@@ -4,6 +4,7 @@ import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Charge;
 import com.oceanus.doris.domain.Institution;
+import com.oceanus.doris.domain.enumeration.ChargeTarget;
 import com.oceanus.doris.repository.ChargeRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.ChargeService;
@@ -56,6 +57,9 @@ public class ChargeResourceIntTest {
 
     private static final Double DEFAULT_AMOUNT = EntityCreation.Charge.DEFAULT_AMOUNT;
     private static final Double UPDATED_AMOUNT = 2D;
+
+    private static final ChargeTarget DEFAULT_TARGET = EntityCreation.Charge.DEFAULT_TARGET;
+    private static final ChargeTarget UPDATED_TARGET = ChargeTarget.DESTINATION;
 
     @Autowired
     private ChargeRepository chargeRepository;
@@ -118,6 +122,7 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getChargeType()).isEqualTo(DEFAULT_CHARGE_TYPE);
         assertThat(testCharge.getOperationType()).isEqualTo(DEFAULT_OPERATION_TYPE);
         assertThat(testCharge.getAmount()).isEqualTo(DEFAULT_AMOUNT);
+        assertThat(testCharge.getTarget()).isEqualTo(DEFAULT_TARGET);
     }
 
     @Test
@@ -218,6 +223,25 @@ public class ChargeResourceIntTest {
 
     @Test
     @Transactional
+    public void checkTargetIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chargeRepository.findAll().size();
+        // set the field null
+        charge.setTarget(null);
+
+        // Create the Charge, which fails.
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+
+        restChargeMockMvc.perform(post("/api/charges")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(chargeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Charge> chargeList = chargeRepository.findAll();
+        assertThat(chargeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllCharges() throws Exception {
         // Initialize the database
         chargeRepository.saveAndFlush(charge);
@@ -230,7 +254,8 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].chargeType").value(hasItem(DEFAULT_CHARGE_TYPE.toString())))
             .andExpect(jsonPath("$.[*].operationType").value(hasItem(DEFAULT_OPERATION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())));
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())))
+            .andExpect(jsonPath("$.[*].target").value(hasItem(DEFAULT_TARGET.toString())));
     }
 
     @Test
@@ -247,7 +272,8 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.chargeType").value(DEFAULT_CHARGE_TYPE.toString()))
             .andExpect(jsonPath("$.operationType").value(DEFAULT_OPERATION_TYPE.toString()))
-            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.doubleValue()));
+            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.doubleValue()))
+            .andExpect(jsonPath("$.target").value(DEFAULT_TARGET.toString()));
     }
 
     @Test
@@ -271,7 +297,8 @@ public class ChargeResourceIntTest {
             .description(UPDATED_DESCRIPTION)
             .chargeType(UPDATED_CHARGE_TYPE)
             .operationType(UPDATED_OPERATION_TYPE)
-            .amount(UPDATED_AMOUNT);
+            .amount(UPDATED_AMOUNT)
+            .target(UPDATED_TARGET);
         ChargeDTO chargeDTO = chargeMapper.toDto(updatedCharge);
 
         restChargeMockMvc.perform(put("/api/charges")
@@ -287,6 +314,7 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getChargeType()).isEqualTo(UPDATED_CHARGE_TYPE);
         assertThat(testCharge.getOperationType()).isEqualTo(UPDATED_OPERATION_TYPE);
         assertThat(testCharge.getAmount()).isEqualTo(UPDATED_AMOUNT);
+        assertThat(testCharge.getTarget()).isEqualTo(UPDATED_TARGET);
     }
 
     @Test

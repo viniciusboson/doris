@@ -1,5 +1,6 @@
 package com.oceanus.doris.domain;
 
+import com.oceanus.doris.domain.enumeration.ChargeTarget;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -46,6 +47,11 @@ public class Charge extends AbstractAuditingEntity implements Serializable {
     @NotNull
     @Column(name = "amount", nullable = false)
     private Double amount;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "target", nullable = false)
+    private ChargeTarget target;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -119,6 +125,19 @@ public class Charge extends AbstractAuditingEntity implements Serializable {
         this.amount = amount;
     }
 
+    public ChargeTarget getTarget() {
+        return target;
+    }
+
+    public Charge target(ChargeTarget target) {
+        this.target = target;
+        return this;
+    }
+
+    public void setTarget(ChargeTarget target) {
+        this.target = target;
+    }
+
     public Institution getInstitution() {
         return institution;
     }
@@ -184,6 +203,7 @@ public class Charge extends AbstractAuditingEntity implements Serializable {
             ", chargeType='" + getChargeType() + "'" +
             ", operationType='" + getOperationType() + "'" +
             ", amount='" + getAmount() + "'" +
+            ", target='" + getTarget() + "'" +
             "}";
     }
 }

@@ -17,6 +17,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.oceanus.doris.domain.enumeration.ChargeTarget.BOTH;
+import static com.oceanus.doris.domain.enumeration.ChargeTarget.DESTINATION;
+import static com.oceanus.doris.domain.enumeration.ChargeTarget.ORIGIN;
+import static com.oceanus.doris.domain.enumeration.ChargeType.FLAT_FEE;
+import static com.oceanus.doris.domain.enumeration.ChargeType.PERCENTAGE;
 import static com.oceanus.doris.domain.enumeration.OperationType.DEPOSIT;
 import static com.oceanus.doris.domain.enumeration.OperationType.WITHDRAW;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,13 +84,14 @@ public class OperationServiceImplTest {
         //Arrange
         final Position origin = validOperation.getPositionFrom();
         final Double previousBalance = origin.getBalance();
+        final List<Charge> charges = Collections.EMPTY_LIST;
 
         doReturn(origin).when(positionRepository).findOne(origin.getId());
         doReturn(validOperation.getInstitutionFrom())
             .when(institutionRepository).findOne(validOperation.getInstitutionFrom().getId());
 
         //Act
-        operationService.processOriginTransactions(validOperation);
+        operationService.processOriginTransactions(validOperation, charges);
         final Double expectedBalance = previousBalance - validOperation.getAmountFrom();
 
         //Assert
@@ -93,12 +99,36 @@ public class OperationServiceImplTest {
         verify(transactionRepository).save(any(Transaction.class));
     }
 
+    @Test
+    public void processOriginTransactionsWithCharges() {
+        //Arrange
+        final Position origin = validOperation.getPositionFrom();
+        final Double previousBalance = origin.getBalance(), operationAmount = validOperation.getAmountFrom();
+        final Double flatFee = 3.0, percentageFee = 0.0025, ignoredFee = 10.0;
+        final List<Charge> charges = Arrays.asList(
+            new Charge().amount(flatFee).chargeType(FLAT_FEE).target(ORIGIN),
+            new Charge().amount(percentageFee).chargeType(PERCENTAGE).target(BOTH),
+            new Charge().amount(ignoredFee).chargeType(FLAT_FEE).target(DESTINATION)); //DESTINATION target must be ignored
+
+        doReturn(origin).when(positionRepository).findOne(origin.getId());
+        doReturn(validOperation.getInstitutionFrom())
+            .when(institutionRepository).findOne(validOperation.getInstitutionFrom().getId());
+
+        //Act
+        operationService.processOriginTransactions(validOperation, charges);
+        final Double expectedBalance = previousBalance - operationAmount - flatFee  - (operationAmount * percentageFee) / 100;
+        final int expectedTransactions = 1 + (charges.size() - 1); //DESTINATION target must be ignored
+
+        assertThat(origin.getBalance()).isEqualTo(expectedBalance);
+        verify(transactionRepository, times(expectedTransactions)).save(any(Transaction.class));
+    }
 
     @Test
     public void processDestinationTransactionsWithoutCharges() {
         //Arrange
         final Position destination = validOperation.getPositionTo();
         final Double previousBalance = destination.getBalance();
+        final List<Charge> charges = Collections.EMPTY_LIST;
 
         doReturn(destination).when(positionRepository).findOne(destination.getId());
         doReturn(validOperation.getInstitutionTo())
@@ -108,7 +138,7 @@ public class OperationServiceImplTest {
                 any(OperationType.class));
 
         //Act
-        operationService.processDestinationTransactions(validOperation);
+        operationService.processDestinationTransactions(validOperation, charges);
         final Double expectedBalance = previousBalance + validOperation.getAmountTo();
 
         //Assert
@@ -120,20 +150,21 @@ public class OperationServiceImplTest {
     public void processDestinationTransactionsWithCharges() {
         //Arrange
         final Position destination = validOperation.getPositionTo();
-        final Double previousBalance = destination.getBalance();
-        final List<Charge> charges = Arrays.asList(new Charge().amount(3D), new Charge().amount(5D));
+        final Double previousBalance = destination.getBalance(), operationAmount = validOperation.getAmountTo();
+        final Double flatFee = 3.0, percentageFee = 0.0025, ignoredFee = 10.0;
+        final List<Charge> charges = Arrays.asList(
+            new Charge().amount(flatFee).chargeType(FLAT_FEE).target(DESTINATION),
+            new Charge().amount(percentageFee).chargeType(PERCENTAGE).target(BOTH),
+            new Charge().amount(ignoredFee).chargeType(FLAT_FEE).target(ORIGIN)); //ORIGIN target must be ignored
 
         doReturn(destination).when(positionRepository).findOne(destination.getId());
         doReturn(validOperation.getInstitutionTo())
             .when(institutionRepository).findOne(validOperation.getInstitutionTo().getId());
-        doReturn(charges).when(chargeRepository)
-            .findAllByInstitutionAndAssetsContainsAndOperationType(any(Institution.class), any(Asset.class),
-                any(OperationType.class));
 
         //Act
-        operationService.processDestinationTransactions(validOperation);
-        final Double expectedBalance = previousBalance + validOperation.getAmountTo() - 3D - 5D;
-        final int expectedTransactions = 1 + charges.size();
+        operationService.processDestinationTransactions(validOperation, charges);
+        final Double expectedBalance = previousBalance + operationAmount - flatFee  - (operationAmount * percentageFee / 100);
+        final int expectedTransactions = 1 + (charges.size() - 1); //ORIGIN target must be ignored
 
         assertThat(destination.getBalance()).isEqualTo(expectedBalance);
         verify(transactionRepository, times(expectedTransactions)).save(any(Transaction.class));
