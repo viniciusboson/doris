@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Accounts.
+    -->
+    <changeSet id="20171024173206-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="portfolio_id"
+                                 baseTableName="accounts"
+                                 constraintName="fk_accounts_portfolio_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portfolio"/>
+
+        <addForeignKeyConstraint baseColumnNames="accounts_id"
+                                 baseTableName="accounts_assets"
+                                 constraintName="fk_accounts_assets_accounts_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+        <addForeignKeyConstraint baseColumnNames="assets_id"
+                                 baseTableName="accounts_assets"
+                                 constraintName="fk_accounts_assets_assets_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="asset"/>
+        
+        <addForeignKeyConstraint baseColumnNames="accounts_id"
+                                 baseTableName="accounts_institutions"
+                                 constraintName="fk_accounts_institutions_accounts_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+        <addForeignKeyConstraint baseColumnNames="institutions_id"
+                                 baseTableName="accounts_institutions"
+                                 constraintName="fk_accounts_institutions_institutions_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="institution"/>
+        
+    </changeSet>
+</databaseChangeLog>

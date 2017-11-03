@@ -1,0 +1,80 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "positionFrom",
+            "otherEntityName": "position",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "institutionFrom",
+            "otherEntityName": "institution",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "positionTo",
+            "otherEntityName": "position",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "institutionTo",
+            "otherEntityName": "institution",
+            "otherEntityField": "description"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "executedAt",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "amountFrom",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "amountTo",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "operationTypeFrom",
+            "fieldType": "OperationType",
+            "fieldValues": "WIRE_TRANSFER,WITHDRAW,DEPOSIT,BUY,SELL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "operationTypeTo",
+            "fieldType": "OperationType",
+            "fieldValues": "WIRE_TRANSFER,WITHDRAW,DEPOSIT,BUY,SELL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20171024173208",
+    "entityTableName": "operation",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris",
+    "enableEntityAudit": true
+}

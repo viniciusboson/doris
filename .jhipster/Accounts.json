@@ -1,0 +1,47 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "portfolio",
+            "otherEntityName": "portfolio",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipValidateRules": "required",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "assets",
+            "otherEntityName": "asset",
+            "otherEntityField": "code",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipValidateRules": "required",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "institutions",
+            "otherEntityName": "institution",
+            "otherEntityField": "description",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20171024173206",
+    "entityTableName": "accounts",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "microserviceName": "doris",
+    "enableEntityAudit": true
+}
