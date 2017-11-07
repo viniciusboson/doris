@@ -4,6 +4,7 @@ import com.oceanus.doris.domain.*;
 import com.oceanus.doris.domain.enumeration.OperationType;
 import com.oceanus.doris.repository.*;
 import com.oceanus.doris.service.OperationService;
+import com.oceanus.doris.service.PositionMetricService;
 import com.oceanus.doris.service.mapper.OperationMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,13 +57,16 @@ public class OperationServiceImplTest {
     @Mock
     private ChargeRepository chargeRepository;
 
+    @Mock
+    private PositionMetricService positionMetricService;
+
     private Operation validOperation;
 
     @Before
     public  void setup() {
         MockitoAnnotations.initMocks(this);
         operationService = new OperationServiceImpl(operationRepository, operationMapper,
-            positionRepository, transactionRepository, institutionRepository, chargeRepository);
+            positionRepository, transactionRepository, institutionRepository, chargeRepository, positionMetricService);
 
         Position positionFrom = new Position().description("Position from");
         positionFrom.setId(1L);

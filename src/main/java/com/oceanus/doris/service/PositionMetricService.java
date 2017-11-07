@@ -1,6 +1,9 @@
 package com.oceanus.doris.service;
 
+import com.oceanus.doris.service.dto.OperationDTO;
 import com.oceanus.doris.service.dto.PositionMetricDTO;
+import com.oceanus.doris.service.dto.TransactionDTO;
+
 import java.util.List;
 
 /**
@@ -37,4 +40,11 @@ public interface PositionMetricService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Create a new positionMetric or update an existed one based on a given operation.
+     *
+     * @param operationDTO containing the details to be metric
+     */
+    void createMetric(OperationDTO operationDTO);
 }

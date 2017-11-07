@@ -1,19 +1,19 @@
 package com.oceanus.doris.service.impl;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.domain.enumeration.ChargeTarget;
 import com.oceanus.doris.domain.enumeration.OperationType;
 import com.oceanus.doris.domain.enumeration.TransactionType;
 import com.oceanus.doris.repository.*;
 import com.oceanus.doris.service.OperationService;
+import com.oceanus.doris.service.PositionMetricService;
 import com.oceanus.doris.service.dto.OperationDTO;
 import com.oceanus.doris.service.mapper.OperationMapper;
+import com.oceanus.doris.service.mapper.TransactionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +23,7 @@ import static com.oceanus.doris.domain.enumeration.ChargeTarget.BOTH;
 import static com.oceanus.doris.domain.enumeration.ChargeTarget.DESTINATION;
 import static com.oceanus.doris.domain.enumeration.ChargeTarget.ORIGIN;
 import static com.oceanus.doris.domain.enumeration.ChargeType.FLAT_FEE;
+import static com.oceanus.doris.domain.enumeration.TransactionType.CHARGE;
 import static com.oceanus.doris.domain.enumeration.TransactionType.CREDIT;
 import static com.oceanus.doris.domain.enumeration.TransactionType.DEBIT;
 import static java.lang.String.join;
@@ -46,17 +47,21 @@ public class OperationServiceImpl implements OperationService{
 
     private final ChargeRepository chargeRepository;
 
+    private final PositionMetricService positionMetricService;
+
     private final OperationMapper operationMapper;
 
     public OperationServiceImpl(OperationRepository operationRepository, OperationMapper operationMapper,
                                 PositionRepository positionRepository, TransactionRepository transactionRepository,
-                                InstitutionRepository institutionRepository, ChargeRepository chargeRepository) {
+                                InstitutionRepository institutionRepository, ChargeRepository chargeRepository,
+                                PositionMetricService positionMetricService) {
         this.operationRepository = operationRepository;
         this.operationMapper = operationMapper;
         this.positionRepository = positionRepository;
         this.transactionRepository = transactionRepository;
         this.institutionRepository = institutionRepository;
         this.chargeRepository = chargeRepository;
+        this.positionMetricService = positionMetricService;
     }
 
     /**
@@ -90,13 +95,20 @@ public class OperationServiceImpl implements OperationService{
         final Position destination = positionRepository.findOne(operation.getPositionTo().getId());
 
         final List<Charge> charges = new ArrayList<>();
-        charges.addAll(getChargesToBeTransacted(operation.getInstitutionFrom(), origin.getAsset(), operation.getOperationTypeFrom()));
-        charges.addAll(getChargesToBeTransacted(operation.getInstitutionTo(), destination.getAsset(), operation.getOperationTypeTo()));
+        charges.addAll(getChargesToBeTransacted(operation.getInstitutionFrom(), origin.getAsset(),
+            operation.getOperationTypeFrom()));
+        charges.addAll(getChargesToBeTransacted(operation.getInstitutionTo(), destination.getAsset(),
+            operation.getOperationTypeTo()));
 
-        processOriginTransactions(operation,  charges);
-        processDestinationTransactions(operation, charges);
+        final List<Transaction> originTransactions = processOriginTransactions(operation,  charges);
+        final List<Transaction> destinationTransactions = processDestinationTransactions(operation, charges);
 
-        return operationMapper.toDto(operation);
+        final OperationDTO result = operationMapper.toDto(operation);
+
+        //TODO: decouple PositionMetric with Operation using pub/sub topic
+        positionMetricService.createMetric(result);
+
+        return result;
     }
 
     /**
@@ -104,16 +116,19 @@ public class OperationServiceImpl implements OperationService{
      *
      * @param operation containing the transaction's details.
      */
-    void processOriginTransactions(final Operation operation, List<Charge> charges) {
-        Position origin = positionRepository.findOne(operation.getPositionFrom().getId());
+    List<Transaction> processOriginTransactions(final Operation operation, List<Charge> charges) {
+        final Position origin = positionRepository.findOne(operation.getPositionFrom().getId());
         log.debug("Process origin transactions of operation {} over position {}", operation,  origin);
 
-        final String mainTransactionDescription = join(" - ",
+        final String operationTransactionDescription = join(" - ",
             operation.getOperationTypeFrom().toString(),
             institutionRepository.findOne(operation.getInstitutionFrom().getId()).getDescription());
 
+        final List<Transaction> createdTransactions = new ArrayList<>();
+
         origin.subtract(operation.getAmountFrom());
-        createTransaction(operation, origin, mainTransactionDescription, operation.getAmountFrom(), DEBIT);
+        createdTransactions.add(createTransaction(operation, origin, operationTransactionDescription,
+            operation.getAmountFrom(), DEBIT));
 
         positionRepository.save(origin);
 
@@ -123,8 +138,10 @@ public class OperationServiceImpl implements OperationService{
                 Double amount = (FLAT_FEE.equals(charge.getChargeType())?
                     charge.getAmount() : operation.getAmountFrom() * charge.getAmount() / 100);
                 origin.subtract(amount);
-                createTransaction(operation, origin, charge.getDescription(), amount, DEBIT);
+                createdTransactions.add(createTransaction(operation, origin, charge.getDescription(), amount, CHARGE));
             });
+
+        return createdTransactions;
     }
 
     /**
@@ -133,16 +150,19 @@ public class OperationServiceImpl implements OperationService{
      *
      * @param operation containing the transaction's details.
      */
-    void processDestinationTransactions(final Operation operation, List<Charge> charges) {
+    List<Transaction> processDestinationTransactions(final Operation operation, List<Charge> charges) {
         final Position destination = positionRepository.findOne(operation.getPositionTo().getId());
         log.debug("Process destination transactions of operation {} over position {}", operation,  destination);
 
-        final String mainTransactionDescription = join(" - ",
+        final String chargeTransactionDescription = join(" - ",
             operation.getOperationTypeTo().toString(),
             institutionRepository.findOne(operation.getInstitutionTo().getId()).getDescription());
 
+        final List<Transaction> createdTransactions = new ArrayList<>();
+
         destination.add(operation.getAmountTo());
-        createTransaction(operation, destination, mainTransactionDescription, operation.getAmountTo(), CREDIT);
+        createdTransactions.add(createTransaction(operation, destination, chargeTransactionDescription,
+            operation.getAmountTo(), CREDIT));
 
         charges.stream()
             .filter(charge -> charge.getTarget().equals(DESTINATION) || charge.getTarget().equals(BOTH))
@@ -150,10 +170,13 @@ public class OperationServiceImpl implements OperationService{
                 Double amount = (FLAT_FEE.equals(charge.getChargeType())?
                     charge.getAmount() : operation.getAmountTo() * charge.getAmount() / 100 );
                 destination.subtract(amount);
-                createTransaction(operation, destination, charge.getDescription(), amount, DEBIT);
+                createdTransactions.add(createTransaction(operation, destination, charge.getDescription(), amount,
+                    CHARGE));
             });
 
         positionRepository.save(destination);
+
+        return createdTransactions;
     }
 
     /**

@@ -178,4 +178,33 @@ public class PositionMetric extends AbstractAuditingEntity implements Serializab
             ", txCosts='" + getTxCosts() + "'" +
             "}";
     }
+
+    public void increasePosition(Double price, Double amount, Double costs) {
+        if(price == null || amount == null || costs == null) {
+            throw new NullPointerException("Neither price or amount can be null");
+        }
+        entryAvgPrice = calculateWeightedAvgPrice(entryAvgPrice, entryAmount, price, amount, costs);
+        entryAmount = (entryAmount == null)? amount : entryAmount + amount;
+        txCosts = (txCosts == null)? costs : txCosts + costs;
+    }
+
+    public void decreasePosition(Double price, Double amount, Double costs) {
+        if(price == null || amount == null || costs == null) {
+            throw new NullPointerException("Neither price or amount can be null");
+        }
+        exitAvgPrice = calculateWeightedAvgPrice(exitAvgPrice, exitAmount, price, amount, costs);
+        exitAmount = (exitAmount == null)? amount : exitAmount + amount;
+        txCosts = (txCosts == null)? costs : txCosts + costs;
+    }
+
+    Double calculateWeightedAvgPrice(Double previousAvgPrice, Double previousAmount, Double newPrice,
+                                             Double newAmount, Double costs) {
+        previousAvgPrice = (previousAvgPrice != null) ? previousAvgPrice : 0.0;
+        previousAmount = (previousAmount != null) ? previousAmount : 0.0;
+        newPrice = (newPrice != null) ? newPrice : 0.0;
+        newAmount = (newAmount != null) ? newAmount : 0.0;
+        costs = (costs != null) ? costs : 0.0;
+
+        return ((previousAvgPrice * previousAmount) + (newPrice * newAmount) + costs) / (previousAmount + newAmount);
+    }
 }
