@@ -41,7 +41,7 @@
         {
             "fieldName": "type",
             "fieldType": "TransactionType",
-            "fieldValues": "DEBIT,CREDIT",
+            "fieldValues": "DEBIT,CREDIT,CHARGE",
             "fieldValidateRules": [
                 "required"
             ]

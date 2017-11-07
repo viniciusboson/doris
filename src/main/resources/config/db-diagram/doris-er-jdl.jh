@@ -110,7 +110,7 @@ entity Transaction {
 }
 
 enum TransactionType {
-  DEBIT, CREDIT
+  DEBIT, CREDIT, CHARGE
 }
 
 relationship ManyToOne {
