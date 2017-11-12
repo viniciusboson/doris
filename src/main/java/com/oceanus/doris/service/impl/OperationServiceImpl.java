@@ -180,7 +180,7 @@ public class OperationServiceImpl implements OperationService{
     }
 
     /**
-     * Creates and persistes a new Transaction.
+     * Creates and persists a new Transaction.
      */
     private Transaction createTransaction(Operation operation, Position position, String description,
                                 Double amount, TransactionType type) {
