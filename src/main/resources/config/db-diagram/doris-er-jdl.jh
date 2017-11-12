@@ -1,6 +1,6 @@
 entity Institution {
   id Long
-  description String required // Poloniex, XP, Exodus, Santander
+  description String required // Exchange, Bank, Wallet
 }
 
 entity Asset {
