@@ -1,6 +1,7 @@
 package com.oceanus.doris.service.impl;
 
 import com.oceanus.doris.domain.*;
+import com.oceanus.doris.domain.enumeration.OperationType;
 import com.oceanus.doris.domain.enumeration.TransactionType;
 import com.oceanus.doris.repository.PositionMetricRepository;
 import com.oceanus.doris.repository.PositionRepository;
@@ -8,7 +9,6 @@ import com.oceanus.doris.repository.TransactionRepository;
 import com.oceanus.doris.service.PositionMetricService;
 import com.oceanus.doris.service.dto.OperationDTO;
 import com.oceanus.doris.service.dto.PositionMetricDTO;
-import com.oceanus.doris.service.dto.TransactionDTO;
 import com.oceanus.doris.service.mapper.OperationMapper;
 import com.oceanus.doris.service.mapper.PositionMetricMapper;
 import org.slf4j.Logger;
@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.oceanus.doris.domain.enumeration.OperationType.SELL;
 import static com.oceanus.doris.domain.enumeration.TransactionType.CHARGE;
 import static com.oceanus.doris.domain.enumeration.TransactionType.CREDIT;
 import static com.oceanus.doris.domain.enumeration.TransactionType.DEBIT;
@@ -123,32 +124,35 @@ public class PositionMetricServiceImpl implements PositionMetricService{
             destination);
 
         calculateMetric(origin, destination.getAsset(), operation.getAmountFrom(), operation.getAmountTo(),
-            originTransactions, DEBIT);
+            originTransactions, DEBIT, operation.getOperationTypeFrom());
         calculateMetric(destination, origin.getAsset(), operation.getAmountFrom(), operation.getAmountTo(),
-            destinationTransactions, CREDIT);
+            destinationTransactions, CREDIT, operation.getOperationTypeTo());
     }
 
-    private PositionMetric calculateMetric(Position position, Asset assetComparison, Double price, Double amount,
-                                           List<Transaction> transactions, TransactionType transactionType) {
-        PositionMetric destinationPositionMetric = positionMetricRepository.findOneByPositionAndAssetComparison(
+    private PositionMetric calculateMetric(Position position, Asset assetComparison, Double amountFrom, Double amountTo,
+                                           List<Transaction> transactions, TransactionType transactionType,
+                                           OperationType operationType) {
+        PositionMetric positionMetric = positionMetricRepository.findOneByPositionAndAssetComparison(
             position, assetComparison);
-        if(destinationPositionMetric == null) {
-            destinationPositionMetric = new PositionMetric().position(position)
+        if(positionMetric == null) {
+            positionMetric = new PositionMetric().position(position)
                 .assetComparison(assetComparison);
         }
 
         Double txCosts = transactions.stream()
-            .filter(t -> CHARGE.equals(t.getType()))
+            .filter(t -> CHARGE.equals(t.getType()) && position.equals(t.getPosition()))
             .mapToDouble(Transaction::getAmount)
             .sum();
 
+        final Double price = SELL.equals(operationType) ? amountTo : amountFrom;
+        final Double amount = SELL.equals(operationType) ? amountFrom : amountTo;
 
         if(DEBIT.equals(transactionType)) {
-            destinationPositionMetric.decreasePosition(price, amount, txCosts);
+            positionMetric.decreasePosition(price, amount, txCosts);
         } else {
-            destinationPositionMetric.increasePosition(price, amount, txCosts);
+            positionMetric.increasePosition(price, amount, txCosts);
         }
 
-        return positionMetricRepository.save(destinationPositionMetric);
+        return positionMetricRepository.save(positionMetric);
     }
 }
