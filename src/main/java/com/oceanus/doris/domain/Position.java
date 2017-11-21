@@ -97,16 +97,6 @@ public class Position extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public Position add(Double amount) {
-        this.balance += amount;
-        return this;
-    }
-
-    public Position subtract(Double amount) {
-        this.balance -= amount;
-        return this;
-    }
-
     public void setBalance(Double balance) {
         this.balance = balance;
     }

@@ -44,6 +44,11 @@ public class PositionDTO extends AbstractAuditingDTO implements Serializable {
         this.id = id;
     }
 
+    public PositionDTO id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -58,6 +63,20 @@ public class PositionDTO extends AbstractAuditingDTO implements Serializable {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public void increaseBalance(Double amount) {
+        if(balance == null) {
+            balance = 0.0;
+        }
+        this.balance += amount;
+    }
+
+    public void decreaseBalance(Double amount) {
+        if(balance == null) {
+            balance = 0.0;
+        }
+        this.balance -= amount;
     }
 
     public PositionType getType() {

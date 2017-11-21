@@ -11,6 +11,9 @@ import com.oceanus.doris.domain.enumeration.ChargeTarget;
 import com.oceanus.doris.domain.enumeration.ChargeType;
 import com.oceanus.doris.domain.enumeration.OperationType;
 
+import static com.oceanus.doris.domain.enumeration.ChargeType.FLAT_FEE;
+import static com.oceanus.doris.domain.enumeration.ChargeType.PERCENTAGE;
+
 /**
  * A DTO for the Charge entity.
  */
@@ -142,5 +145,9 @@ public class ChargeDTO extends AbstractAuditingDTO implements Serializable {
             ", amount='" + getAmount() + "'" +
             ", target='" + getTarget() + "'" +
             "}";
+    }
+
+    public Double calculateFee(Double baseAmount) {
+        return (PERCENTAGE.equals(getChargeType()) ? baseAmount * getAmount() / 100 : getAmount());
     }
 }

@@ -32,6 +32,11 @@ public class AssetDTO extends AbstractAuditingDTO implements Serializable {
         this.id = id;
     }
 
+    public AssetDTO id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }

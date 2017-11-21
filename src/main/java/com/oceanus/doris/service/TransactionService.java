@@ -1,5 +1,6 @@
 package com.oceanus.doris.service;
 
+import com.oceanus.doris.service.dto.OperationDTO;
 import com.oceanus.doris.service.dto.TransactionDTO;
 import java.util.List;
 
@@ -37,4 +38,11 @@ public interface TransactionService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Create transactions based on a given operation.
+     *
+     * @param operationDTO containing the details which will generate the transactions
+     */
+    List<TransactionDTO> createTransactions(OperationDTO operationDTO);
 }

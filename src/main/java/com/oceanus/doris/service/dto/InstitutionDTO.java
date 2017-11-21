@@ -23,6 +23,11 @@ public class InstitutionDTO extends AbstractAuditingDTO implements Serializable 
         this.id = id;
     }
 
+    public InstitutionDTO id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }
