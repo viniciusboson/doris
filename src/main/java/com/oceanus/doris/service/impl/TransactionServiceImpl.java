@@ -3,8 +3,6 @@ package com.oceanus.doris.service.impl;
 import com.oceanus.doris.service.TransactionService;
 import com.oceanus.doris.domain.Transaction;
 import com.oceanus.doris.repository.TransactionRepository;
-import com.oceanus.doris.service.dto.TransactionDTO;
-import com.oceanus.doris.service.mapper.TransactionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,25 +23,21 @@ public class TransactionServiceImpl implements TransactionService{
 
     private final TransactionRepository transactionRepository;
 
-    private final TransactionMapper transactionMapper;
-
-    public TransactionServiceImpl(TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
-        this.transactionMapper = transactionMapper;
     }
 
     /**
      * Save a transaction.
      *
-     * @param transactionDTO the entity to save
+     * @param transaction the entity to save
      * @return the persisted entity
      */
     @Override
-    public TransactionDTO save(TransactionDTO transactionDTO) {
-        log.debug("Request to save Transaction : {}", transactionDTO);
-        Transaction transaction = transactionMapper.toEntity(transactionDTO);
+    public Transaction save(Transaction transaction) {
+        log.debug("Request to save Transaction : {}", transaction);
         transaction = transactionRepository.save(transaction);
-        return transactionMapper.toDto(transaction);
+        return transaction;
     }
 
     /**
@@ -53,10 +47,9 @@ public class TransactionServiceImpl implements TransactionService{
      */
     @Override
     @Transactional(readOnly = true)
-    public List<TransactionDTO> findAll() {
+    public List<Transaction> findAll() {
         log.debug("Request to get all Transactions");
         return transactionRepository.findAll().stream()
-            .map(transactionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -68,10 +61,10 @@ public class TransactionServiceImpl implements TransactionService{
      */
     @Override
     @Transactional(readOnly = true)
-    public TransactionDTO findOne(Long id) {
+    public Transaction findOne(Long id) {
         log.debug("Request to get Transaction : {}", id);
         Transaction transaction = transactionRepository.findOne(id);
-        return transactionMapper.toDto(transaction);
+        return transaction;
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.oceanus.doris.service.mapper;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.service.dto.InstitutionDTO;
+import com.oceanus.doris.web.rest.dto.InstitutionDTO;
 
 import org.mapstruct.*;
 
@@ -11,9 +11,9 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface InstitutionMapper extends EntityMapper<InstitutionDTO, Institution> {
 
-    
 
-    
+
+
 
     default Institution fromId(Long id) {
         if (id == null) {

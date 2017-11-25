@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.Asset;
 import com.oceanus.doris.service.AssetService;
+import com.oceanus.doris.service.mapper.AssetMapper;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.AssetDTO;
+import com.oceanus.doris.web.rest.dto.AssetDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,11 @@ public class AssetResource {
 
     private final AssetService assetService;
 
-    public AssetResource(AssetService assetService) {
+    private final AssetMapper assetMapper;
+
+    public AssetResource(AssetService assetService, AssetMapper assetMapper) {
         this.assetService = assetService;
+        this.assetMapper = assetMapper;
     }
 
     /**
@@ -49,10 +54,10 @@ public class AssetResource {
         if (assetDTO.getId() != null) {
             throw new BadRequestAlertException("A new asset cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        AssetDTO result = assetService.save(assetDTO);
+        Asset result = assetService.save(assetMapper.toEntity(assetDTO));
         return ResponseEntity.created(new URI("/api/assets/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(assetMapper.toDto(result));
     }
 
     /**
@@ -71,10 +76,10 @@ public class AssetResource {
         if (assetDTO.getId() == null) {
             return createAsset(assetDTO);
         }
-        AssetDTO result = assetService.save(assetDTO);
+        Asset result = assetService.save(assetMapper.toEntity(assetDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, assetDTO.getId().toString()))
-            .body(result);
+            .body(assetMapper.toDto(result));
     }
 
     /**
@@ -86,8 +91,8 @@ public class AssetResource {
     @Timed
     public List<AssetDTO> getAllAssets() {
         log.debug("REST request to get all Assets");
-        return assetService.findAll();
-        }
+        return assetMapper.toDto(assetService.findAll());
+    }
 
     /**
      * GET  /assets/:id : get the "id" asset.
@@ -99,8 +104,8 @@ public class AssetResource {
     @Timed
     public ResponseEntity<AssetDTO> getAsset(@PathVariable Long id) {
         log.debug("REST request to get Asset : {}", id);
-        AssetDTO assetDTO = assetService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(assetDTO));
+        Asset asset = assetService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(assetMapper.toDto(asset)));
     }
 
     /**

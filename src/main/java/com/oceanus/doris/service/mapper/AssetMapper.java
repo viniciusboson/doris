@@ -1,7 +1,7 @@
 package com.oceanus.doris.service.mapper;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.service.dto.AssetDTO;
+import com.oceanus.doris.web.rest.dto.AssetDTO;
 
 import org.mapstruct.*;
 
@@ -11,9 +11,9 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface AssetMapper extends EntityMapper<AssetDTO, Asset> {
 
-    
 
-    
+
+
 
     default Asset fromId(Long id) {
         if (id == null) {

@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.Position;
 import com.oceanus.doris.service.PositionService;
+import com.oceanus.doris.service.mapper.PositionMapper;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.PositionDTO;
+import com.oceanus.doris.web.rest.dto.PositionDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,11 @@ public class PositionResource {
 
     private final PositionService positionService;
 
-    public PositionResource(PositionService positionService) {
+    private final PositionMapper positionMapper;
+
+    public PositionResource(PositionService positionService, PositionMapper positionMapper) {
         this.positionService = positionService;
+        this.positionMapper = positionMapper;
     }
 
     /**
@@ -49,10 +54,10 @@ public class PositionResource {
         if (positionDTO.getId() != null) {
             throw new BadRequestAlertException("A new position cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PositionDTO result = positionService.save(positionDTO);
+        Position result = positionService.save(positionMapper.toEntity(positionDTO));
         return ResponseEntity.created(new URI("/api/positions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(positionMapper.toDto(result));
     }
 
     /**
@@ -71,10 +76,10 @@ public class PositionResource {
         if (positionDTO.getId() == null) {
             return createPosition(positionDTO);
         }
-        PositionDTO result = positionService.save(positionDTO);
+        Position result = positionService.save(positionMapper.toEntity(positionDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, positionDTO.getId().toString()))
-            .body(result);
+            .body(positionMapper.toDto(result));
     }
 
     /**
@@ -86,7 +91,7 @@ public class PositionResource {
     @Timed
     public List<PositionDTO> getAllPositions() {
         log.debug("REST request to get all Positions");
-        return positionService.findAll();
+        return positionMapper.toDto(positionService.findAll());
         }
 
     /**
@@ -99,8 +104,8 @@ public class PositionResource {
     @Timed
     public ResponseEntity<PositionDTO> getPosition(@PathVariable Long id) {
         log.debug("REST request to get Position : {}", id);
-        PositionDTO positionDTO = positionService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(positionDTO));
+        Position position = positionService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(positionMapper.toDto(position)));
     }
 
     /**

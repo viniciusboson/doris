@@ -1,8 +1,7 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.OperationDTO;
-import com.oceanus.doris.service.dto.PositionMetricDTO;
-import com.oceanus.doris.service.dto.TransactionDTO;
+import com.oceanus.doris.domain.Operation;
+import com.oceanus.doris.domain.PositionMetric;
 
 import java.util.List;
 
@@ -14,17 +13,17 @@ public interface PositionMetricService {
     /**
      * Save a positionMetric.
      *
-     * @param positionMetricDTO the entity to save
+     * @param positionMetric the entity to save
      * @return the persisted entity
      */
-    PositionMetricDTO save(PositionMetricDTO positionMetricDTO);
+    PositionMetric save(PositionMetric positionMetric);
 
     /**
      *  Get all the positionMetrics.
      *
      *  @return the list of entities
      */
-    List<PositionMetricDTO> findAll();
+    List<PositionMetric> findAll();
 
     /**
      *  Get the "id" positionMetric.
@@ -32,7 +31,7 @@ public interface PositionMetricService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    PositionMetricDTO findOne(Long id);
+    PositionMetric findOne(Long id);
 
     /**
      *  Delete the "id" positionMetric.
@@ -44,7 +43,7 @@ public interface PositionMetricService {
     /**
      * Create a new positionMetric or update an existed one based on a given operation.
      *
-     * @param operationDTO containing the details to be metric
+     * @param operation containing the details to be metric
      */
-    void createMetric(OperationDTO operationDTO);
+    void createMetric(Operation operation);
 }

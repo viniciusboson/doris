@@ -1,7 +1,7 @@
 package com.oceanus.doris.service.mapper;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.service.dto.PositionMetricDTO;
+import com.oceanus.doris.web.rest.dto.PositionMetricDTO;
 
 import org.mapstruct.*;
 
@@ -15,7 +15,7 @@ public interface PositionMetricMapper extends EntityMapper<PositionMetricDTO, Po
     @Mapping(source = "position.description", target = "positionDescription")
     @Mapping(source = "assetComparison.id", target = "assetComparisonId")
     @Mapping(source = "assetComparison.code", target = "assetComparisonCode")
-    PositionMetricDTO toDto(PositionMetric positionMetric); 
+    PositionMetricDTO toDto(PositionMetric positionMetric);
 
     @Mapping(source = "positionId", target = "position")
     @Mapping(source = "assetComparisonId", target = "assetComparison")

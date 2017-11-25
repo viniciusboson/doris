@@ -3,12 +3,10 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.PositionMetric;
-import com.oceanus.doris.domain.Position;
-import com.oceanus.doris.domain.Asset;
 import com.oceanus.doris.repository.PositionMetricRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.PositionMetricService;
-import com.oceanus.doris.service.dto.PositionMetricDTO;
+import com.oceanus.doris.web.rest.dto.PositionMetricDTO;
 import com.oceanus.doris.service.mapper.PositionMetricMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -87,7 +85,7 @@ public class PositionMetricResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PositionMetricResource positionMetricResource = new PositionMetricResource(positionMetricService);
+        final PositionMetricResource positionMetricResource = new PositionMetricResource(positionMetricService, positionMetricMapper);
         this.restPositionMetricMockMvc = MockMvcBuilders.standaloneSetup(positionMetricResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

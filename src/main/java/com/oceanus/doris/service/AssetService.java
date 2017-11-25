@@ -1,6 +1,6 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.AssetDTO;
+import com.oceanus.doris.domain.Asset;
 import java.util.List;
 
 /**
@@ -11,17 +11,17 @@ public interface AssetService {
     /**
      * Save a asset.
      *
-     * @param assetDTO the entity to save
+     * @param asset the entity to save
      * @return the persisted entity
      */
-    AssetDTO save(AssetDTO assetDTO);
+    Asset save(Asset asset);
 
     /**
      *  Get all the assets.
      *
      *  @return the list of entities
      */
-    List<AssetDTO> findAll();
+    List<Asset> findAll();
 
     /**
      *  Get the "id" asset.
@@ -29,7 +29,7 @@ public interface AssetService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    AssetDTO findOne(Long id);
+    Asset findOne(Long id);
 
     /**
      *  Delete the "id" asset.

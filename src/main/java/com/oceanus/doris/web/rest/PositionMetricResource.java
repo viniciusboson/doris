@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.PositionMetric;
 import com.oceanus.doris.service.PositionMetricService;
+import com.oceanus.doris.service.mapper.PositionMetricMapper;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.PositionMetricDTO;
+import com.oceanus.doris.web.rest.dto.PositionMetricDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,28 +33,31 @@ public class PositionMetricResource {
 
     private final PositionMetricService positionMetricService;
 
-    public PositionMetricResource(PositionMetricService positionMetricService) {
+    private final PositionMetricMapper positionMetricMapper;
+
+    public PositionMetricResource(PositionMetricService positionMetricService, PositionMetricMapper positionMetricMapper) {
         this.positionMetricService = positionMetricService;
+        this.positionMetricMapper = positionMetricMapper;
     }
 
     /**
      * POST  /position-metrics : Create a new positionMetric.
      *
-     * @param positionMetricDTO the positionMetricDTO to create
+     * @param positionMetric the positionMetricDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new positionMetricDTO, or with status 400 (Bad Request) if the positionMetric has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/position-metrics")
     @Timed
-    public ResponseEntity<PositionMetricDTO> createPositionMetric(@Valid @RequestBody PositionMetricDTO positionMetricDTO) throws URISyntaxException {
-        log.debug("REST request to save PositionMetric : {}", positionMetricDTO);
-        if (positionMetricDTO.getId() != null) {
+    public ResponseEntity<PositionMetricDTO> createPositionMetric(@Valid @RequestBody PositionMetricDTO positionMetric) throws URISyntaxException {
+        log.debug("REST request to save PositionMetric : {}", positionMetric);
+        if (positionMetric.getId() != null) {
             throw new BadRequestAlertException("A new positionMetric cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PositionMetricDTO result = positionMetricService.save(positionMetricDTO);
+        PositionMetric result = positionMetricService.save(positionMetricMapper.toEntity(positionMetric));
         return ResponseEntity.created(new URI("/api/position-metrics/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(positionMetricMapper.toDto(result));
     }
 
     /**
@@ -71,10 +76,10 @@ public class PositionMetricResource {
         if (positionMetricDTO.getId() == null) {
             return createPositionMetric(positionMetricDTO);
         }
-        PositionMetricDTO result = positionMetricService.save(positionMetricDTO);
+        PositionMetric result = positionMetricService.save(positionMetricMapper.toEntity(positionMetricDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, positionMetricDTO.getId().toString()))
-            .body(result);
+            .body(positionMetricMapper.toDto(result));
     }
 
     /**
@@ -86,7 +91,7 @@ public class PositionMetricResource {
     @Timed
     public List<PositionMetricDTO> getAllPositionMetrics() {
         log.debug("REST request to get all PositionMetrics");
-        return positionMetricService.findAll();
+        return positionMetricMapper.toDto(positionMetricService.findAll());
         }
 
     /**
@@ -99,8 +104,8 @@ public class PositionMetricResource {
     @Timed
     public ResponseEntity<PositionMetricDTO> getPositionMetric(@PathVariable Long id) {
         log.debug("REST request to get PositionMetric : {}", id);
-        PositionMetricDTO positionMetricDTO = positionMetricService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(positionMetricDTO));
+        PositionMetric positionMetric = positionMetricService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(positionMetricMapper.toDto(positionMetric)));
     }
 
     /**

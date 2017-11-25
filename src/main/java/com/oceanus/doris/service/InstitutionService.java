@@ -1,6 +1,7 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.InstitutionDTO;
+import com.oceanus.doris.domain.Institution;
+
 import java.util.List;
 
 /**
@@ -11,17 +12,17 @@ public interface InstitutionService {
     /**
      * Save a institution.
      *
-     * @param institutionDTO the entity to save
+     * @param institution the entity to save
      * @return the persisted entity
      */
-    InstitutionDTO save(InstitutionDTO institutionDTO);
+    Institution save(Institution institution);
 
     /**
      *  Get all the institutions.
      *
      *  @return the list of entities
      */
-    List<InstitutionDTO> findAll();
+    List<Institution> findAll();
 
     /**
      *  Get the "id" institution.
@@ -29,7 +30,7 @@ public interface InstitutionService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    InstitutionDTO findOne(Long id);
+    Institution findOne(Long id);
 
     /**
      *  Delete the "id" institution.

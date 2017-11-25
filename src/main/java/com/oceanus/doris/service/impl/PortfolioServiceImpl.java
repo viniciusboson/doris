@@ -3,8 +3,6 @@ package com.oceanus.doris.service.impl;
 import com.oceanus.doris.service.PortfolioService;
 import com.oceanus.doris.domain.Portfolio;
 import com.oceanus.doris.repository.PortfolioRepository;
-import com.oceanus.doris.service.dto.PortfolioDTO;
-import com.oceanus.doris.service.mapper.PortfolioMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,25 +23,21 @@ public class PortfolioServiceImpl implements PortfolioService{
 
     private final PortfolioRepository portfolioRepository;
 
-    private final PortfolioMapper portfolioMapper;
-
-    public PortfolioServiceImpl(PortfolioRepository portfolioRepository, PortfolioMapper portfolioMapper) {
+    public PortfolioServiceImpl(PortfolioRepository portfolioRepository) {
         this.portfolioRepository = portfolioRepository;
-        this.portfolioMapper = portfolioMapper;
     }
 
     /**
      * Save a portfolio.
      *
-     * @param portfolioDTO the entity to save
+     * @param portfolio the entity to save
      * @return the persisted entity
      */
     @Override
-    public PortfolioDTO save(PortfolioDTO portfolioDTO) {
-        log.debug("Request to save Portfolio : {}", portfolioDTO);
-        Portfolio portfolio = portfolioMapper.toEntity(portfolioDTO);
+    public Portfolio save(Portfolio portfolio) {
+        log.debug("Request to save Portfolio : {}", portfolio);
         portfolio = portfolioRepository.save(portfolio);
-        return portfolioMapper.toDto(portfolio);
+        return portfolio;
     }
 
     /**
@@ -53,10 +47,9 @@ public class PortfolioServiceImpl implements PortfolioService{
      */
     @Override
     @Transactional(readOnly = true)
-    public List<PortfolioDTO> findAll() {
+    public List<Portfolio> findAll() {
         log.debug("Request to get all Portfolios");
         return portfolioRepository.findAll().stream()
-            .map(portfolioMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -68,10 +61,10 @@ public class PortfolioServiceImpl implements PortfolioService{
      */
     @Override
     @Transactional(readOnly = true)
-    public PortfolioDTO findOne(Long id) {
+    public Portfolio findOne(Long id) {
         log.debug("Request to get Portfolio : {}", id);
         Portfolio portfolio = portfolioRepository.findOne(id);
-        return portfolioMapper.toDto(portfolio);
+        return portfolio;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.PortfolioDTO;
+import com.oceanus.doris.domain.Portfolio;
+
 import java.util.List;
 
 /**
@@ -11,17 +12,17 @@ public interface PortfolioService {
     /**
      * Save a portfolio.
      *
-     * @param portfolioDTO the entity to save
+     * @param portfolio the entity to save
      * @return the persisted entity
      */
-    PortfolioDTO save(PortfolioDTO portfolioDTO);
+    Portfolio save(Portfolio portfolio);
 
     /**
      *  Get all the portfolios.
      *
      *  @return the list of entities
      */
-    List<PortfolioDTO> findAll();
+    List<Portfolio> findAll();
 
     /**
      *  Get the "id" portfolio.
@@ -29,7 +30,7 @@ public interface PortfolioService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    PortfolioDTO findOne(Long id);
+    Portfolio findOne(Long id);
 
     /**
      *  Delete the "id" portfolio.

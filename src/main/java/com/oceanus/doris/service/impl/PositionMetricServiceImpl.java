@@ -7,10 +7,6 @@ import com.oceanus.doris.repository.PositionMetricRepository;
 import com.oceanus.doris.repository.PositionRepository;
 import com.oceanus.doris.repository.TransactionRepository;
 import com.oceanus.doris.service.PositionMetricService;
-import com.oceanus.doris.service.dto.OperationDTO;
-import com.oceanus.doris.service.dto.PositionMetricDTO;
-import com.oceanus.doris.service.mapper.OperationMapper;
-import com.oceanus.doris.service.mapper.PositionMetricMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,32 +36,25 @@ public class PositionMetricServiceImpl implements PositionMetricService{
 
     private final TransactionRepository transactionRepository;
 
-    private final PositionMetricMapper positionMetricMapper;
-
-    private final OperationMapper operationMapper;
-
     public PositionMetricServiceImpl(PositionMetricRepository positionMetricRepository,
-                                     PositionRepository positionRepository, TransactionRepository transactionRepository,
-                                     PositionMetricMapper positionMetricMapper, OperationMapper operationMapper) {
+                                     PositionRepository positionRepository,
+                                     TransactionRepository transactionRepository) {
         this.positionMetricRepository = positionMetricRepository;
-        this.positionMetricMapper = positionMetricMapper;
         this.positionRepository = positionRepository;
         this.transactionRepository = transactionRepository;
-        this.operationMapper = operationMapper;
     }
 
     /**
      * Save a positionMetric.
      *
-     * @param positionMetricDTO the entity to save
+     * @param positionMetric the entity to save
      * @return the persisted entity
      */
     @Override
-    public PositionMetricDTO save(PositionMetricDTO positionMetricDTO) {
-        log.debug("Request to save PositionMetric : {}", positionMetricDTO);
-        PositionMetric positionMetric = positionMetricMapper.toEntity(positionMetricDTO);
+    public PositionMetric save(PositionMetric positionMetric) {
+        log.debug("Request to save PositionMetric : {}", positionMetric);
         positionMetric = positionMetricRepository.save(positionMetric);
-        return positionMetricMapper.toDto(positionMetric);
+        return positionMetric;
     }
 
     /**
@@ -75,10 +64,9 @@ public class PositionMetricServiceImpl implements PositionMetricService{
      */
     @Override
     @Transactional(readOnly = true)
-    public List<PositionMetricDTO> findAll() {
+    public List<PositionMetric> findAll() {
         log.debug("Request to get all PositionMetrics");
         return positionMetricRepository.findAll().stream()
-            .map(positionMetricMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -90,10 +78,10 @@ public class PositionMetricServiceImpl implements PositionMetricService{
      */
     @Override
     @Transactional(readOnly = true)
-    public PositionMetricDTO findOne(Long id) {
+    public PositionMetric findOne(Long id) {
         log.debug("Request to get PositionMetric : {}", id);
         PositionMetric positionMetric = positionMetricRepository.findOne(id);
-        return positionMetricMapper.toDto(positionMetric);
+        return positionMetric;
     }
 
     /**
@@ -110,12 +98,11 @@ public class PositionMetricServiceImpl implements PositionMetricService{
     /**
      * Create a new positionMetric or update an existed one based on a given operation.
      *
-     * @param operationDTO containing the details to be metric
+     * @param operation containing the details to be metric
      */
     @Override
-    public void createMetric(OperationDTO operationDTO) {
-        log.debug("Request to create a PositionMetric based on the operation : {}", operationDTO);
-        final Operation operation = operationMapper.toEntity(operationDTO);
+    public void createMetric(Operation operation) {
+        log.debug("Request to create a PositionMetric based on the operation : {}", operation);
         final Position origin = positionRepository.findOne(operation.getPositionFrom().getId());
         final List<Transaction> originTransactions = transactionRepository.findAllByOperationAndPosition(operation,
             origin);

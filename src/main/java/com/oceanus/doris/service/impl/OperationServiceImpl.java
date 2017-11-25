@@ -6,9 +6,6 @@ import com.oceanus.doris.domain.enumeration.TransactionType;
 import com.oceanus.doris.repository.*;
 import com.oceanus.doris.service.OperationService;
 import com.oceanus.doris.service.PositionMetricService;
-import com.oceanus.doris.service.dto.OperationDTO;
-import com.oceanus.doris.service.mapper.OperationMapper;
-import com.oceanus.doris.service.mapper.TransactionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -49,14 +46,10 @@ public class OperationServiceImpl implements OperationService{
 
     private final PositionMetricService positionMetricService;
 
-    private final OperationMapper operationMapper;
-
-    public OperationServiceImpl(OperationRepository operationRepository, OperationMapper operationMapper,
-                                PositionRepository positionRepository, TransactionRepository transactionRepository,
-                                InstitutionRepository institutionRepository, ChargeRepository chargeRepository,
-                                PositionMetricService positionMetricService) {
+    public OperationServiceImpl(OperationRepository operationRepository, PositionRepository positionRepository,
+                                TransactionRepository transactionRepository, InstitutionRepository institutionRepository,
+                                ChargeRepository chargeRepository, PositionMetricService positionMetricService) {
         this.operationRepository = operationRepository;
-        this.operationMapper = operationMapper;
         this.positionRepository = positionRepository;
         this.transactionRepository = transactionRepository;
         this.institutionRepository = institutionRepository;
@@ -67,28 +60,26 @@ public class OperationServiceImpl implements OperationService{
     /**
      * Save a operation.
      *
-     * @param operationDTO the entity to save
+     * @param operation the entity to save
      * @return the persisted entity
      */
     @Override
-    public OperationDTO save(OperationDTO operationDTO) {
-        log.debug("Request to save Operation : {}", operationDTO);
-        Operation operation = operationMapper.toEntity(operationDTO);
+    public Operation save(Operation operation) {
+        log.debug("Request to save Operation : {}", operation);
         operation = operationRepository.save(operation);
-        return operationMapper.toDto(operation);
+        return operation;
     }
 
     /**
      * Create an operation and all its dependencies. See {@link com.oceanus.doris.domain.Position},
      * {@link com.oceanus.doris.domain.Transaction}, {@link com.oceanus.doris.domain.PositionMetric}
      *
-     * @param operationDTO the entity to save
+     * @param operation the entity to save
      * @return the persisted entity
      */
-    public OperationDTO create(final OperationDTO operationDTO) {
-        log.debug("Request to create Operation : {}", operationDTO);
+    public Operation create(Operation operation) {
+        log.debug("Request to create Operation : {}", operation);
 
-        Operation operation = operationMapper.toEntity(operationDTO);
         operation = operationRepository.save(operation);
 
         final Position origin = positionRepository.findOne(operation.getPositionFrom().getId());
@@ -103,12 +94,10 @@ public class OperationServiceImpl implements OperationService{
         final List<Transaction> originTransactions = processOriginTransactions(operation,  charges);
         final List<Transaction> destinationTransactions = processDestinationTransactions(operation, charges);
 
-        final OperationDTO result = operationMapper.toDto(operation);
-
         //TODO: decouple PositionMetric with Operation using pub/sub topic
-        positionMetricService.createMetric(result);
+        positionMetricService.createMetric(operation);
 
-        return result;
+        return operation;
     }
 
     /**
@@ -207,10 +196,9 @@ public class OperationServiceImpl implements OperationService{
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OperationDTO> findAll() {
+    public List<Operation> findAll() {
         log.debug("Request to get all Operations");
         return operationRepository.findAll().stream()
-            .map(operationMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -222,10 +210,10 @@ public class OperationServiceImpl implements OperationService{
      */
     @Override
     @Transactional(readOnly = true)
-    public OperationDTO findOne(Long id) {
+    public Operation findOne(Long id) {
         log.debug("Request to get Operation : {}", id);
         Operation operation = operationRepository.findOne(id);
-        return operationMapper.toDto(operation);
+        return operation;
     }
 
     /**

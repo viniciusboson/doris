@@ -1,4 +1,4 @@
-package com.oceanus.doris.service.dto;
+package com.oceanus.doris.web.rest.dto;
 
 import java.io.Serializable;
 import java.time.Instant;

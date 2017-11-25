@@ -1,7 +1,7 @@
 package com.oceanus.doris.service.mapper;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.service.dto.OperationDTO;
+import com.oceanus.doris.web.rest.dto.OperationDTO;
 
 import org.mapstruct.*;
 
@@ -19,7 +19,7 @@ public interface OperationMapper extends EntityMapper<OperationDTO, Operation> {
     @Mapping(source = "positionTo.description", target = "positionToDescription")
     @Mapping(source = "institutionTo.id", target = "institutionToId")
     @Mapping(source = "institutionTo.description", target = "institutionToDescription")
-    OperationDTO toDto(Operation operation); 
+    OperationDTO toDto(Operation operation);
 
     @Mapping(source = "positionFromId", target = "positionFrom")
     @Mapping(source = "institutionFromId", target = "institutionFrom")

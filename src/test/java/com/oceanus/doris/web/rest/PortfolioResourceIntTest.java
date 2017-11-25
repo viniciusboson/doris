@@ -6,7 +6,7 @@ import com.oceanus.doris.domain.Portfolio;
 import com.oceanus.doris.repository.PortfolioRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.PortfolioService;
-import com.oceanus.doris.service.dto.PortfolioDTO;
+import com.oceanus.doris.web.rest.dto.PortfolioDTO;
 import com.oceanus.doris.service.mapper.PortfolioMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -73,7 +73,7 @@ public class PortfolioResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PortfolioResource portfolioResource = new PortfolioResource(portfolioService);
+        final PortfolioResource portfolioResource = new PortfolioResource(portfolioService, portfolioMapper);
         this.restPortfolioMockMvc = MockMvcBuilders.standaloneSetup(portfolioResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

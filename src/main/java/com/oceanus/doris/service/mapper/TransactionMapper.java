@@ -1,7 +1,7 @@
 package com.oceanus.doris.service.mapper;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.service.dto.TransactionDTO;
+import com.oceanus.doris.web.rest.dto.TransactionDTO;
 
 import org.mapstruct.*;
 
@@ -14,7 +14,7 @@ public interface TransactionMapper extends EntityMapper<TransactionDTO, Transact
     @Mapping(source = "operation.id", target = "operationId")
     @Mapping(source = "position.id", target = "positionId")
     @Mapping(source = "position.description", target = "positionDescription")
-    TransactionDTO toDto(Transaction transaction); 
+    TransactionDTO toDto(Transaction transaction);
 
     @Mapping(source = "operationId", target = "operation")
     @Mapping(source = "positionId", target = "position")

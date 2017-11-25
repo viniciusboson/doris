@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.Transaction;
 import com.oceanus.doris.service.TransactionService;
+import com.oceanus.doris.service.mapper.TransactionMapper;
+import com.oceanus.doris.web.rest.dto.TransactionDTO;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.TransactionDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,12 @@ public class TransactionResource {
 
     private final TransactionService transactionService;
 
-    public TransactionResource(TransactionService transactionService) {
+    private final TransactionMapper transactionMapper;
+
+
+    public TransactionResource(TransactionService transactionService, TransactionMapper transactionMapper) {
         this.transactionService = transactionService;
+        this.transactionMapper = transactionMapper;
     }
 
     /**
@@ -49,10 +55,10 @@ public class TransactionResource {
         if (transactionDTO.getId() != null) {
             throw new BadRequestAlertException("A new transaction cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        TransactionDTO result = transactionService.save(transactionDTO);
+        Transaction result = transactionService.save(transactionMapper.toEntity(transactionDTO));
         return ResponseEntity.created(new URI("/api/transactions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(transactionMapper.toDto(result));
     }
 
     /**
@@ -71,10 +77,10 @@ public class TransactionResource {
         if (transactionDTO.getId() == null) {
             return createTransaction(transactionDTO);
         }
-        TransactionDTO result = transactionService.save(transactionDTO);
+        Transaction result = transactionService.save(transactionMapper.toEntity(transactionDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, transactionDTO.getId().toString()))
-            .body(result);
+            .body(transactionMapper.toDto(result));
     }
 
     /**
@@ -86,7 +92,7 @@ public class TransactionResource {
     @Timed
     public List<TransactionDTO> getAllTransactions() {
         log.debug("REST request to get all Transactions");
-        return transactionService.findAll();
+        return transactionMapper.toDto(transactionService.findAll());
         }
 
     /**
@@ -99,8 +105,8 @@ public class TransactionResource {
     @Timed
     public ResponseEntity<TransactionDTO> getTransaction(@PathVariable Long id) {
         log.debug("REST request to get Transaction : {}", id);
-        TransactionDTO transactionDTO = transactionService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(transactionDTO));
+        Transaction transaction = transactionService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(transactionMapper.toDto(transaction)));
     }
 
     /**

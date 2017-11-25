@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.Operation;
 import com.oceanus.doris.service.OperationService;
+import com.oceanus.doris.service.mapper.OperationMapper;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.OperationDTO;
+import com.oceanus.doris.web.rest.dto.OperationDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,11 @@ public class OperationResource {
 
     private final OperationService operationService;
 
-    public OperationResource(OperationService operationService) {
+    private final OperationMapper operationMapper;
+
+    public OperationResource(OperationService operationService, OperationMapper operationMapper) {
         this.operationService = operationService;
+        this.operationMapper = operationMapper;
     }
 
     /**
@@ -49,10 +54,10 @@ public class OperationResource {
         if (operationDTO.getId() != null) {
             throw new BadRequestAlertException("A new operation cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        OperationDTO result = operationService.create(operationDTO);
+        Operation result = operationService.create(operationMapper.toEntity(operationDTO));
         return ResponseEntity.created(new URI("/api/operations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(operationMapper.toDto(result));
     }
 
     /**
@@ -71,10 +76,10 @@ public class OperationResource {
         if (operationDTO.getId() == null) {
             return createOperation(operationDTO);
         }
-        OperationDTO result = operationService.save(operationDTO);
+        Operation result = operationService.save(operationMapper.toEntity(operationDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, operationDTO.getId().toString()))
-            .body(result);
+            .body(operationMapper.toDto(result));
     }
 
     /**
@@ -86,7 +91,7 @@ public class OperationResource {
     @Timed
     public List<OperationDTO> getAllOperations() {
         log.debug("REST request to get all Operations");
-        return operationService.findAll();
+        return operationMapper.toDto(operationService.findAll());
         }
 
     /**
@@ -99,8 +104,8 @@ public class OperationResource {
     @Timed
     public ResponseEntity<OperationDTO> getOperation(@PathVariable Long id) {
         log.debug("REST request to get Operation : {}", id);
-        OperationDTO operationDTO = operationService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(operationDTO));
+        Operation operation = operationService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(operationMapper.toDto(operation)));
     }
 
     /**

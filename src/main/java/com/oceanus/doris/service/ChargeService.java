@@ -1,6 +1,7 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.ChargeDTO;
+import com.oceanus.doris.domain.Charge;
+
 import java.util.List;
 
 /**
@@ -11,17 +12,17 @@ public interface ChargeService {
     /**
      * Save a charge.
      *
-     * @param chargeDTO the entity to save
+     * @param charge the entity to save
      * @return the persisted entity
      */
-    ChargeDTO save(ChargeDTO chargeDTO);
+    Charge save(Charge charge);
 
     /**
      *  Get all the charges.
      *
      *  @return the list of entities
      */
-    List<ChargeDTO> findAll();
+    List<Charge> findAll();
 
     /**
      *  Get the "id" charge.
@@ -29,7 +30,7 @@ public interface ChargeService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    ChargeDTO findOne(Long id);
+    Charge findOne(Long id);
 
     /**
      *  Delete the "id" charge.

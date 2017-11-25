@@ -1,6 +1,7 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.PositionDTO;
+import com.oceanus.doris.domain.Position;
+
 import java.util.List;
 
 /**
@@ -11,17 +12,17 @@ public interface PositionService {
     /**
      * Save a position.
      *
-     * @param positionDTO the entity to save
+     * @param position the entity to save
      * @return the persisted entity
      */
-    PositionDTO save(PositionDTO positionDTO);
+    Position save(Position position);
 
     /**
      *  Get all the positions.
      *
      *  @return the list of entities
      */
-    List<PositionDTO> findAll();
+    List<Position> findAll();
 
     /**
      *  Get the "id" position.
@@ -29,7 +30,7 @@ public interface PositionService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    PositionDTO findOne(Long id);
+    Position findOne(Long id);
 
     /**
      *  Delete the "id" position.

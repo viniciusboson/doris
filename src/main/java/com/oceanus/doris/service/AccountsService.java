@@ -1,6 +1,6 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.AccountsDTO;
+import com.oceanus.doris.domain.Accounts;
 import java.util.List;
 
 /**
@@ -11,17 +11,17 @@ public interface AccountsService {
     /**
      * Save a accounts.
      *
-     * @param accountsDTO the entity to save
+     * @param accounts the entity to save
      * @return the persisted entity
      */
-    AccountsDTO save(AccountsDTO accountsDTO);
+    Accounts save(Accounts accounts);
 
     /**
      *  Get all the accounts.
      *
      *  @return the list of entities
      */
-    List<AccountsDTO> findAll();
+    List<Accounts> findAll();
 
     /**
      *  Get the "id" accounts.
@@ -29,7 +29,7 @@ public interface AccountsService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    AccountsDTO findOne(Long id);
+    Accounts findOne(Long id);
 
     /**
      *  Delete the "id" accounts.

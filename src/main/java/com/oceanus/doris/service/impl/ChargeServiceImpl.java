@@ -3,8 +3,6 @@ package com.oceanus.doris.service.impl;
 import com.oceanus.doris.service.ChargeService;
 import com.oceanus.doris.domain.Charge;
 import com.oceanus.doris.repository.ChargeRepository;
-import com.oceanus.doris.service.dto.ChargeDTO;
-import com.oceanus.doris.service.mapper.ChargeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,25 +23,21 @@ public class ChargeServiceImpl implements ChargeService{
 
     private final ChargeRepository chargeRepository;
 
-    private final ChargeMapper chargeMapper;
-
-    public ChargeServiceImpl(ChargeRepository chargeRepository, ChargeMapper chargeMapper) {
+    public ChargeServiceImpl(ChargeRepository chargeRepository) {
         this.chargeRepository = chargeRepository;
-        this.chargeMapper = chargeMapper;
     }
 
     /**
      * Save a charge.
      *
-     * @param chargeDTO the entity to save
+     * @param charge the entity to save
      * @return the persisted entity
      */
     @Override
-    public ChargeDTO save(ChargeDTO chargeDTO) {
-        log.debug("Request to save Charge : {}", chargeDTO);
-        Charge charge = chargeMapper.toEntity(chargeDTO);
+    public Charge save(Charge charge) {
+        log.debug("Request to save Charge : {}", charge);
         charge = chargeRepository.save(charge);
-        return chargeMapper.toDto(charge);
+        return charge;
     }
 
     /**
@@ -53,10 +47,9 @@ public class ChargeServiceImpl implements ChargeService{
      */
     @Override
     @Transactional(readOnly = true)
-    public List<ChargeDTO> findAll() {
+    public List<Charge> findAll() {
         log.debug("Request to get all Charges");
         return chargeRepository.findAllWithEagerRelationships().stream()
-            .map(chargeMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -68,10 +61,10 @@ public class ChargeServiceImpl implements ChargeService{
      */
     @Override
     @Transactional(readOnly = true)
-    public ChargeDTO findOne(Long id) {
+    public Charge findOne(Long id) {
         log.debug("Request to get Charge : {}", id);
         Charge charge = chargeRepository.findOneWithEagerRelationships(id);
-        return chargeMapper.toDto(charge);
+        return charge;
     }
 
     /**

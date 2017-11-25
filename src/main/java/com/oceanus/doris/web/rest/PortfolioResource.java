@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.Portfolio;
 import com.oceanus.doris.service.PortfolioService;
+import com.oceanus.doris.service.mapper.PortfolioMapper;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.PortfolioDTO;
+import com.oceanus.doris.web.rest.dto.PortfolioDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,11 @@ public class PortfolioResource {
 
     private final PortfolioService portfolioService;
 
-    public PortfolioResource(PortfolioService portfolioService) {
+    private final PortfolioMapper portfolioMapper;
+
+    public PortfolioResource(PortfolioService portfolioService, PortfolioMapper portfolioMapper) {
         this.portfolioService = portfolioService;
+        this.portfolioMapper = portfolioMapper;
     }
 
     /**
@@ -49,10 +54,10 @@ public class PortfolioResource {
         if (portfolioDTO.getId() != null) {
             throw new BadRequestAlertException("A new portfolio cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PortfolioDTO result = portfolioService.save(portfolioDTO);
+        Portfolio result = portfolioService.save(portfolioMapper.toEntity(portfolioDTO));
         return ResponseEntity.created(new URI("/api/portfolios/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(portfolioMapper.toDto(result));
     }
 
     /**
@@ -71,10 +76,10 @@ public class PortfolioResource {
         if (portfolioDTO.getId() == null) {
             return createPortfolio(portfolioDTO);
         }
-        PortfolioDTO result = portfolioService.save(portfolioDTO);
+        Portfolio result = portfolioService.save(portfolioMapper.toEntity(portfolioDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, portfolioDTO.getId().toString()))
-            .body(result);
+            .body(portfolioMapper.toDto(result));
     }
 
     /**
@@ -86,7 +91,7 @@ public class PortfolioResource {
     @Timed
     public List<PortfolioDTO> getAllPortfolios() {
         log.debug("REST request to get all Portfolios");
-        return portfolioService.findAll();
+        return portfolioMapper.toDto(portfolioService.findAll());
         }
 
     /**
@@ -99,8 +104,8 @@ public class PortfolioResource {
     @Timed
     public ResponseEntity<PortfolioDTO> getPortfolio(@PathVariable Long id) {
         log.debug("REST request to get Portfolio : {}", id);
-        PortfolioDTO portfolioDTO = portfolioService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(portfolioDTO));
+        Portfolio portfolio = portfolioService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(portfolioMapper.toDto(portfolio)));
     }
 
     /**

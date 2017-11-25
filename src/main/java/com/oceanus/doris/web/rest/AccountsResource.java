@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.Accounts;
 import com.oceanus.doris.service.AccountsService;
+import com.oceanus.doris.service.mapper.AccountsMapper;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.AccountsDTO;
+import com.oceanus.doris.web.rest.dto.AccountsDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,12 @@ public class AccountsResource {
 
     private final AccountsService accountsService;
 
-    public AccountsResource(AccountsService accountsService) {
+
+    private final AccountsMapper accountsMapper;
+
+    public AccountsResource(AccountsService accountsService, AccountsMapper accountsMapper) {
         this.accountsService = accountsService;
+        this.accountsMapper = accountsMapper;
     }
 
     /**
@@ -49,10 +55,10 @@ public class AccountsResource {
         if (accountsDTO.getId() != null) {
             throw new BadRequestAlertException("A new accounts cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        AccountsDTO result = accountsService.save(accountsDTO);
+        Accounts result = accountsService.save(accountsMapper.toEntity(accountsDTO));
         return ResponseEntity.created(new URI("/api/accounts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(accountsMapper.toDto(result));
     }
 
     /**
@@ -71,10 +77,10 @@ public class AccountsResource {
         if (accountsDTO.getId() == null) {
             return createAccounts(accountsDTO);
         }
-        AccountsDTO result = accountsService.save(accountsDTO);
+        Accounts result = accountsService.save(accountsMapper.toEntity(accountsDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, accountsDTO.getId().toString()))
-            .body(result);
+            .body(accountsMapper.toDto(result));
     }
 
     /**
@@ -86,7 +92,7 @@ public class AccountsResource {
     @Timed
     public List<AccountsDTO> getAllAccounts() {
         log.debug("REST request to get all Accounts");
-        return accountsService.findAll();
+        return accountsMapper.toDto(accountsService.findAll());
         }
 
     /**
@@ -99,8 +105,8 @@ public class AccountsResource {
     @Timed
     public ResponseEntity<AccountsDTO> getAccounts(@PathVariable Long id) {
         log.debug("REST request to get Accounts : {}", id);
-        AccountsDTO accountsDTO = accountsService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountsDTO));
+        Accounts accounts = accountsService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountsMapper.toDto(accounts)));
     }
 
     /**

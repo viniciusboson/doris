@@ -3,8 +3,6 @@ package com.oceanus.doris.service.impl;
 import com.oceanus.doris.service.AccountsService;
 import com.oceanus.doris.domain.Accounts;
 import com.oceanus.doris.repository.AccountsRepository;
-import com.oceanus.doris.service.dto.AccountsDTO;
-import com.oceanus.doris.service.mapper.AccountsMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,25 +23,21 @@ public class AccountsServiceImpl implements AccountsService{
 
     private final AccountsRepository accountsRepository;
 
-    private final AccountsMapper accountsMapper;
-
-    public AccountsServiceImpl(AccountsRepository accountsRepository, AccountsMapper accountsMapper) {
+    public AccountsServiceImpl(AccountsRepository accountsRepository) {
         this.accountsRepository = accountsRepository;
-        this.accountsMapper = accountsMapper;
     }
 
     /**
      * Save a accounts.
      *
-     * @param accountsDTO the entity to save
+     * @param accounts the entity to save
      * @return the persisted entity
      */
     @Override
-    public AccountsDTO save(AccountsDTO accountsDTO) {
-        log.debug("Request to save Accounts : {}", accountsDTO);
-        Accounts accounts = accountsMapper.toEntity(accountsDTO);
+    public Accounts save(Accounts accounts) {
+        log.debug("Request to save Accounts : {}", accounts);
         accounts = accountsRepository.save(accounts);
-        return accountsMapper.toDto(accounts);
+        return accounts;
     }
 
     /**
@@ -53,10 +47,9 @@ public class AccountsServiceImpl implements AccountsService{
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AccountsDTO> findAll() {
+    public List<Accounts> findAll() {
         log.debug("Request to get all Accounts");
         return accountsRepository.findAllWithEagerRelationships().stream()
-            .map(accountsMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -68,10 +61,10 @@ public class AccountsServiceImpl implements AccountsService{
      */
     @Override
     @Transactional(readOnly = true)
-    public AccountsDTO findOne(Long id) {
+    public Accounts findOne(Long id) {
         log.debug("Request to get Accounts : {}", id);
         Accounts accounts = accountsRepository.findOneWithEagerRelationships(id);
-        return accountsMapper.toDto(accounts);
+        return accounts;
     }
 
     /**

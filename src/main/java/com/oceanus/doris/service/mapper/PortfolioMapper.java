@@ -1,7 +1,7 @@
 package com.oceanus.doris.service.mapper;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.service.dto.PortfolioDTO;
+import com.oceanus.doris.web.rest.dto.PortfolioDTO;
 
 import org.mapstruct.*;
 
@@ -11,7 +11,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface PortfolioMapper extends EntityMapper<PortfolioDTO, Portfolio> {
 
-    
+
 
     @Mapping(target = "accounts", ignore = true)
     Portfolio toEntity(PortfolioDTO portfolioDTO);

@@ -3,8 +3,6 @@ package com.oceanus.doris.service.impl;
 import com.oceanus.doris.service.PositionService;
 import com.oceanus.doris.domain.Position;
 import com.oceanus.doris.repository.PositionRepository;
-import com.oceanus.doris.service.dto.PositionDTO;
-import com.oceanus.doris.service.mapper.PositionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,25 +23,21 @@ public class PositionServiceImpl implements PositionService{
 
     private final PositionRepository positionRepository;
 
-    private final PositionMapper positionMapper;
-
-    public PositionServiceImpl(PositionRepository positionRepository, PositionMapper positionMapper) {
+    public PositionServiceImpl(PositionRepository positionRepository) {
         this.positionRepository = positionRepository;
-        this.positionMapper = positionMapper;
     }
 
     /**
      * Save a position.
      *
-     * @param positionDTO the entity to save
+     * @param position the entity to save
      * @return the persisted entity
      */
     @Override
-    public PositionDTO save(PositionDTO positionDTO) {
-        log.debug("Request to save Position : {}", positionDTO);
-        Position position = positionMapper.toEntity(positionDTO);
+    public Position save(Position position) {
+        log.debug("Request to save Position : {}", position);
         position = positionRepository.save(position);
-        return positionMapper.toDto(position);
+        return position;
     }
 
     /**
@@ -53,10 +47,9 @@ public class PositionServiceImpl implements PositionService{
      */
     @Override
     @Transactional(readOnly = true)
-    public List<PositionDTO> findAll() {
+    public List<Position> findAll() {
         log.debug("Request to get all Positions");
         return positionRepository.findAll().stream()
-            .map(positionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -68,10 +61,10 @@ public class PositionServiceImpl implements PositionService{
      */
     @Override
     @Transactional(readOnly = true)
-    public PositionDTO findOne(Long id) {
+    public Position findOne(Long id) {
         log.debug("Request to get Position : {}", id);
         Position position = positionRepository.findOne(id);
-        return positionMapper.toDto(position);
+        return position;
     }
 
     /**

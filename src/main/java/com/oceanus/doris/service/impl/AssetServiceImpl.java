@@ -3,8 +3,6 @@ package com.oceanus.doris.service.impl;
 import com.oceanus.doris.service.AssetService;
 import com.oceanus.doris.domain.Asset;
 import com.oceanus.doris.repository.AssetRepository;
-import com.oceanus.doris.service.dto.AssetDTO;
-import com.oceanus.doris.service.mapper.AssetMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,25 +23,21 @@ public class AssetServiceImpl implements AssetService{
 
     private final AssetRepository assetRepository;
 
-    private final AssetMapper assetMapper;
-
-    public AssetServiceImpl(AssetRepository assetRepository, AssetMapper assetMapper) {
+    public AssetServiceImpl(AssetRepository assetRepository) {
         this.assetRepository = assetRepository;
-        this.assetMapper = assetMapper;
     }
 
     /**
      * Save a asset.
      *
-     * @param assetDTO the entity to save
+     * @param asset the entity to save
      * @return the persisted entity
      */
     @Override
-    public AssetDTO save(AssetDTO assetDTO) {
-        log.debug("Request to save Asset : {}", assetDTO);
-        Asset asset = assetMapper.toEntity(assetDTO);
+    public Asset save(Asset asset) {
+        log.debug("Request to save Asset : {}", asset);
         asset = assetRepository.save(asset);
-        return assetMapper.toDto(asset);
+        return asset;
     }
 
     /**
@@ -53,10 +47,9 @@ public class AssetServiceImpl implements AssetService{
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AssetDTO> findAll() {
+    public List<Asset> findAll() {
         log.debug("Request to get all Assets");
         return assetRepository.findAll().stream()
-            .map(assetMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -68,10 +61,11 @@ public class AssetServiceImpl implements AssetService{
      */
     @Override
     @Transactional(readOnly = true)
-    public AssetDTO findOne(Long id) {
+    public Asset findOne(Long id) {
         log.debug("Request to get Asset : {}", id);
         Asset asset = assetRepository.findOne(id);
-        return assetMapper.toDto(asset);
+        return asset;
+
     }
 
     /**

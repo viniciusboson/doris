@@ -6,7 +6,7 @@ import com.oceanus.doris.domain.Asset;
 import com.oceanus.doris.repository.AssetRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.AssetService;
-import com.oceanus.doris.service.dto.AssetDTO;
+import com.oceanus.doris.web.rest.dto.AssetDTO;
 import com.oceanus.doris.service.mapper.AssetMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -83,7 +83,7 @@ public class AssetResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AssetResource assetResource = new AssetResource(assetService);
+        final AssetResource assetResource = new AssetResource(assetService, assetMapper);
         this.restAssetMockMvc = MockMvcBuilders.standaloneSetup(assetResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

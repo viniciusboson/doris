@@ -1,7 +1,7 @@
 package com.oceanus.doris.service.mapper;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.service.dto.PositionDTO;
+import com.oceanus.doris.web.rest.dto.PositionDTO;
 
 import org.mapstruct.*;
 
@@ -15,7 +15,7 @@ public interface PositionMapper extends EntityMapper<PositionDTO, Position> {
     @Mapping(source = "asset.code", target = "assetCode")
     @Mapping(source = "account.id", target = "accountId")
     @Mapping(source = "account.description", target = "accountDescription")
-    PositionDTO toDto(Position position); 
+    PositionDTO toDto(Position position);
 
     @Mapping(source = "assetId", target = "asset")
     @Mapping(source = "accountId", target = "account")

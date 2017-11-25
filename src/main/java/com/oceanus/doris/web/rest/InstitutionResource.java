@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.service.InstitutionService;
+import com.oceanus.doris.service.mapper.InstitutionMapper;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.InstitutionDTO;
+import com.oceanus.doris.web.rest.dto.InstitutionDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,11 @@ public class InstitutionResource {
 
     private final InstitutionService institutionService;
 
-    public InstitutionResource(InstitutionService institutionService) {
+    private final InstitutionMapper institutionMapper;
+
+    public InstitutionResource(InstitutionService institutionService, InstitutionMapper institutionMapper) {
         this.institutionService = institutionService;
+        this.institutionMapper = institutionMapper;
     }
 
     /**
@@ -49,10 +54,10 @@ public class InstitutionResource {
         if (institutionDTO.getId() != null) {
             throw new BadRequestAlertException("A new institution cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        InstitutionDTO result = institutionService.save(institutionDTO);
+        Institution result = institutionService.save(institutionMapper.toEntity(institutionDTO));
         return ResponseEntity.created(new URI("/api/institutions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(institutionMapper.toDto(result));
     }
 
     /**
@@ -71,10 +76,10 @@ public class InstitutionResource {
         if (institutionDTO.getId() == null) {
             return createInstitution(institutionDTO);
         }
-        InstitutionDTO result = institutionService.save(institutionDTO);
+        Institution result = institutionService.save(institutionMapper.toEntity(institutionDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, institutionDTO.getId().toString()))
-            .body(result);
+            .body(institutionMapper.toDto(result));
     }
 
     /**
@@ -86,7 +91,7 @@ public class InstitutionResource {
     @Timed
     public List<InstitutionDTO> getAllInstitutions() {
         log.debug("REST request to get all Institutions");
-        return institutionService.findAll();
+        return institutionMapper.toDto(institutionService.findAll());
         }
 
     /**
@@ -99,8 +104,8 @@ public class InstitutionResource {
     @Timed
     public ResponseEntity<InstitutionDTO> getInstitution(@PathVariable Long id) {
         log.debug("REST request to get Institution : {}", id);
-        InstitutionDTO institutionDTO = institutionService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(institutionDTO));
+        Institution institution = institutionService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(institutionMapper.toDto(institution)));
     }
 
     /**

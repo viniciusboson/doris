@@ -3,13 +3,10 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Accounts;
-import com.oceanus.doris.domain.Portfolio;
-import com.oceanus.doris.domain.Asset;
-import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.AccountsRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.AccountsService;
-import com.oceanus.doris.service.dto.AccountsDTO;
+import com.oceanus.doris.web.rest.dto.AccountsDTO;
 import com.oceanus.doris.service.mapper.AccountsMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -76,7 +73,7 @@ public class AccountsResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AccountsResource accountsResource = new AccountsResource(accountsService);
+        final AccountsResource accountsResource = new AccountsResource(accountsService, accountsMapper);
         this.restAccountsMockMvc = MockMvcBuilders.standaloneSetup(accountsResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

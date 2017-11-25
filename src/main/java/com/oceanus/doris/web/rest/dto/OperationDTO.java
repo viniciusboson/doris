@@ -1,13 +1,10 @@
-package com.oceanus.doris.service.dto;
+package com.oceanus.doris.web.rest.dto;
 
 
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-import com.oceanus.doris.domain.enumeration.OperationType;
 import com.oceanus.doris.domain.enumeration.OperationType;
 
 /**

@@ -65,8 +65,8 @@ public class OperationServiceImplTest {
     @Before
     public  void setup() {
         MockitoAnnotations.initMocks(this);
-        operationService = new OperationServiceImpl(operationRepository, operationMapper,
-            positionRepository, transactionRepository, institutionRepository, chargeRepository, positionMetricService);
+        operationService = new OperationServiceImpl(operationRepository, positionRepository, transactionRepository,
+            institutionRepository, chargeRepository, positionMetricService);
 
         Position positionFrom = new Position().description("Position from");
         positionFrom.setId(1L);

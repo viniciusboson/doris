@@ -1,10 +1,12 @@
 package com.oceanus.doris.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.oceanus.doris.domain.Charge;
 import com.oceanus.doris.service.ChargeService;
+import com.oceanus.doris.service.mapper.ChargeMapper;
 import com.oceanus.doris.web.rest.errors.BadRequestAlertException;
 import com.oceanus.doris.web.rest.util.HeaderUtil;
-import com.oceanus.doris.service.dto.ChargeDTO;
+import com.oceanus.doris.web.rest.dto.ChargeDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,11 @@ public class ChargeResource {
 
     private final ChargeService chargeService;
 
-    public ChargeResource(ChargeService chargeService) {
+    private final ChargeMapper chargeMapper;
+
+    public ChargeResource(ChargeService chargeService, ChargeMapper chargeMapper) {
         this.chargeService = chargeService;
+        this.chargeMapper = chargeMapper;
     }
 
     /**
@@ -49,10 +54,10 @@ public class ChargeResource {
         if (chargeDTO.getId() != null) {
             throw new BadRequestAlertException("A new charge cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ChargeDTO result = chargeService.save(chargeDTO);
+        Charge result = chargeService.save(chargeMapper.toEntity(chargeDTO));
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(chargeMapper.toDto(result));
     }
 
     /**
@@ -71,10 +76,10 @@ public class ChargeResource {
         if (chargeDTO.getId() == null) {
             return createCharge(chargeDTO);
         }
-        ChargeDTO result = chargeService.save(chargeDTO);
+        Charge result = chargeService.save(chargeMapper.toEntity(chargeDTO));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, chargeDTO.getId().toString()))
-            .body(result);
+            .body(chargeMapper.toDto(result));
     }
 
     /**
@@ -86,7 +91,7 @@ public class ChargeResource {
     @Timed
     public List<ChargeDTO> getAllCharges() {
         log.debug("REST request to get all Charges");
-        return chargeService.findAll();
+        return chargeMapper.toDto(chargeService.findAll());
         }
 
     /**
@@ -99,8 +104,8 @@ public class ChargeResource {
     @Timed
     public ResponseEntity<ChargeDTO> getCharge(@PathVariable Long id) {
         log.debug("REST request to get Charge : {}", id);
-        ChargeDTO chargeDTO = chargeService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(chargeDTO));
+        Charge charge = chargeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(chargeMapper.toDto(charge)));
     }
 
     /**

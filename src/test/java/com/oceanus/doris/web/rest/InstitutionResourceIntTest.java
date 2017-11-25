@@ -6,7 +6,7 @@ import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.InstitutionRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.InstitutionService;
-import com.oceanus.doris.service.dto.InstitutionDTO;
+import com.oceanus.doris.web.rest.dto.InstitutionDTO;
 import com.oceanus.doris.service.mapper.InstitutionMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -73,7 +73,7 @@ public class InstitutionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final InstitutionResource institutionResource = new InstitutionResource(institutionService);
+        final InstitutionResource institutionResource = new InstitutionResource(institutionService, institutionMapper);
         this.restInstitutionMockMvc = MockMvcBuilders.standaloneSetup(institutionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -3,12 +3,10 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Transaction;
-import com.oceanus.doris.domain.Operation;
-import com.oceanus.doris.domain.Position;
 import com.oceanus.doris.repository.TransactionRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.TransactionService;
-import com.oceanus.doris.service.dto.TransactionDTO;
+import com.oceanus.doris.web.rest.dto.TransactionDTO;
 import com.oceanus.doris.service.mapper.TransactionMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -27,9 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -93,7 +89,7 @@ public class TransactionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TransactionResource transactionResource = new TransactionResource(transactionService);
+        final TransactionResource transactionResource = new TransactionResource(transactionService, transactionMapper);
         this.restTransactionMockMvc = MockMvcBuilders.standaloneSetup(transactionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

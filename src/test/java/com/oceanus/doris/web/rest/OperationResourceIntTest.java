@@ -3,14 +3,10 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Operation;
-import com.oceanus.doris.domain.Position;
-import com.oceanus.doris.domain.Institution;
-import com.oceanus.doris.domain.Position;
-import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.repository.OperationRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.OperationService;
-import com.oceanus.doris.service.dto.OperationDTO;
+import com.oceanus.doris.web.rest.dto.OperationDTO;
 import com.oceanus.doris.service.mapper.OperationMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -29,9 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -95,7 +89,7 @@ public class OperationResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OperationResource operationResource = new OperationResource(operationService);
+        final OperationResource operationResource = new OperationResource(operationService, operationMapper);
         this.restOperationMockMvc = MockMvcBuilders.standaloneSetup(operationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -1,7 +1,7 @@
 package com.oceanus.doris.service.mapper;
 
 import com.oceanus.doris.domain.*;
-import com.oceanus.doris.service.dto.ChargeDTO;
+import com.oceanus.doris.web.rest.dto.ChargeDTO;
 
 import org.mapstruct.*;
 
@@ -13,7 +13,7 @@ public interface ChargeMapper extends EntityMapper<ChargeDTO, Charge> {
 
     @Mapping(source = "institution.id", target = "institutionId")
     @Mapping(source = "institution.description", target = "institutionDescription")
-    ChargeDTO toDto(Charge charge); 
+    ChargeDTO toDto(Charge charge);
 
     @Mapping(source = "institutionId", target = "institution")
     Charge toEntity(ChargeDTO chargeDTO);

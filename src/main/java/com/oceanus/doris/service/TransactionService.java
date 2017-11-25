@@ -1,6 +1,7 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.TransactionDTO;
+import com.oceanus.doris.domain.Transaction;
+
 import java.util.List;
 
 /**
@@ -11,17 +12,17 @@ public interface TransactionService {
     /**
      * Save a transaction.
      *
-     * @param transactionDTO the entity to save
+     * @param transaction the entity to save
      * @return the persisted entity
      */
-    TransactionDTO save(TransactionDTO transactionDTO);
+    Transaction save(Transaction transaction);
 
     /**
      *  Get all the transactions.
      *
      *  @return the list of entities
      */
-    List<TransactionDTO> findAll();
+    List<Transaction> findAll();
 
     /**
      *  Get the "id" transaction.
@@ -29,7 +30,7 @@ public interface TransactionService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    TransactionDTO findOne(Long id);
+    Transaction findOne(Long id);
 
     /**
      *  Delete the "id" transaction.

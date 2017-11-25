@@ -1,6 +1,7 @@
 package com.oceanus.doris.service;
 
-import com.oceanus.doris.service.dto.OperationDTO;
+import com.oceanus.doris.domain.Operation;
+
 import java.util.List;
 
 /**
@@ -12,25 +13,25 @@ public interface OperationService {
      * Create an operation and all its dependencies. See {@link com.oceanus.doris.domain.Position},
      * {@link com.oceanus.doris.domain.Transaction}, {@link com.oceanus.doris.domain.PositionMetric}
      *
-     * @param operationDTO the entity to save
+     * @param operation the entity to save
      * @return the persisted entity
      */
-    OperationDTO create(OperationDTO operationDTO);
+    Operation create(Operation operation);
 
     /**
      * Save a operation.
      *
-     * @param operationDTO the entity to save
+     * @param operation the entity to save
      * @return the persisted entity
      */
-    OperationDTO save(OperationDTO operationDTO);
+    Operation save(Operation operation);
 
     /**
      *  Get all the operations.
      *
      *  @return the list of entities
      */
-    List<OperationDTO> findAll();
+    List<Operation> findAll();
 
     /**
      *  Get the "id" operation.
@@ -38,7 +39,7 @@ public interface OperationService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    OperationDTO findOne(Long id);
+    Operation findOne(Long id);
 
     /**
      *  Delete the "id" operation.

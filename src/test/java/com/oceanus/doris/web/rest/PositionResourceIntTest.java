@@ -6,7 +6,7 @@ import com.oceanus.doris.domain.Position;
 import com.oceanus.doris.repository.PositionRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.PositionService;
-import com.oceanus.doris.service.dto.PositionDTO;
+import com.oceanus.doris.web.rest.dto.PositionDTO;
 import com.oceanus.doris.service.mapper.PositionMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -84,7 +84,7 @@ public class PositionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PositionResource positionResource = new PositionResource(positionService);
+        final PositionResource positionResource = new PositionResource(positionService, positionMapper);
         this.restPositionMockMvc = MockMvcBuilders.standaloneSetup(positionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

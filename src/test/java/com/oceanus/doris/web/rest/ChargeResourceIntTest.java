@@ -3,12 +3,11 @@ package com.oceanus.doris.web.rest;
 import com.oceanus.doris.DorisApp;
 
 import com.oceanus.doris.domain.Charge;
-import com.oceanus.doris.domain.Institution;
 import com.oceanus.doris.domain.enumeration.ChargeTarget;
 import com.oceanus.doris.repository.ChargeRepository;
 import com.oceanus.doris.repository.util.EntityCreation;
 import com.oceanus.doris.service.ChargeService;
-import com.oceanus.doris.service.dto.ChargeDTO;
+import com.oceanus.doris.web.rest.dto.ChargeDTO;
 import com.oceanus.doris.service.mapper.ChargeMapper;
 import com.oceanus.doris.web.rest.errors.ExceptionTranslator;
 
@@ -89,7 +88,7 @@ public class ChargeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ChargeResource chargeResource = new ChargeResource(chargeService);
+        final ChargeResource chargeResource = new ChargeResource(chargeService, chargeMapper);
         this.restChargeMockMvc = MockMvcBuilders.standaloneSetup(chargeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
