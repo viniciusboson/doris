@@ -205,6 +205,6 @@ public class PositionMetric extends AbstractAuditingEntity implements Serializab
         newAmount = (newAmount != null) ? newAmount : 0.0;
         costs = (costs != null) ? costs : 0.0;
 
-        return ((previousAvgPrice * previousAmount) + (newPrice * newAmount) + costs) / (previousAmount + newAmount);
+        return ((previousAvgPrice * previousAmount) + (newPrice * newAmount)) / (previousAmount + newAmount);
     }
 }

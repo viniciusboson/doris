@@ -50,6 +50,11 @@ public class Asset extends AbstractAuditingEntity implements Serializable {
         this.id = id;
     }
 
+    public Asset id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }

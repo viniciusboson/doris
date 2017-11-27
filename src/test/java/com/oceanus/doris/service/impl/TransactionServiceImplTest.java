@@ -3,8 +3,7 @@ package com.oceanus.doris.service.impl;
 import com.oceanus.doris.domain.*;
 import com.oceanus.doris.domain.enumeration.OperationType;
 import com.oceanus.doris.repository.*;
-import com.oceanus.doris.service.OperationService;
-import com.oceanus.doris.service.PositionMetricService;
+import com.oceanus.doris.service.*;
 import com.oceanus.doris.service.mapper.OperationMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +24,7 @@ import static com.oceanus.doris.domain.enumeration.ChargeType.FLAT_FEE;
 import static com.oceanus.doris.domain.enumeration.ChargeType.PERCENTAGE;
 import static com.oceanus.doris.domain.enumeration.OperationType.DEPOSIT;
 import static com.oceanus.doris.domain.enumeration.OperationType.WITHDRAW;
+import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -35,50 +35,35 @@ import static org.mockito.Mockito.*;
  * @see OperationService
  */
 @RunWith(SpringRunner.class)
-public class OperationServiceImplTest {
+public class TransactionServiceImplTest {
 
-    private OperationServiceImpl operationService;
-
-    @Mock
-    private PositionRepository positionRepository;
-
-    @Mock
-    private OperationRepository operationRepository;
-
-    @Mock
-    private OperationMapper operationMapper;
+    private TransactionServiceImpl transactionService;
 
     @Mock
     private TransactionRepository transactionRepository;
 
     @Mock
-    private InstitutionRepository institutionRepository;
+    private PositionService positionService;
 
     @Mock
-    private ChargeRepository chargeRepository;
+    private InstitutionService institutionService;
 
     @Mock
-    private PositionMetricService positionMetricService;
+    private ChargeService chargeService;
 
     private Operation validOperation;
 
     @Before
     public  void setup() {
         MockitoAnnotations.initMocks(this);
-        operationService = new OperationServiceImpl(operationRepository, positionRepository, transactionRepository,
-            institutionRepository, chargeRepository, positionMetricService);
+        transactionService = new TransactionServiceImpl(transactionRepository, positionService, institutionService,
+            chargeService);
 
-        Position positionFrom = new Position().description("Position from");
-        positionFrom.setId(1L);
-
-        Position positionTo = new Position().description("Position to");
-        positionTo.setId(2L);
-
-        validOperation = new Operation().id(1L).executedAt(ZonedDateTime.now()).amountFrom(1D).amountTo(2D)
+        validOperation = new Operation().id(1L).executedAt(ZonedDateTime.now()).amountFrom(1.0).amountTo(2.0)
             .operationTypeFrom(WITHDRAW)
             .operationTypeTo(DEPOSIT)
-            .positionFrom(new Position().id(1L).description("position from").balance(0D))
-            .positionTo(new Position().id(2L).description("position to").balance(0D))
+            .positionFrom(new Position().id(1L).description("position from").balance(0D).asset(new Asset().id(3L)))
+            .positionTo(new Position().id(2L).description("position to").balance(0D).asset(new Asset().id(4L)))
             .institutionFrom(new Institution().id(1L).description("institution from"))
             .institutionTo(new Institution().id(2L).description("institution to"));
     }
@@ -87,15 +72,17 @@ public class OperationServiceImplTest {
     public void processOriginTransactionsWithoutCharges() {
         //Arrange
         final Position origin = validOperation.getPositionFrom();
+        final Position destination = validOperation.getPositionTo();
         final Double previousBalance = origin.getBalance();
-        final List<Charge> charges = Collections.EMPTY_LIST;
 
-        doReturn(origin).when(positionRepository).findOne(origin.getId());
+        doReturn(origin).when(positionService).findOne(origin.getId());
+        doReturn(destination).when(positionService).findOne(destination.getId());
         doReturn(validOperation.getInstitutionFrom())
-            .when(institutionRepository).findOne(validOperation.getInstitutionFrom().getId());
+            .when(institutionService).findOne(validOperation.getInstitutionFrom().getId());
+        doReturn(EMPTY_LIST).when(chargeService).getChargesForOperation(any(), any(), any(), any(), any(), any(), any());
 
         //Act
-        operationService.processOriginTransactions(validOperation, charges);
+        transactionService.processOriginTransactions(validOperation);
         final Double expectedBalance = previousBalance - validOperation.getAmountFrom();
 
         //Assert
@@ -107,21 +94,23 @@ public class OperationServiceImplTest {
     public void processOriginTransactionsWithCharges() {
         //Arrange
         final Position origin = validOperation.getPositionFrom();
+        final Position destination = validOperation.getPositionTo();
         final Double previousBalance = origin.getBalance(), operationAmount = validOperation.getAmountFrom();
         final Double flatFee = 3.0, percentageFee = 0.0025, ignoredFee = 10.0;
         final List<Charge> charges = Arrays.asList(
             new Charge().amount(flatFee).chargeType(FLAT_FEE).target(ORIGIN),
-            new Charge().amount(percentageFee).chargeType(PERCENTAGE).target(BOTH),
-            new Charge().amount(ignoredFee).chargeType(FLAT_FEE).target(DESTINATION)); //DESTINATION target must be ignored
+            new Charge().amount(percentageFee).chargeType(PERCENTAGE).target(BOTH));
 
-        doReturn(origin).when(positionRepository).findOne(origin.getId());
+        doReturn(origin).when(positionService).findOne(origin.getId());
+        doReturn(destination).when(positionService).findOne(destination.getId());
         doReturn(validOperation.getInstitutionFrom())
-            .when(institutionRepository).findOne(validOperation.getInstitutionFrom().getId());
+            .when(institutionService).findOne(validOperation.getInstitutionFrom().getId());
+        doReturn(charges).when(chargeService).getChargesForOperation(any(), any(), any(), any(), any(), any(), any());
 
         //Act
-        operationService.processOriginTransactions(validOperation, charges);
+        transactionService.processOriginTransactions(validOperation);
         final Double expectedBalance = previousBalance - operationAmount - flatFee  - (operationAmount * percentageFee) / 100;
-        final int expectedTransactions = 1 + (charges.size() - 1); //DESTINATION target must be ignored
+        final int expectedTransactions = 1 + charges.size();
 
         assertThat(origin.getBalance()).isEqualTo(expectedBalance);
         verify(transactionRepository, times(expectedTransactions)).save(any(Transaction.class));
@@ -130,19 +119,18 @@ public class OperationServiceImplTest {
     @Test
     public void processDestinationTransactionsWithoutCharges() {
         //Arrange
+        final Position origin = validOperation.getPositionFrom();
         final Position destination = validOperation.getPositionTo();
         final Double previousBalance = destination.getBalance();
-        final List<Charge> charges = Collections.EMPTY_LIST;
 
-        doReturn(destination).when(positionRepository).findOne(destination.getId());
+        doReturn(origin).when(positionService).findOne(origin.getId());
+        doReturn(destination).when(positionService).findOne(destination.getId());
         doReturn(validOperation.getInstitutionTo())
-            .when(institutionRepository).findOne(validOperation.getInstitutionTo().getId());
-        doReturn(Collections.EMPTY_LIST).when(chargeRepository)
-            .findAllByInstitutionAndAssetsContainsAndOperationType(any(Institution.class), any(Asset.class),
-                any(OperationType.class));
+            .when(institutionService).findOne(validOperation.getInstitutionTo().getId());
+        doReturn(EMPTY_LIST).when(chargeService).getChargesForOperation(any(), any(), any(), any(), any(), any(), any());
 
         //Act
-        operationService.processDestinationTransactions(validOperation, charges);
+        transactionService.processDestinationTransactions(validOperation);
         final Double expectedBalance = previousBalance + validOperation.getAmountTo();
 
         //Assert
@@ -153,22 +141,24 @@ public class OperationServiceImplTest {
     @Test
     public void processDestinationTransactionsWithCharges() {
         //Arrange
+        final Position origin = validOperation.getPositionFrom();
         final Position destination = validOperation.getPositionTo();
         final Double previousBalance = destination.getBalance(), operationAmount = validOperation.getAmountTo();
-        final Double flatFee = 3.0, percentageFee = 0.0025, ignoredFee = 10.0;
+        final Double flatFee = 3.0, percentageFee = 0.0025;
         final List<Charge> charges = Arrays.asList(
             new Charge().amount(flatFee).chargeType(FLAT_FEE).target(DESTINATION),
-            new Charge().amount(percentageFee).chargeType(PERCENTAGE).target(BOTH),
-            new Charge().amount(ignoredFee).chargeType(FLAT_FEE).target(ORIGIN)); //ORIGIN target must be ignored
+            new Charge().amount(percentageFee).chargeType(PERCENTAGE).target(BOTH)); //ORIGIN target must be ignored
 
-        doReturn(destination).when(positionRepository).findOne(destination.getId());
+        doReturn(origin).when(positionService).findOne(origin.getId());
+        doReturn(destination).when(positionService).findOne(destination.getId());
         doReturn(validOperation.getInstitutionTo())
-            .when(institutionRepository).findOne(validOperation.getInstitutionTo().getId());
+            .when(institutionService).findOne(validOperation.getInstitutionTo().getId());
+        doReturn(charges).when(chargeService).getChargesForOperation(any(), any(), any(), any(), any(), any(), any());
 
         //Act
-        operationService.processDestinationTransactions(validOperation, charges);
+        transactionService.processDestinationTransactions(validOperation);
         final Double expectedBalance = previousBalance + operationAmount - flatFee  - (operationAmount * percentageFee / 100);
-        final int expectedTransactions = 1 + (charges.size() - 1); //ORIGIN target must be ignored
+        final int expectedTransactions = 1 + charges.size();
 
         assertThat(destination.getBalance()).isEqualTo(expectedBalance);
         verify(transactionRepository, times(expectedTransactions)).save(any(Transaction.class));

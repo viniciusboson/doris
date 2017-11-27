@@ -15,6 +15,8 @@ import com.oceanus.doris.domain.enumeration.ChargeType;
 
 import com.oceanus.doris.domain.enumeration.OperationType;
 
+import static com.oceanus.doris.domain.enumeration.ChargeType.PERCENTAGE;
+
 /**
  * A Charge.
  */
@@ -205,5 +207,9 @@ public class Charge extends AbstractAuditingEntity implements Serializable {
             ", amount='" + getAmount() + "'" +
             ", target='" + getTarget() + "'" +
             "}";
+    }
+
+    public Double calculateFee(Double baseAmount) {
+        return (PERCENTAGE.equals(getChargeType()) ? baseAmount * getAmount() / 100 : getAmount());
     }
 }
